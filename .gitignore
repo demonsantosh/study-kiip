@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Backups & OS junk
+*.bak
+.DS_Store
+
+# Transient translation batch file (created/removed each run)
+_batch.json
