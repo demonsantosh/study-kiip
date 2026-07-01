@@ -54,17 +54,64 @@
   // (e.g. "I (humble) / म"). Route the Devanagari part to 'ne' so English
   // stays English and Nepali coverage improves. Runs once at load.
   function cleanWord(v) {
-    if (!v || !v.en || !/[ऀ-ॿ]/.test(v.en)) return;
-    const parts = v.en.split("/").map((s) => s.trim()).filter(Boolean);
-    const en = [], ne = [];
-    parts.forEach((p) => { (/[ऀ-ॿ]/.test(p) ? ne : en).push(p); });
-    v.en = en.join(" / ");
-    if (!v.ne && ne.length) v.ne = ne.join(" / ");
+    if (!v) return;
+    // 1) Pull any "Similar: …" / "(유사어 …)" reference words out of en/ne into .similar,
+    //    so they never leak into the word-by-word gloss.
+    ["en", "ne"].forEach((f) => {
+      if (!v[f]) return;
+      const m = String(v[f]).match(/\s*\(?\s*(?:Similar|유사어)\s*[:：]\s*([^]*)$/i);
+      if (m) { if (!v.similar) v.similar = m[1].replace(/\)\s*$/, "").trim(); v[f] = String(v[f]).slice(0, m.index).trim(); }
+    });
+    // 2) A Korean "similar" word mistakenly stored in the Nepali (ne) slot → move to similar.
+    if (v.ne && /[가-힣]/.test(v.ne) && !/[ऀ-ॿ]/.test(v.ne)) {
+      if (!v.similar) v.similar = v.ne;
+      v.ne = "";
+    }
+    // 3) Nepali (Devanagari) stuck inside the English field → split it out into 'ne'.
+    if (v.en && /[ऀ-ॿ]/.test(v.en)) {
+      const parts = v.en.split("/").map((s) => s.trim()).filter(Boolean);
+      const en = [], ne = [];
+      parts.forEach((p) => { (/[ऀ-ॿ]/.test(p) ? ne : en).push(p); });
+      v.en = en.join(" / ");
+      if (!v.ne && ne.length) v.ne = ne.join(" / ");
+    }
+    // 4) A Nepali field that is purely English (no Devanagari) is wrong → clear it so the
+    //    gloss falls back to the English meaning rather than showing English as "Nepali".
+    if (v.ne && /[A-Za-z]/.test(v.ne) && !/[ऀ-ॿ]/.test(v.ne)) v.ne = "";
+    // 5) An English field that is purely Korean (no Latin) is not an English meaning →
+    //    relocate to similar so the English gloss doesn't display Korean.
+    if (v.en && /[가-힣]/.test(v.en) && !/[A-Za-z]/.test(v.en)) { if (!v.similar) v.similar = v.en; v.en = ""; }
+    // tidy stray leading/trailing separators left behind
+    ["en", "ne"].forEach((f) => { if (v[f]) v[f] = String(v[f]).replace(/^[\/·,:\s]+|[\/·,:\s]+$/g, "").trim(); });
   }
   (function cleanAllWords() {
-    DATA.levels.forEach((l) => l.chapters.forEach((c) => (c.vocab || []).forEach(cleanWord)));
+    // Normalize en/ne on EVERY object that carries them, so Nepali never shows a
+    // Korean similar-word or English-mixed text anywhere: vocab, grammar,
+    // dialogues (+lines), activities, culture — across all chapters.
+    DATA.levels.forEach((l) => l.chapters.forEach((c) => {
+      (c.vocab || []).forEach(cleanWord);
+      (c.grammar || []).forEach(cleanWord);
+      (c.dialogues || []).forEach((d) => { cleanWord(d); (d.lines || []).forEach(cleanWord); });
+      (c.activities || []).forEach(cleanWord);
+      if (c.culture) cleanWord(c.culture);
+    }));
     const LV = window.LESSON_VOCAB || {};
     Object.keys(LV).forEach((id) => (LV[id] || []).forEach(cleanWord));
+  })();
+  // some rebuilt chapters store their title as "English | <Nepali>" in .ko. Split it so
+  // the universal (non-Devanagari) part stays as the title and the Nepali moves to .ne,
+  // where it shows only for Nepali users. Devanagari letters/digits only — the danda
+  // punctuation U+0964/65 is shared with Bengali and must not trigger this.
+  (function cleanTitles() {
+    const DEVA = /[ऀ-ॣ०-ॿ]/;
+    function fix(o) {
+      if (!o || !o.ko || o.ko.indexOf("|") === -1) return;
+      const parts = o.ko.split("|").map((s) => s.trim()).filter(Boolean);
+      const keep = parts.filter((p) => !DEVA.test(p));
+      const nep = parts.filter((p) => DEVA.test(p));
+      if (nep.length && keep.length) { if (!o.ne) o.ne = nep.join(" | "); o.ko = keep.join(" | "); }
+    }
+    DATA.levels.forEach((l) => l.chapters.forEach((c) => { fix(c); if (c.culture) fix(c.culture); (c.grammar || []).forEach(fix); }));
   })();
 
   // every unique word for a chapter: curated (with translations) + all word
@@ -98,6 +145,37 @@
   }
   // display name for a level — localized when the level has a names map (e.g. Revision 1)
   function lvlName(l) { return (l && l.names && (l.names[curLang()] || l.names.en)) || (l ? l.name : ""); }
+  // Localized titles for the non-Korean Revision/review chapter names (the rest of the
+  // chapters keep their Korean lesson titles, as befits a Korean course).
+  const TITLE_I18N = {
+    "Cultural and Information": { ko: "문화와 정보", en: "Culture & Information", ne: "संस्कृति र जानकारी", bn: "সংস্কৃতি ও তথ্য", ru: "Культура и информация", he: "תרבות ומידע", ms: "Budaya & Maklumat", vi: "Văn hóa & Thông tin", id: "Budaya & Informasi", si: "සංස්කෘතිය හා තොරතුරු", pt: "Cultura e Informação", fr: "Culture et information" },
+    "Revise 1": { ko: "복습 1", en: "Review 1", ne: "पुनरावलोकन १", bn: "পুনরালোচনা ১", ru: "Повторение 1", he: "חזרה 1", ms: "Ulang Kaji 1", vi: "Ôn tập 1", id: "Tinjauan 1", si: "පුනරීක්ෂණය 1", pt: "Revisão 1", fr: "Révision 1" },
+    "Revise 2": { ko: "복습 2", en: "Review 2", ne: "पुनरावलोकन २", bn: "পুনরালোচনা ২", ru: "Повторение 2", he: "חזרה 2", ms: "Ulang Kaji 2", vi: "Ôn tập 2", id: "Tinjauan 2", si: "පුනරීක්ෂණය 2", pt: "Revisão 2", fr: "Révision 2" },
+    "한국어 중급 어휘 복습": { ko: "한국어 중급 어휘 복습", en: "Intermediate Korean Vocabulary Review", ne: "कोरियन मध्यम तह शब्दावली पुनरावलोकन", bn: "মধ্যবর্তী কোরীয় শব্দভাণ্ডার পুনরালোচনা", ru: "Повторение лексики (средний уровень)", he: "חזרה על אוצר מילים (ביניים)", ms: "Ulang Kaji Kosa Kata Korea Pertengahan", vi: "Ôn tập từ vựng tiếng Hàn trung cấp", id: "Tinjauan Kosakata Korea Menengah", si: "අතරමැදි කොරියානු වචන මාලා පුනරීක්ෂණය", pt: "Revisão de Vocabulário Coreano Intermediário", fr: "Révision du vocabulaire coréen intermédiaire" },
+    "Worries and Counseling": { ko: "걱정과 상담", en: "Worries and Counseling", ne: "चिन्ता र परामर्श", bn: "দুশ্চিন্তা ও পরামর্শ", ru: "Тревоги и консультирование", he: "דאגות וייעוץ", ms: "Kerisauan & Kaunseling", vi: "Lo lắng và Tư vấn", id: "Kekhawatiran & Konseling", si: "කනස්සල්ල හා උපදේශනය", pt: "Preocupações e Aconselhamento", fr: "Soucis et conseil" },
+    "언어생활": { ko: "언어생활", en: "Language Life", ne: "भाषिक जीवन", bn: "ভাষিক জীবন", ru: "Языковая жизнь", he: "חיי שפה", ms: "Kehidupan Berbahasa", vi: "Đời sống ngôn ngữ", id: "Kehidupan Berbahasa", si: "භාෂික ජීවිතය", pt: "Vida linguística", fr: "Vie langagière" },
+    "교육 제도": { ko: "교육 제도", en: "Education System", ne: "शिक्षा प्रणाली", bn: "শিক্ষা ব্যবস্থা", ru: "Система образования", he: "מערכת החינוך", ms: "Sistem Pendidikan", vi: "Hệ thống giáo dục", id: "Sistem Pendidikan", si: "අධ්‍යාපන ක්‍රමය", pt: "Sistema educativo", fr: "Système éducatif" }
+  };
+  // Title fields: a chapter shows Korean + English + the SELECTED language together,
+  // uniformly across every chapter (Revision chapters use TITLE_I18N; the rest use their
+  // own ko/en/ne). Empty fields are skipped by the renderer so there are no blank gaps.
+  function titleTT(c) { const k = String((c && c.ko) || ""); return TITLE_I18N[k] || TITLE_I18N[k.normalize("NFC")] || null; }
+  function titleKo(c) { const tt = titleTT(c); if (tt && tt.ko) return tt.ko; const k = String((c && c.ko) || "").normalize("NFC"); return /[가-힣]/.test(k) ? k : ""; }
+  function titleEn(c) { const tt = titleTT(c); return (tt && tt.en) || (c && c.en) || ""; }
+  function titleSel(c) { const code = curLang(); const tt = titleTT(c); if (tt && tt[code]) return tt[code]; if (code === "ne") return (c && c.ne) || ""; return ""; }
+  function chTitle(c) { return titleKo(c) || titleEn(c) || titleSel(c); }   // single-line fallback (breadcrumbs etc.)
+  // Localized level subtitles (the small line under each level title).
+  const SUBTITLE_I18N = {
+    "사회통합프로그램 · 중급 1 (Intermediate 1)": { en: "Social Integration Program · Intermediate 1", ne: "सामाजिक एकीकरण कार्यक्रम · मध्यम तह १", bn: "সামাজিক একীকরণ কর্মসূচি · মধ্যবর্তী ১", ru: "Программа социальной интеграции · Средний 1", he: "תוכנית שילוב חברתי · ביניים 1", ms: "Program Integrasi Sosial · Pertengahan 1", vi: "Chương trình hội nhập xã hội · Trung cấp 1", id: "Program Integrasi Sosial · Menengah 1", si: "සමාජ ඒකාබද්ධතා වැඩසටහන · අතරමැදි 1", pt: "Programa de Integração Social · Intermediário 1", fr: "Programme d'intégration sociale · Intermédiaire 1" },
+    "사회통합프로그램 · 중급 2 (Intermediate 2)": { en: "Social Integration Program · Intermediate 2", ne: "सामाजिक एकीकरण कार्यक्रम · मध्यम तह २", bn: "সামাজিক একীকরণ কর্মসূচি · মধ্যবর্তী ২", ru: "Программа социальной интеграции · Средний 2", he: "תוכנית שילוב חברתי · ביניים 2", ms: "Program Integrasi Sosial · Pertengahan 2", vi: "Chương trình hội nhập xã hội · Trung cấp 2", id: "Program Integrasi Sosial · Menengah 2", si: "සමාජ ඒකාබද්ධතා වැඩසටහන · අතරමැදි 2", pt: "Programa de Integração Social · Intermediário 2", fr: "Programme d'intégration sociale · Intermédiaire 2" },
+    "Vocabulary review & study notes": { en: "Vocabulary review & study notes", ne: "शब्दावली पुनरावलोकन र अध्ययन टिप्पणीहरू", bn: "শব্দভাণ্ডার পুনরালোচনা ও অধ্যয়ন নোট", ru: "Повторение лексики и учебные заметки", he: "חזרה על אוצר מילים והערות לימוד", ms: "Ulang kaji kosa kata & nota kajian", vi: "Ôn tập từ vựng & ghi chú học tập", id: "Tinjauan kosakata & catatan belajar", si: "වචන මාලා පුනරීක්ෂණය සහ අධ්‍යයන සටහන්", pt: "Revisão de vocabulário e notas de estudo", fr: "Révision du vocabulaire et notes d'étude" }
+  };
+  function subName(l) {
+    if (!l) return "";
+    const code = curLang();
+    const m = (l.subtitles && l.subtitles) || SUBTITLE_I18N[l.subtitle];
+    return (m && (m[code] || m.en)) || l.subtitle || "";
+  }
   // the extra-language translation for a vocab item. Shows the SELECTED language
   // when we have it; otherwise English (universal) — never an unrelated language.
   function extraOf(v) {
@@ -155,8 +233,8 @@
   function bareKo(s) {
     return String(s)
       .replace(/\*\*/g, "")
-      .replace(/^\s*(?:✅|🔹|🔵|🔴|🟦|🟢|🟡|🟠|📌|▶|·|-)\s*/, "")
-      .replace(/^\s*(?:Sentence|문장|Question|질문|Sample|예시|보기|Title|제목|Dialogue|대화|Excerpt|Answer|정답|Task)\s*\d*\s*[:.)]\s*/i, "")
+      .replace(/^\s*(?:✅|🔹|🔵|🔴|🟦|🟢|🟡|🟠|📌|▶|→|←|⇒|»|·|-)\s*/, "")
+      .replace(/^\s*(?:Sentence|문장|Question|질문|Sample|예시|보기|Title|제목|Dialogue|대화|Excerpt|Answer|정답|Task|Korean|한국어|KO)\s*\d*\s*[:.)]\s*/i, "")
       .replace(/^\s*\d+\s*[).]\s*/, "")
       .trim();
   }
@@ -170,16 +248,30 @@
     Object.keys(MD).forEach((id) => {
       if (id.indexOf("@") !== -1) return; // base files only (per-language files are @lang)
       const ls = MD[id].split(/\r?\n/);
-      for (let i = 0; i < ls.length - 1; i++) {
-        const ko = bareKo(ls[i]);
-        if (!/[가-힣]/.test(ko)) continue;
-        const em = ls[i + 1].trim().match(/^EN\s*:\s*(.*)$/i);
-        if (!em) continue;
-        let en = em[1], ne = "";
-        const ni = en.search(/\bNE\s*:/i);
-        if (ni >= 0) { ne = en.slice(ni).replace(/^NE\s*:\s*/i, "").trim(); en = en.slice(0, ni).trim(); }
+      const splitNe = (s) => { const ni = s.search(/\b(?:NE|NP|Nepali)\s*[:：]/i); return ni >= 0 ? [s.slice(0, ni).trim(), s.slice(ni).replace(/^\s*(?:NE|NP|Nepali)\s*[:：]\s*/i, "").trim()] : [s.trim(), ""]; };
+      for (let i = 0; i < ls.length; i++) {
+        const raw = ls[i] || "";
+        if (!/[가-힣]/.test(raw)) continue;
+        let ko = "", en = "", ne = "", matched = false;
+        // format C: Korean + inline "EN:/English: … [NE:/NP:/Nepali: …]" all on ONE line
+        const inl = raw.match(/^(.*?)\b(?:EN|English)\s*[:：]\s*(.*)$/i);
+        if (inl && /[가-힣]/.test(inl[1])) {
+          ko = bareKo(inl[1]); [en, ne] = splitNe(inl[2]); matched = true;
+        } else {
+          ko = bareKo(raw);
+          const n1 = (ls[i + 1] || "").trim();
+          // format A: "EN:/English: …" on the next line
+          const em = n1.match(/^(?:EN|English)\s*[:：]\s*(.*)$/i);
+          if (em) { [en, ne] = splitNe(em[1]); matched = true; }
+          else {
+            // format B: "🇬🇧 English" next line, "🇳🇵 Nepali" the line after
+            const mEn = n1.match(/^🇬🇧\s*(.*)$/);
+            if (mEn) { en = mEn[1].trim(); const mNe = (ls[i + 2] || "").trim().match(/^🇳🇵\s*(.*)$/); if (mNe) ne = mNe[1].trim(); matched = true; }
+          }
+        }
+        if (!matched || !/[가-힣]/.test(ko)) continue;
         const k = normK(ko);
-        if (k && !SENT[k]) SENT[k] = { en: en, ne: ne };
+        if (k && !SENT[k]) { SENT[k] = { en: en, ne: ne }; cleanWord(SENT[k]); }
       }
     });
     return SENT;
@@ -231,11 +323,18 @@
     const m = langMeta(curLang()), code = curLang();
     const terms = sentenceTerms(ko);
     const sm = sentMap()[normK(ko)];
-    const enExact = !!(sm && sm.en);
-    const enText = (sm && sm.en) || terms.map((t) => t.en).filter(Boolean).join(" · ");
-    let exExact = false, exText;
-    if (code === "ne") { exExact = !!(sm && sm.ne); exText = (sm && sm.ne) || terms.map((t) => t.ex).filter(Boolean).join(" · "); }
-    else { exText = terms.map((t) => t.ex).filter(Boolean).join(" · "); }
+    // generated full-sentence translations (from the offline translation index / schedule)
+    const dict = (window.I18N && window.I18N.data) || {};
+    const dtr = dict[ko] || dict[bareKo(ko)] || null;
+    const enText0 = (sm && sm.en) || (dtr && dtr.en) || "";
+    const enExact = !!enText0;
+    const enText = enText0 || terms.map((t) => t.en).filter(Boolean).join(" · ");
+    // exact full-sentence translation in the selected language: source notes (sm) for
+    // Nepali, plus the generated index (dtr) for every language — word-by-word only when
+    // no full translation exists yet.
+    const exTr = (code === "ne" ? (sm && sm.ne) : "") || (dtr && dtr[code]) || "";
+    const exExact = !!exTr;
+    const exText = exTr || terms.map((t) => t.ex).filter(Boolean).join(" · ");
     const gloss = ' <i class="sb-gloss">' + esc(t("sb_wbw")) + '</i>';
 
     let h = '<div class="sb-sentence">' + esc(ko) + '</div>';
@@ -392,6 +491,10 @@
   }
   window.addEventListener("hashchange", render);
 
+  /* ---------- remember last-opened lesson (simple content continuity) ---------- */
+  function saveLast(o) { try { localStorage.setItem("kiip_last", JSON.stringify(o)); } catch (e) {} }
+  function getLast() { try { return JSON.parse(localStorage.getItem("kiip_last") || "null"); } catch (e) { return null; } }
+
   /* ---------- top nav ---------- */
   function buildNav() {
     topNav.innerHTML = "";
@@ -419,6 +522,22 @@
       '<p>' + esc(t("hero_desc")) + '</p>';
     view.appendChild(hero);
 
+    // Continue where you left off (last opened lesson)
+    const last = getLast();
+    const lastLvl = last && findLevel(last.lvl);
+    const lastCh = lastLvl && findChapter(lastLvl, last.ch);
+    if (lastCh) {
+      const cont = el("button", "continue-card");
+      cont.innerHTML =
+        '<span class="cont-ic">▶</span>' +
+        '<span class="cont-body"><span class="cont-kicker">' + esc(t("continue_label")) + '</span>' +
+        '<span class="cont-title">' + esc(lastCh.ko) + '</span>' +
+        '<span class="cont-sub">' + esc(lvlName(lastLvl) + " · " + t("kicker_lesson") + " " + lastCh.number) + '</span></span>' +
+        '<span class="cont-go">→</span>';
+      cont.onclick = () => go("/lesson/" + last.lvl + "/" + last.ch + "/" + (last.tab || "lesson"));
+      view.appendChild(cont);
+    }
+
     view.appendChild(el("div", "section-label", t("choose_level")));
     const grid = el("div", "grid");
     DATA.levels.forEach((l) => {
@@ -427,7 +546,7 @@
       card.innerHTML =
         '<div class="card-kicker">' + esc(t("kicker_level")) + '</div>' +
         '<div class="card-ko">' + esc(lvlName(l)) + '</div>' +
-        '<div class="card-ne">' + esc(l.subtitle || "") + '</div>' +
+        '<div class="card-ne">' + esc(subName(l)) + '</div>' +
         '<div class="card-meta"><span><b>' + l.chapters.length + '</b> ' + esc(t("cnt_lessons")) + '</span>' +
         (ready ? '<span><b>' + ready + '</b> ' + esc(t("cnt_ready")) + '</span>' : '') + '</div>';
       card.onclick = () => go("/level/" + l.id);
@@ -435,16 +554,17 @@
     });
     view.appendChild(grid);
 
-    // study-across-chapters tools
-    view.appendChild(el("div", "section-label", t("study_topic")));
-    const tools = el("div", "grid");
+    // study-across-chapters tools (compact row, visually distinct from levels)
+    view.appendChild(el("div", "section-label", t("study_tools_label")));
+    const tools = el("div", "tool-row");
     const counts = allCounts();
     [["words", "📚", t("nav_words"), counts.words + " " + t("cnt_words")],
      ["grammar", "✍️", t("nav_grammar"), counts.grammar + " " + t("cnt_patterns")],
      ["culture", "🎎", t("nav_culture"), counts.culture + " " + t("cnt_notes")]].forEach(([key, emo, title, meta]) => {
-      const card = el("button", "card");
-      card.innerHTML = '<div class="card-ko" style="font-family:var(--font)">' + emo + " " + esc(title) + '</div>' +
-        '<div class="card-meta"><span><b>' + esc(meta) + '</b></span></div>';
+      const card = el("button", "tool-card");
+      card.innerHTML = '<span class="tool-ic">' + emo + '</span>' +
+        '<span class="tool-txt"><span class="tool-title">' + esc(title) + '</span>' +
+        '<span class="tool-meta">' + esc(meta) + '</span></span>';
       card.onclick = () => go("/" + key);
       tools.appendChild(card);
     });
@@ -540,7 +660,13 @@
       pageSel.value = pages.includes(keep) ? keep : "";
     }
     const count = el("span", "study-count");
-    controls.append(q, levelSel, chapSel, pageSel, count);
+    const clearBtn = el("button", "btn-clear", t("clear_label"));
+    // search on its own row; filters grouped on a labelled row below
+    const searchRow = el("div", "study-search-row");
+    searchRow.append(q, count);
+    const filterRow = el("div", "study-filter-row");
+    filterRow.append(el("span", "filter-label", t("filters_label")), levelSel, chapSel, pageSel, clearBtn);
+    controls.append(searchRow, filterRow);
     view.appendChild(controls);
 
     function pageMatch(v) {
@@ -564,7 +690,7 @@
         const ex = extraOf(v);
         return [v.ko, v.rom, v.en, v.similar, ex].join(" ").toLowerCase().indexOf(term) !== -1;
       });
-      count.textContent = rows.length + " words";
+      count.textContent = rows.length + " " + t("cnt_words");
       let html = '<table class="vocab-table"><thead><tr><th>' + esc(t("th_korean")) + '</th><th>' + esc(t("th_english")) + '</th><th>' + esc(m.flag + " " + m.name) + '</th><th>' + esc(t("th_chapter")) + '</th></tr></thead><tbody>';
       rows.forEach((v) => {
         const dir = m.rtl ? ' dir="rtl"' : "";
@@ -581,6 +707,9 @@
     levelSel.onchange = () => { populateChapters(); refreshPages(); draw(); };
     chapSel.onchange = () => { refreshPages(); draw(); };
     pageSel.onchange = draw;
+    clearBtn.onclick = () => {
+      q.value = ""; levelSel.value = ""; populateChapters(); chapSel.value = ""; refreshPages(); draw();
+    };
     refreshPages();
     draw();
   }
@@ -596,7 +725,10 @@
     const levelSel = el("select", "study-filter");
     levelSel.innerHTML = '<option value="">' + esc(t("all_levels")) + '</option>' + DATA.levels.map((l) => '<option value="' + l.id + '">' + esc(lvlName(l)) + '</option>').join("");
     const count = el("span", "study-count");
-    controls.append(q, levelSel, count);
+    const clearBtn = el("button", "btn-clear", t("clear_label"));
+    const searchRow = el("div", "study-search-row"); searchRow.append(q, count);
+    const filterRow = el("div", "study-filter-row"); filterRow.append(el("span", "filter-label", t("filters_label")), levelSel, clearBtn);
+    controls.append(searchRow, filterRow);
     view.appendChild(controls);
     const list = el("div"); view.appendChild(list);
     function draw() {
@@ -610,7 +742,7 @@
       list.innerHTML = "";
       rows.forEach((g) => {
         const c = el("div", "grammar-card");
-        let h = '<div class="g-chap">' + esc(g._lvl + " · Lesson " + g._chNo + " — " + g._chKo) + '</div>' +
+        let h = '<div class="g-chap">' + esc(g._lvl + " · " + t("kicker_lesson") + " " + g._chNo + " — " + g._chKo) + '</div>' +
           '<div class="g-pattern">' + esc(g.pattern) + '</div>' +
           '<div class="g-mean">' + esc(g.en || "") + '</div>' + selLine(g, "g-ne");
         if (g.note) h += '<div class="g-note">' + esc(g.note) + '</div>';
@@ -624,7 +756,9 @@
       });
       if (!rows.length) list.appendChild(emptyState("🔍", "No grammar matches."));
     }
-    q.oninput = draw; levelSel.onchange = draw; draw();
+    q.oninput = draw; levelSel.onchange = draw;
+    clearBtn.onclick = () => { q.value = ""; levelSel.value = ""; draw(); };
+    draw();
   }
 
   /* ---------- 🎎 Culture (all chapters) ---------- */
@@ -642,13 +776,14 @@
       if (c || cmd) items.push({ lvl, ch, c, cmd });
     }));
     sel.innerHTML = '<option value="">' + esc(t("all_chapters")) + '</option>' + items.map((it, i) => '<option value="' + i + '">' + esc(lvlName(it.lvl) + " · " + it.ch.number + ". " + it.ch.ko) + '</option>').join("");
-    controls.appendChild(sel);
+    const filterRow = el("div", "study-filter-row"); filterRow.append(el("span", "filter-label", t("filters_label")), sel);
+    controls.appendChild(filterRow);
     view.appendChild(controls);
     const host = el("div"); view.appendChild(host);
 
     function drawOne(it) {
       const block = el("div", "culture-block");
-      block.appendChild(el("div", "g-chap", esc(lvlName(it.lvl) + " · Lesson " + it.ch.number + " — " + it.ch.ko)));
+      block.appendChild(el("div", "g-chap", esc(lvlName(it.lvl) + " · " + t("kicker_lesson") + " " + it.ch.number + " — " + it.ch.ko)));
       if (it.c) {
         const head = el("div", "culture");
         head.innerHTML = '<div class="c-ko">' + esc(it.c.ko) + '</div>' +
@@ -686,7 +821,7 @@
     view.innerHTML = "";
     view.appendChild(crumbs([[t("crumb_home"), "/"], [lvlName(lvl), null]]));
     view.appendChild(el("h1", "page-title", esc(lvlName(lvl))));
-    view.appendChild(el("p", "page-sub", esc(lvl.subtitle || "") ));
+    view.appendChild(el("p", "page-sub", esc(subName(lvl)) ));
 
     view.appendChild(el("div", "section-label", t("cnt_lessons")));
     if (!lvl.chapters.length) {
@@ -700,11 +835,12 @@
       const nWords = (c.vocab && c.vocab.length) || ((window.LESSON_VOCAB && window.LESSON_VOCAB[c.id] || []).length);
       const ready = nWords || full;
       const card = el("button", "card" + (ready ? "" : " muted"));
-      card.innerHTML =
-        '<div class="card-kicker">Lesson ' + c.number + '</div>' +
-        '<div class="card-ko">' + esc(c.ko) + '</div>' +
-        '<div class="card-en">' + esc(c.en) + '</div>' +
-        selLine(c, "card-ne") +
+      const tko = titleKo(c), ten = titleEn(c), tse = titleSel(c), rtl = langMeta(curLang()).rtl;
+      let th = '<div class="card-kicker">' + esc(t("kicker_lesson")) + ' ' + c.number + '</div>';
+      if (tko) th += '<div class="card-ko">' + esc(tko) + '</div>';
+      if (ten && ten !== tko) th += '<div class="card-en">' + esc(ten) + '</div>';
+      if (tse && tse !== ten && tse !== tko) th += '<div class="card-ne"' + (rtl ? ' dir="rtl"' : '') + '>' + esc(tse) + '</div>';
+      card.innerHTML = th +
         (ready
           ? '<div class="card-meta">' + (full ? '<span>📖 ' + esc(t("tab_full")) + '</span>' : '') +
             (nWords ? '<span><b>' + nWords + '</b> ' + esc(t("cnt_words")) + '</span>' : '') + '</div>'
@@ -719,24 +855,26 @@
     const lvl = findLevel(levelId);
     const ch = findChapter(lvl, chapterId);
     if (!lvl || !ch) return renderHome();
-    tab = tab || "vocab";
+    const hasFull = window.LESSON_MD && window.LESSON_MD[ch.id];
+    tab = tab || (hasFull ? "lesson" : "vocab");   // open the reading first when available
+    saveLast({ lvl: lvl.id, ch: ch.id, tab: tab, ko: ch.ko, number: ch.number });
     view.innerHTML = "";
-    view.appendChild(crumbs([[t("crumb_home"), "/"], [lvlName(lvl), "/level/" + lvl.id], ["Lesson " + ch.number, null]]));
-    view.appendChild(el("h1", "page-title", esc(ch.ko)));
-    view.appendChild(el("p", "page-sub", esc(ch.en) + (curLang() === "ne" && ch.ne ? " · " + esc(ch.ne) : "")));
+    view.appendChild(crumbs([[t("crumb_home"), "/"], [lvlName(lvl), "/level/" + lvl.id], [t("kicker_lesson") + " " + ch.number, null]]));
+    view.appendChild(el("h1", "page-title", esc(titleKo(ch) || titleEn(ch))));
+    const _sub = [titleKo(ch) ? titleEn(ch) : "", titleSel(ch)].filter((s) => s && s !== titleKo(ch)).filter((v, i, a) => a.indexOf(v) === i);
+    if (_sub.length) view.appendChild(el("p", "page-sub", esc(_sub.join(" · "))));
     if (ch.summary) {
       const s = el("p", null, esc(ch.summary));
       s.style.color = "var(--ink-soft)"; s.style.marginTop = "-14px"; s.style.marginBottom = "8px";
       view.appendChild(s);
     }
 
-    const hasFull = window.LESSON_MD && window.LESSON_MD[ch.id];
     const tabs = el("div", "tabs");
     const defs = [];
-    if (hasFull) defs.push(["lesson", "📖 " + t("tab_full")]);
-    defs.push(["vocab", t("tab_vocab")], ["grammar", t("tab_grammar")], ["dialogues", t("tab_dialogues")], ["flashcards", t("tab_flashcards")], ["quiz", t("tab_quiz")]);
-    defs.forEach(([key, label]) => {
-      const b = el("button", key === tab ? "active" : null, label);
+    if (hasFull) defs.push(["lesson", "📖", t("tab_full")]);
+    defs.push(["vocab", "📚", t("tab_vocab")], ["grammar", "✍️", t("tab_grammar")], ["dialogues", "💬", t("tab_dialogues")], ["flashcards", "🃏", t("tab_flashcards")], ["quiz", "❓", t("tab_quiz")]);
+    defs.forEach(([key, emo, label]) => {
+      const b = el("button", key === tab ? "active" : null, '<span class="tab-ic">' + emo + '</span>' + esc(label));
       b.onclick = () => go("/lesson/" + lvl.id + "/" + ch.id + "/" + key);
       tabs.appendChild(b);
     });

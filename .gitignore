@@ -7,3 +7,8 @@ node_modules/
 
 # Transient translation batch file (created/removed each run)
 _batch.json
+_b2.json
+_b3.json
+_trans.json
+_worklist.json
+_manualbatch.json

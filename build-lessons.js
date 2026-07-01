@@ -45,6 +45,19 @@ function idFromName(name) {
 
 const hasHangul = s => /[가-힣]/.test(s);
 
+// derive a chapter topic from the raw file: a line that is just the chapter
+// number is followed by a short Korean topic line (e.g. "10" then "언어생활").
+function topicFromRaw(raw, number) {
+  const ls = raw.split(/\r?\n/).map(s => s.trim());
+  for (let i = 0; i < ls.length - 1; i++) {
+    if (ls[i] !== String(number)) continue;
+    let j = i + 1; while (j < ls.length && !ls[j]) j++;
+    const c = ls[j] || "";
+    if (/[가-힣]/.test(c) && c.length <= 14 && !/[:：\t\d]/.test(c)) return c;
+  }
+  return "";
+}
+
 // lines that are pure chat artifacts -> drop
 function isArtifact(line) {
   const t = line.trim();
@@ -98,12 +111,29 @@ function isArtifact(line) {
   if (/^(Opus|Sonnet|Haiku|Claude)\s*[0-9]/.test(t)) return true;
   if (/Claude is AI and can make mistakes/i.test(t)) return true;
 
+  // ---- chat-app chrome accidentally pasted in (no Korean) ----
+  if (/^Continue$/i.test(t)) return true;                                  // "Continue" button
+  if (/^\d{1,3}\/\d{1,4}$/.test(t)) return true;                           // "16/335" scroll/progress indicator
+
+  // ---- stock-ticker / phone-screenshot OCR junk (no Korean, no Nepali) ----
+  if (!/[가-힣ऀ-ॿ]/.test(t)) {
+    if (/^\$\s?[\d,]+(\.\d+)?$/.test(t)) return true;                      // "$12,120" price
+    if (/^[+\-]?\d+(\.\d+)?\s*%$/.test(t)) return true;                    // "+2.12%", "75%"
+    if (/^\d{5,}$/.test(t)) return true;                                   // "9888857" long bare number
+    if (/^0\d{1,2}\.?$/.test(t)) return true;                             // "002", "003", "004."
+    if (/^\d[\d\s.,]*\s*[KMB]$/.test(t)) return true;                      // "40600K", "411 800K" volume
+    if (/^[A-Z][A-Z0-9]{1,7}$/.test(t) && !/^(OK|TV|AM|PM|EN|NE|US|UK|UN|EU|ID|KR|KIIP)$/.test(t)) return true; // "JOLK","JEDOMO0","ET"
+    if (/^\d{1,3}\s+[a-z]{1,3}$/.test(t)) return true;                     // "12 al" OCR fragment
+    if (/^[!-~]{1,2}$/.test(t) && !/\d/.test(t)) return true;              // lone ASCII "C","#","+" (keep digits/markers)
+  }
+
   // ---- OCR gibberish from pasted page photos (no Korean, no Nepali) ----
   if (!/[가-힣ऀ-ॿ]/.test(t)) {
     if (/[\[\]{}]/.test(t) && t.length < 40) return true;                  // stray brackets
     if (/[a-z]\.[a-z]/i.test(t) && t.length < 25 && !/\b(e\.g|i\.e|etc|a\.m|p\.m|u\.s|vs)\b/i.test(t)) return true; // "ad.y" letter.letter gibberish
     if (/(\b[A-Za-z]\b[\s,]+){3,}/.test(t) && t.length < 40) return true;  // "i n, C, w, v"
     if (/[A-Za-z]{1,4}\s+[A-Za-z]{1,4}$/.test(t) && t.length < 14 && !/\b(the|and|for|you|are|day|how|was|new|all)\b/i.test(t) && !/^[A-Z]/.test(t.replace(/[^A-Za-z]/g,""))) return true;
+    if (/^(Loaal|JEDOMO0?)$/.test(t)) return true;                        // known phone-screenshot OCR tokens
   }
   return false;
 }
@@ -127,6 +157,28 @@ function dedupe(lines) {
   return out;
 }
 
+// Chapter-overview lines often cram several section labels onto ONE tightly
+// packed line — e.g. "활동: … 문화와 정보: 출산 장려 정책 icy Eniviagemree H" — and
+// carry OCR Latin-gibberish. These labels are Korean, so for any line that holds
+// a section label we (a) strip embedded Latin runs / stray symbols (OCR noise),
+// then (b) put each label on its own line so the overview reads cleanly.
+const LABEL_RE = /(어휘|문법|활동|문화와 정보|발음|말하기|듣기|읽기)\s*[:：.]/;
+function tidyOverview(line) {
+  if (line.indexOf("\t") !== -1) return line;          // never touch vocab table rows
+  if (!LABEL_RE.test(line)) return line;
+  if (/^(EN|NE)\s*:/i.test(line.trim())) return line;  // leave translation lines
+  let s = line
+    .replace(/[A-Za-z]{2,}[A-Za-z ]*/g, " ")           // drop Latin word-runs (OCR junk)
+    .replace(/[€@~]+/g, " ")                            // stray OCR symbols
+    .replace(/[ \t]{2,}/g, " ");
+  // newline before every label after the first, so each section is its own line
+  s = s.replace(/\s*(어휘|문법|활동|문화와 정보|발음|말하기|듣기|읽기)(\s*[:：.])/g,
+    (m, l, c, off) => (off === 0 ? l + c : "\n" + l + c));
+  return s.split("\n")
+    .map(x => x.replace(/\s+\d{1,3}\s*$/, "").trim())  // drop trailing stray OCR page-numbers
+    .filter(Boolean).join("\n");
+}
+
 // Keep only content that lives inside a recognized lesson section; drop the
 // user/Claude chat conversation, OCR pastes, acknowledgements, etc.
 function cleanMarkdown(raw) {
@@ -138,6 +190,8 @@ function cleanMarkdown(raw) {
     const f = l.trim().match(/^(\d{1,3})\s+\S.*한국어/);
     return f ? "Page " + f[1] : l;
   });
+  // tidy & split crammed chapter-overview lines (may turn 1 line into several)
+  lines = lines.flatMap(l => tidyOverview(l).split("\n"));
   lines = dedupe(lines.filter(l => !isArtifact(l)));
   const kept = [];
   let inLesson = false;
@@ -154,10 +208,57 @@ function cleanMarkdown(raw) {
     if (START.test(t) || isContent) { inLesson = true; kept.push(line); continue; }
     if (inLesson) kept.push(line);
   }
+  // Remove "단원 도입 / Chapter Overview / Intro" blocks ANYWHERE they occur — the
+  // textbook contents/syllabus: "KIIP 4", unit number/title fragments, bare
+  // 어휘:/문법:/활동:/문화와 정보: listings (with or without numbered items and EN/NP
+  // glosses), and "Chapter Overview"/"Intro Page" markers. It's a table of contents, not
+  // study material; the full content follows in real sections. We skip from a syllabus
+  // start up to the next REAL lesson anchor (a vocab table row, "Word-by-Word", a
+  // "단어 (rom) — meaning" definition, a "(Vocabulary)" header, or a Chapter/📖 header).
+  const isLessonAnchor = (t) =>
+    t.indexOf("\t") !== -1 ||
+    /Word[\s-]?by[\s-]?Word|Word meanings|Word Breakdown/i.test(t) ||
+    /^Chapter\s*\d+\s*[:：]/i.test(t) ||
+    /^📖\s*KIIP\b/.test(t) ||
+    (/[—–]/.test(t) && /\([^)]*\)/.test(t)) ||
+    (/\([^)]*\)\s*$/.test(t) && /(Vocabulary|Grammar|어휘|문법)/i.test(t));
+  const isSyllabusStart = (t) =>
+    (/^(어휘|문법|활동|문화와 정보|발음|말하기|듣기|읽기)\s*[:：.]/.test(t) && t.indexOf("\t") === -1) ||
+    (/Chapter Overview|단원\s*도입|Intro Page/i.test(t) && !/^📖\s*KIIP\b/.test(t));
+  const isPreMarker = (p) =>
+    !p || /^\d{1,2}[.)]?$/.test(p) || /Chapter Overview|단원\s*도입|Intro Page/i.test(p) ||
+    /^(📚|📘|🟦|📖)/.test(p) || /^KIIP\b/i.test(p) || (/^[가-힣 ]{1,12}$/.test(p));
+  // strip the leading "KIIP 4" / unit-number / title-fragment preamble that sits above
+  // the first real anchor or syllabus block
+  const anchor0 = (t) =>
+    /^Chapter\s*\d+\s*[:：]/i.test(t) || /^📖\s*KIIP\b/.test(t) ||
+    /Word[\s-]?by[\s-]?Word|Word meanings|Word Breakdown/i.test(t) ||
+    t.indexOf("\t") !== -1 || /^(EN|NE|NP)\s*:/i.test(t) || /^(🇬🇧|🇳🇵)/.test(t) ||
+    (/[—–]/.test(t) && /\([^)]*\)/.test(t)) || isSyllabusStart(t);
+  let a0 = 0;
+  while (a0 < kept.length && a0 < 40 && !anchor0(kept[a0].trim())) a0++;
+  const base = (a0 > 0 && a0 < kept.length && a0 < 40 && anchor0(kept[a0].trim())) ? kept.slice(a0) : kept;
+  const cleaned2 = [];
+  for (let i = 0; i < base.length; i++) {
+    const t = base[i].trim();
+    if (isSyllabusStart(t) && !isLessonAnchor(t)) {
+      // pull back over the syllabus's own preceding marker/number/title fragments
+      let back = 0;
+      while (cleaned2.length && back < 6 && isPreMarker(cleaned2[cleaned2.length - 1].trim()) &&
+             !isLessonAnchor(cleaned2[cleaned2.length - 1].trim())) { cleaned2.pop(); back++; }
+      // skip forward to the next real lesson anchor
+      let j = i, n = 0;
+      while (j < base.length && n < 45 && !isLessonAnchor(base[j].trim())) { j++; n++; }
+      i = j - 1;
+      continue;
+    }
+    cleaned2.push(base[i]);
+  }
+
   // collapse runs of blank lines
   const out = [];
   let blank = 0;
-  for (const l of kept) {
+  for (const l of cleaned2) {
     if (!l.trim()) { blank++; if (blank > 1) continue; }
     else blank = 0;
     out.push(l);
@@ -188,6 +289,13 @@ function extractVocab(raw) {
   let curPage = null;
   const add = (ko, en, ne, similar, rom) => {
     ko = (ko || "").trim();
+    // strip a leading list/quiz marker so the vocab KEY is the word itself:
+    //   "① 말 중시" -> "말 중시", "🔹 댕댕이" -> "댕댕이", "1) 가다" -> "가다".
+    // numbers fused to the word (e.g. "4단계", "3~6세", "6년") are left intact.
+    ko = ko.replace(/^(?:(?:[•·▶►*:：]|[‍︎️⃣]|[←-⇿①-➿⬀-⯿■-⛿]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDC00-\uDFFF])\s*)+/, "")
+           .replace(/^\d{1,2}[).]\s+/, "")
+           .replace(/\s*[✓✔✗✘√×]\s*$/, "")   // trailing check / cross marks
+           .trim();
     en = (en || "").trim();
     if (!ko || !hasHangul(ko) || !en) return;
     if (HEADER_KO.test(ko) || META_EN.test(en)) return;
@@ -246,33 +354,17 @@ function extractVocab(raw) {
 const LANG_CODES = ["ne", "bn", "ru", "he", "ms", "vi", "id", "si"];
 let extraSeq = 0;
 
-// Standalone review files (not named KIIP<3|4>_chapterN) pinned to a KIIP level
-// so they appear under the right level instead of a separate "Extra" group.
-// Numbers are chosen above each level's existing chapters (kiip3: 1-16, kiip4: 1-9).
-const REVIEW_MAP = {
-  "한국어 중급 어휘 복습": { level: "kiip4", number: 10 },
-  "Cultural_and_Information": { level: "kiip3", number: 17 },
-  "Revise1": { level: "kiip3", number: 18 },
-  "Revise2": { level: "kiip3", number: 19 },
-};
-
 files.forEach(f => {
   const base = path.basename(f);
   let info = idFromName(base);
-  // files that aren't named KIIP<3|4>_chapterN: pin to a level via REVIEW_MAP,
-  // otherwise fall back to a standalone "Extra/Review" entry.
+  // Files NOT named KIIP<3|4>_chapterN are standalone review / study-note files
+  // (한국어 중급 어휘 복습, Cultural_and_Information, Revise1, Revise2, …). They are
+  // grouped into the separate "Revision" level (rendered as "Revision 1") — NOT
+  // mixed into the numbered KIIP 3 / KIIP 4 Lessons lists.
   if (!info) {
-    const key = base.replace(/(?:\.[a-z]{2})?\.md$/i, "").normalize("NFC");
-    const r = REVIEW_MAP[key];
-    if (r) {
-      const lvlDigit = r.level.replace("kiip", "");
-      const title = key.replace(/[_-]+/g, " ").trim();
-      info = { id: "k" + lvlDigit + "-ch" + r.number, level: r.level, number: r.number, _title: title };
-    } else {
-      extraSeq++;
-      const title = base.replace(/\.md$/i, "").replace(/[_-]+/g, " ").trim();
-      info = { id: "extra-" + extraSeq, level: "extra", number: extraSeq, _title: title };
-    }
+    extraSeq++;
+    const title = base.replace(/(?:\.[a-z]{2})?\.md$/i, "").replace(/[_-]+/g, " ").replace(/([A-Za-z])(\d)/g, "$1 $2").trim();
+    info = { id: "extra-" + extraSeq, level: "extra", number: extraSeq, _title: title };
   }
   // language-suffixed file?  KIIP4_chapter1.vi.md  ->  variant for "vi"
   const lm = base.match(/\.([a-z]{2})\.md$/i);
@@ -290,6 +382,7 @@ files.forEach(f => {
   let title = info._title || "";
   const tm = cleaned.match(/Chapter\s*\d+\s*[:\-—]\s*([^\n(]+)/i);
   if (tm && !info._title) title = tm[1].trim();
+  if (!title && !info._title) title = topicFromRaw(raw, info.number);
   META[info.id] = { level: info.level, number: info.number, title };
   console.log(info.id, "->", VOCAB[info.id].length, "vocab,", cleaned.length, "chars", title ? "| " + title : "");
 });

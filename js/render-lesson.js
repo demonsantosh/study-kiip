@@ -44,9 +44,20 @@
     return html;
   }
 
+  // A source line often crams "한국어 … EN: English … NE: Nepali" together. Split it so
+  // the Korean, the EN: gloss and the NE:/NP: gloss each land on their own line.
+  function splitGlossLine(line) {
+    if (line.indexOf("\t") !== -1) return [line];                 // leave tables intact
+    line = line.replace(/^\s*(?:Korean|한국어|KO)\s*[:：]\s*/i, ""); // drop a leading "Korean:" label
+    let parts = line.split(/\s+(?=(?:EN|NE|NP|English|Nepali)\s*:)/);
+    // also split several "단어 (rom) — meaning" definitions crammed on one line
+    parts = parts.flatMap((p) => p.split(/\s+(?=[가-힣][가-힣\s]{0,12}\([A-Za-z-]+\)\s—\s)/));
+    return parts.length > 1 ? parts.map((p) => p.trim()).filter(Boolean) : [line];
+  }
+
   window.renderLesson = function (md) {
     if (!md) return '<div class="empty-state"><div class="es-emoji">📖</div><p>No lesson text yet.</p></div>';
-    const lines = md.split(/\r?\n/);
+    const lines = md.split(/\r?\n/).flatMap(splitGlossLine);
     let html = "";
     let i = 0;
     let para = [];
@@ -105,8 +116,8 @@
       }
 
       // EN: / NE: lines
-      if (/^EN\s*:/.test(t)) { flushPara(); html += '<div class="l-en">' + inline(t) + "</div>"; i++; continue; }
-      if (/^NE\s*:/.test(t)) { flushPara(); html += '<div class="l-ne">' + inline(t) + "</div>"; i++; continue; }
+      if (/^(EN|English)\s*:/i.test(t)) { flushPara(); html += '<div class="l-en">' + inline(t) + "</div>"; i++; continue; }
+      if (/^(NE|NP|Nepali)\s*:/i.test(t)) { flushPara(); html += '<div class="l-ne">' + inline(t) + "</div>"; i++; continue; }
 
       // ✅ answer / Question / Sentence / Sample
       if (/^✅/.test(t)) { flushPara(); html += '<div class="l-answer">' + inline(t) + "</div>"; i++; continue; }
@@ -115,9 +126,11 @@
       }
       if (/^🔹/.test(t)) { flushPara(); html += '<div class="l-note">' + inline(t.replace(/^🔹\s*/, "")) + "</div>"; i++; continue; }
 
-      // "Word — meaning / nepali (Similar: x)" definition line
+      // "Word — meaning / nepali (Similar: x)" definition line. Match when the head
+      // contains Korean (even with romanization like "한국 (han-guk)"), so each word
+      // definition lands on its own line instead of merging into one paragraph.
       const dm = t.match(/^([^—]{1,30})\s—\s(.+)$/);
-      if (dm && hangulHeavy(dm[1])) {
+      if (dm && /[가-힣]/.test(dm[1])) {
         flushPara();
         html += '<div class="l-def"><span class="l-def-ko">' + inline(dm[1].trim()) + '</span> — <span class="l-def-mean">' + inline(dm[2].trim()) + "</span></div>";
         i++; continue;
@@ -135,7 +148,18 @@
         continue;
       }
 
-      // default: accumulate paragraph
+      // default: a Korean line is a complete sentence/item in this note format, so it
+      // stands on its own — each becomes its own clickable unit and gets its own
+      // sentence-level translation (not a word-by-word gloss of several merged lines).
+      // Non-Korean prose can still wrap together into a paragraph.
+      if (hangulHeavy(t)) {
+        flushPara();
+        // split the line into individual sentences so each becomes its own clickable
+        // unit and gets its own sentence-level translation (not one merged word-by-word).
+        const sents = t.split(/(?<=[.?!。！？…])\s+/).map((s) => s.trim()).filter(Boolean);
+        (sents.length ? sents : [t]).forEach((s) => { html += '<p class="lp ko">' + inline(s) + "</p>"; });
+        i++; continue;
+      }
       para.push(t);
       i++;
     }
