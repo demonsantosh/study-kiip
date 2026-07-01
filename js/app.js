@@ -856,7 +856,18 @@
     const ch = findChapter(lvl, chapterId);
     if (!lvl || !ch) return renderHome();
     const hasFull = window.LESSON_MD && window.LESSON_MD[ch.id];
-    tab = tab || (hasFull ? "lesson" : "vocab");   // open the reading first when available
+    const hasVocab = vocabOf(ch).length > 0;
+    // which tabs actually have content (markdown-only chapters keep everything in the
+    // Full Lesson, so their Grammar/Dialogues/Quiz tabs would otherwise be empty)
+    const avail = {
+      lesson: !!hasFull,
+      vocab: hasVocab,
+      grammar: (ch.grammar || []).length > 0,
+      dialogues: (ch.dialogues || []).length > 0 || (ch.activities || []).length > 0 || !!(ch.culture && ch.culture.ko),
+      flashcards: hasVocab,
+      quiz: vocabOf(ch).length >= 4
+    };
+    if (!tab || !avail[tab]) tab = hasFull ? "lesson" : (hasVocab ? "vocab" : "lesson");
     saveLast({ lvl: lvl.id, ch: ch.id, tab: tab, ko: ch.ko, number: ch.number });
     view.innerHTML = "";
     view.appendChild(crumbs([[t("crumb_home"), "/"], [lvlName(lvl), "/level/" + lvl.id], [t("kicker_lesson") + " " + ch.number, null]]));
@@ -870,9 +881,11 @@
     }
 
     const tabs = el("div", "tabs");
-    const defs = [];
-    if (hasFull) defs.push(["lesson", "📖", t("tab_full")]);
-    defs.push(["vocab", "📚", t("tab_vocab")], ["grammar", "✍️", t("tab_grammar")], ["dialogues", "💬", t("tab_dialogues")], ["flashcards", "🃏", t("tab_flashcards")], ["quiz", "❓", t("tab_quiz")]);
+    const defs = [
+      ["lesson", "📖", t("tab_full")], ["vocab", "📚", t("tab_vocab")],
+      ["grammar", "✍️", t("tab_grammar")], ["dialogues", "💬", t("tab_dialogues")],
+      ["flashcards", "🃏", t("tab_flashcards")], ["quiz", "❓", t("tab_quiz")]
+    ].filter(([k]) => avail[k]);
     defs.forEach(([key, emo, label]) => {
       const b = el("button", key === tab ? "active" : null, '<span class="tab-ic">' + emo + '</span>' + esc(label));
       b.onclick = () => go("/lesson/" + lvl.id + "/" + ch.id + "/" + key);
