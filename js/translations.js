@@ -25,7 +25,8 @@ window.I18N = {
     { code: "id", name: "Bahasa Indonesia", flag: "🇮🇩", rtl: false },
     { code: "si", name: "සිංහල", flag: "🇱🇰", rtl: false },
     { code: "pt", name: "Português (BR)", flag: "🇧🇷", rtl: false },
-    { code: "fr", name: "Français", flag: "🇫🇷", rtl: false }
+    { code: "fr", name: "Français", flag: "🇫🇷", rtl: false },
+    { code: "ta", name: "தமிழ்", flag: "🇮🇳", rtl: false }
   ],
   data: {
     "한국":       { bn: "কোরিয়া", ru: "Корея", he: "קוריאה", ms: "Korea", vi: "Hàn Quốc", id: "Korea", si: "කොරියාව" },

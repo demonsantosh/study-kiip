@@ -2,7 +2,7 @@ global.window={};
 require("./js/data.js"); require("./js/translations.js"); require("./js/translations-gen.js"); require("./js/lessons-data.js");
 const N=parseInt(process.argv[2]||"50",10);
 const START=parseInt(process.argv[3]||"0",10);
-const LANGS=["ne","bn","ru","he","ms","vi","id","si","pt","fr"];
+const LANGS=["ne","bn","ru","he","ms","vi","id","si","pt","fr","ta"];
 const data=window.I18N.data||{};
 const srcNe=new Set();   // ko's that already have Nepali from the source notes (no need to generate)
 const hasNe=(k)=>!!(data[k]&&data[k].ne)||srcNe.has(k);

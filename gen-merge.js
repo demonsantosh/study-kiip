@@ -4,7 +4,7 @@
 const fs=require("fs");
 const STORE="js/translations-gen.json";
 const OUT="js/translations-gen.js";
-const LANGS=["ne","bn","ru","he","ms","vi","id","si","pt","fr"];
+const LANGS=["ne","bn","ru","he","ms","vi","id","si","pt","fr","ta"];
 let store=JSON.parse(fs.readFileSync(STORE,"utf8"));
 const batchFile=process.argv[2];
 if(batchFile){
@@ -25,7 +25,7 @@ const js="/* AUTO-GENERATED offline word translations (by Claude). Do not hand-e
   "    Object.keys(src).forEach(function(l){ if(src[l] && !dst[l]) dst[l]=src[l]; }); }); })();\n";
 fs.writeFileSync(OUT, js);
 // coverage report
-const langs=["bn","ru","he","ms","vi","id","si","ne"];
+const langs=["bn","ru","he","ms","vi","id","si","ne","pt","fr","ta"];
 const cov={}; langs.forEach(l=>cov[l]=0);
 Object.keys(store).forEach(ko=>langs.forEach(l=>{ if(store[ko][l]) cov[l]++; }));
 console.log("store words:", Object.keys(store).length, "| coverage:", JSON.stringify(cov));
