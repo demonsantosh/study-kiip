@@ -12,3 +12,6 @@ _b3.json
 _trans.json
 _worklist.json
 _manualbatch.json
+_keys.json
+_vals.json
+_mkkeys.js

@@ -398,6 +398,23 @@ html, body { overflow-x: hidden; max-width: 100%; }
   .vocab-table .v-ko { white-space: normal; font-size: 18px; }
   .vocab-table .v-sim { display: block; }
 
+  /* lesson-note tables → stacked cards on small screens (no sideways scrolling).
+     The bold Korean word sits on top; each translation/meaning stacks right below it. */
+  .lesson-doc .lesson-table-wrap { overflow-x: visible; margin: 10px 0; }
+  .lesson-doc .lesson-table { display: block; border: none; background: none; font-size: 15px; }
+  .lesson-doc .lesson-table thead { display: none; }
+  .lesson-doc .lesson-table tbody,
+  .lesson-doc .lesson-table tr,
+  .lesson-doc .lesson-table td { display: block; width: 100%; }
+  .lesson-doc .lesson-table tr { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-sm); margin-bottom: 10px; padding: 10px 14px; }
+  .lesson-doc .lesson-table td { border: none; padding: 3px 0; }
+  .lesson-doc .lesson-table td[data-label]::before {
+    content: attr(data-label); display: block;
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--ink-soft); margin-top: 4px;
+  }
+  .lesson-doc .lesson-table .lt-ko { white-space: normal; font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+
   /* word-by-word breakdown: stack each word's parts instead of 4 cramped columns */
   .sb-tline { grid-template-columns: 1fr; gap: 1px; }
   .sb-row { grid-template-columns: auto 1fr; gap: 2px 10px; }
@@ -425,6 +442,7 @@ html, body { overflow-x: hidden; max-width: 100%; }
   .opt { padding: 12px 14px; font-size: 15px; }
 
   .vocab-table .v-ko { font-size: 19px; }
+  .lesson-doc .lesson-table .lt-ko { font-size: 18px; }
 
   /* fully stack the breakdown rows */
   .sb-row { grid-template-columns: 1fr; gap: 1px; }

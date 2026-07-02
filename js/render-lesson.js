@@ -11,6 +11,11 @@
   const esc = (s) =>
     String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 
+  // attribute-safe plain text (for data-label): strip **bold** markers, escape quotes too
+  const escAttr = (s) =>
+    String(s).replace(/\*\*/g, "").replace(/[&<>"]/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])).trim();
+
   // inline: **bold**, `code`, and highlight EN:/NE: labels
   function inline(s) {
     s = esc(s);
@@ -28,7 +33,9 @@
     const headRx = /^(#|korean|한국어|word|단어|verb|verb\/adj|tense|form|stem|program|award|title|event|excerpt|feeling|condition|항목|문장)/i;
     let html = '<div class="lesson-table-wrap"><table class="lesson-table">';
     let bodyStart = 0;
+    let headers = [];
     if (rows.length && rows[0].length >= 2 && headRx.test(rows[0][0].trim())) {
+      headers = rows[0];
       html += "<thead><tr>" + rows[0].map((c) => "<th>" + inline(c) + "</th>").join("") + "</tr></thead>";
       bodyStart = 1;
     }
@@ -36,8 +43,12 @@
     for (let i = bodyStart; i < rows.length; i++) {
       const r = rows[i];
       html += "<tr>" + r.map((c, idx) => {
-        const cls = idx === 0 && hangulHeavy(c) ? ' class="lt-ko"' : "";
-        return "<td" + cls + ">" + inline(c) + "</td>";
+        const isKo = idx === 0 && hangulHeavy(c);
+        const cls = isKo ? ' class="lt-ko"' : "";
+        // carry the column header as a label so the stacked mobile view keeps context;
+        // the first Korean cell stands on its own (bold), so it gets no label prefix.
+        const lbl = (!isKo && headers[idx]) ? ' data-label="' + escAttr(headers[idx]) + '"' : "";
+        return "<td" + cls + lbl + ">" + inline(c) + "</td>";
       }).join("") + "</tr>";
     }
     html += "</tbody></table></div>";
