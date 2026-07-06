@@ -49,11 +49,22 @@ const hasHangul = s => /[가-힣]/.test(s);
 // number is followed by a short Korean topic line (e.g. "10" then "언어생활").
 function topicFromRaw(raw, number) {
   const ls = raw.split(/\r?\n/).map(s => s.trim());
+  // (a) "📖 KIIP 4 · 12과 선거와 투표 · …" or "… 12과 선거와 투표" → topic after "N과"
+  for (const l of ls) {
+    const m = l.match(new RegExp(number + "\\s*과\\s+([가-힣][가-힣\\s]{1,20}?)\\s*(?:·|\\||\\(|$)"));
+    if (m && m[1].trim()) return m[1].trim();
+  }
+  // (b) a line that is just the chapter number, followed by a short Korean topic line
   for (let i = 0; i < ls.length - 1; i++) {
     if (ls[i] !== String(number)) continue;
     let j = i + 1; while (j < ls.length && !ls[j]) j++;
     const c = ls[j] || "";
     if (/[가-힣]/.test(c) && c.length <= 14 && !/[:：\t\d]/.test(c)) return c;
+  }
+  // (c) "12 선거와 투표" — number + topic on the SAME line
+  for (const l of ls) {
+    const m = l.match(new RegExp("^" + number + "\\s+([가-힣][가-힣\\s]{1,20})$"));
+    if (m && m[1].trim()) return m[1].trim();
   }
   return "";
 }
@@ -68,6 +79,10 @@ function isArtifact(line) {
   if (/^Continue from where you left off\.?$/i.test(t)) return true;
   if (/^Show more$/i.test(t)) return true;
   if (/^Claude'?s response was interrupted\.?$/i.test(t)) return true;
+  // ---- chatty AI intro / greeting narration (not lesson content) ----
+  if (/축하(해요|합니다|드려요|해)/.test(t)) return true;                 // "…축하해요, Santosh! 🎉"
+  if (/도입 페이지(예요|입니다|이에요)|미리 보여줘요|미리 보여드려요/.test(t)) return true; // "이 페이지는 …도입 페이지예요"
+  if (/\bSantosh\b/.test(t)) return true;                                // user's name should never be in content
 
   // ---- page-share prompts, chat timestamps & assistant/user narration ----
   if (/^📌?\s*✅?\s*Share (the next page|Chapter)\b/i.test(t)) return true;     // "📌 Share the next page to continue!"
