@@ -83,6 +83,7 @@ function isArtifact(line) {
   if (/축하(해요|합니다|드려요|해)/.test(t)) return true;                 // "…축하해요, Santosh! 🎉"
   if (/도입 페이지(예요|입니다|이에요)|미리 보여줘요|미리 보여드려요/.test(t)) return true; // "이 페이지는 …도입 페이지예요"
   if (/\bSantosh\b/.test(t)) return true;                                // user's name should never be in content
+  if (/단원 개요를 정리|어휘 표를 구성|단원 개요를 구성|어휘 표를 정리/.test(t)) return true; // build-narration line ("…개요를 정리하고 어휘 표를 구성했다")
 
   // ---- page-share prompts, chat timestamps & assistant/user narration ----
   if (/^📌?\s*✅?\s*Share (the next page|Chapter)\b/i.test(t)) return true;     // "📌 Share the next page to continue!"
