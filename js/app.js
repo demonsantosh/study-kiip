@@ -449,9 +449,16 @@
     root.querySelectorAll(".l-ne").forEach((e) => e.remove());      // whole "NE:" lines
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
     const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    const NPFLAG = "🇳🇵"; // 🇳🇵
     nodes.forEach((n) => {
       let s = n.nodeValue;
-      if (!/[ऀ-ॿ]/.test(s)) return;
+      const hasNep = /[ऀ-ॿ]/.test(s);
+      const hasNpFlag = s.indexOf(NPFLAG) !== -1;
+      if (!hasNep && !hasNpFlag) return;
+      // A line packs "🇰🇷 Korean 🇬🇧 English 🇳🇵 Nepali"; the 🇳🇵 flag introduces the
+      // Nepali segment and runs to the end of this (line) node. Drop the flag and
+      // everything after it so no stranded flag or leftover unit (?, :, °C, %) remains.
+      s = s.replace(/🇳🇵[\s\S]*$/u, "");
       s = s.replace(/\s*[\/·,–—-]\s*[^\/\n]*[ऀ-ॿ][^\/\n]*/g, ""); // "english / नेपाली" → "english"
       s = s.replace(/[ऀ-ॿ०-ॿ]+/g, "");                   // any remaining Devanagari run
       s = s.replace(/\(\s*\)/g, "").replace(/\s{2,}/g, " ").replace(/\s+([.?!,;:])/g, "$1").trim();
@@ -464,7 +471,10 @@
     const FLAGS = /[\u{1F1E6}-\u{1F1FF}️‍\s]/gu;
     root.querySelectorAll("p, div, li, h1, h2, h3, h4, h5, span").forEach((e) => {
       if (e.querySelector("*")) return;                 // only leaf lines
-      if ((e.textContent || "").replace(FLAGS, "") === "") e.remove();
+      // A line that is only flags, whitespace, and stray punctuation/units left
+      // behind by the removed Nepali (e.g. "🇳🇵?", ":", "°C") carries no content.
+      const rem = (e.textContent || "").replace(FLAGS, "").replace(/^[\s?!:.,;·°%\-–—()]+$/u, "");
+      if (rem === "") e.remove();
     });
   }
   // extract the "문화와 정보" section out of a full lesson's markdown
