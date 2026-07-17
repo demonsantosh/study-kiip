@@ -16,3 +16,6 @@ _keys.json
 _vals.json
 _mkkeys.js
 .claude/settings.local.json
+
+# scratch/debris from scheduled runs
+_*
