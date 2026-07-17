@@ -1,0 +1,16 @@
+const fs=require('fs'),path=require('path'),vm=require('vm');const {JSDOM}=require('jsdom');
+const DIR=process.argv[2],KEY=process.argv[3],LANG=process.argv[4]||'ne';
+const files=['js/data.js','js/ui-i18n.js','js/translations.js','js/translations-gen.js','js/lessons-data.js','js/render-lesson.js','js/app.js'];
+const html=fs.readFileSync(path.join(DIR,'index.html'),'utf8').replace(/<script src="[^"]*"><\/script>/g,'');
+const dom=new JSDOM(html,{runScripts:'outside-only',pretendToBeVisual:true,url:'http://localhost/'});
+const {window}=dom;window.scrollTo=()=>{};window.localStorage.setItem('kiip_lang',LANG);
+const ctx=dom.getInternalVMContext();
+for(const f of files)vm.runInContext(fs.readFileSync(path.join(DIR,f),'utf8'),ctx,{filename:f});
+const DATA=window.KIIP_DATA;let hash=null;
+for(const l of DATA.levels)for(const c of l.chapters)if(c.id===KEY)hash='#lesson/'+l.id+'/'+c.id+'/lesson';
+window.location.hash=hash;window.dispatchEvent(new window.Event('hashchange'));
+const wrap=window.document.querySelector('#view .lesson-doc');
+const sel=wrap.querySelector('.lf-select');
+const content=[...wrap.children].filter(k=>!k.classList.contains('lesson-filter')&&!k.classList.contains('click-tip'));
+const vis=()=>content.filter(k=>k.style.display!=='none').length;
+[...sel.options].filter(o=>o.value.startsWith('sect:')).forEach(o=>{sel.value=o.value;sel.dispatchEvent(new window.Event('change'));console.log('  '+o.textContent+' -> '+vis()+' blocks');});

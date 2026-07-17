@@ -938,6 +938,69 @@
     makeKoClickable(wrap);
     const tip = el("div", "click-tip", t("tip_click"));
     wrap.insertBefore(tip, wrap.firstChild);
+    addLessonFilter(wrap);
+  }
+
+  // Study aid: a dropdown at the top of the Full Lesson that filters the page down
+  // to one KIIP section (어휘 / 문법 / 활동 / 문화와 정보 / 읽기 / 쓰기 / 말하기 / 듣기 /
+  // 발음 / 복습) or one textbook page. Purely local & generic — it reads the headings
+  // the lesson already renders, so it works for every chapter. "Show all" clears it.
+  function addLessonFilter(wrap) {
+    const SECTMAP = [
+      ["문화와 정보", "문화와 정보 · Culture"], ["문화", "문화와 정보 · Culture"],
+      ["어휘", "어휘 · Vocabulary"], ["문법", "문법 · Grammar"], ["활동", "활동 · Activities"],
+      ["읽기", "읽기 · Reading"], ["쓰기", "쓰기 · Writing"], ["말하기", "말하기 · Speaking"],
+      ["듣기", "듣기 · Listening"], ["발음", "발음 · Pronunciation"],
+      ["복습", "복습 · Review"], ["배운 어휘", "복습 · Review"]
+    ];
+    const canonSect = (tx) => {
+      for (const [k, label] of SECTMAP) if (new RegExp("^(?:[^\\p{L}\\d]*\\s*)" + k, "u").test(tx)) return label;
+      return null;
+    };
+    const pageNo = (tx) => { const m = tx.match(/^(?:📖\s*)?Page\s*(\d+)/i); return m ? m[1] : null; };
+    // tag every content block with the section/page it belongs to (carried forward
+    // from the most recent heading); skip the tip line so it always stays visible.
+    const kids = [...wrap.children].filter((k) => !k.classList.contains("click-tip"));
+    let curSect = "", curPage = "";
+    const sects = [], pages = [];
+    kids.forEach((k) => {
+      const cls = k.className || "";
+      const tx = (k.textContent || "").replace(/\s+/g, " ").trim();
+      if (/\blh\b/.test(cls)) {                        // render-lesson headings only
+        const pg = /lh-page/.test(cls) ? pageNo(tx) : null;
+        if (pg) { curPage = pg; if (!pages.includes(pg)) pages.push(pg); }
+        // a heading like "📖 Page 14 — 어휘 (Vocabulary)" introduces both a page and a
+        // section; if the section name follows the "Page N —" prefix, read it too.
+        let cs = canonSect(tx) || (pg && canonSect(tx.replace(/^(?:📖\s*)?Page\s*\d+\s*[—–:.\-]*\s*/i, "")));
+        if (cs) { curSect = cs; if (!sects.includes(cs)) sects.push(cs); }
+      }
+      k.dataset.lsect = curSect; k.dataset.lpage = curPage;
+    });
+    if (sects.length + pages.length < 2) return;       // nothing worth filtering
+    const bar = el("div", "lesson-filter");
+    const sel = el("select", "lf-select");
+    let opts = '<option value="">🔖 ' + esc(t("lf_all")) + "</option>";
+    if (sects.length) opts += '<optgroup label="' + esc(t("lf_sections")) + '">' +
+      sects.map((s) => '<option value="sect:' + esc(s) + '">' + esc(s) + "</option>").join("") + "</optgroup>";
+    if (pages.length) opts += '<optgroup label="' + esc(t("lf_pages")) + '">' +
+      pages.map((p) => '<option value="page:' + esc(p) + '">📖 ' + esc(t("lf_page")) + " " + esc(p) + "</option>").join("") + "</optgroup>";
+    sel.innerHTML = opts;
+    const clear = el("button", "lf-clear", esc(t("lf_clear")));
+    const lbl = el("span", "lf-label", esc(t("lf_study")));
+    bar.appendChild(lbl); bar.appendChild(sel); bar.appendChild(clear);
+    const apply = (v) => {
+      clear.style.display = v ? "" : "none";
+      kids.forEach((k) => {
+        if (!v) { k.style.display = ""; return; }
+        const dim = v.slice(0, 4), val = v.slice(5);
+        const ok = dim === "sect" ? (k.dataset.lsect === val) : (k.dataset.lpage === val);
+        k.style.display = ok ? "" : "none";
+      });
+    };
+    sel.addEventListener("change", () => apply(sel.value));
+    clear.addEventListener("click", () => { sel.value = ""; apply(""); });
+    apply("");
+    wrap.insertBefore(bar, wrap.firstChild);
   }
 
   // Local-only: replace the Nepali column of lesson vocab tables with the

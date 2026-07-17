@@ -15,3 +15,4 @@ _manualbatch.json
 _keys.json
 _vals.json
 _mkkeys.js
+.claude/settings.local.json

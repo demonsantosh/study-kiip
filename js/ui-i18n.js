@@ -436,6 +436,37 @@ window.UI_I18N = {
     "fr": "💡 Astuce : cliquez sur n'importe quelle phrase coréenne pour voir sa traduction et le sens des mots.",
     "ta": "💡 குறிப்பு: எந்தக் கொரிய வாக்கியத்தையும் சொடுக்கி அதன் மொழிபெயர்ப்பையும் சொற்பொருளையும் காணலாம்."
   },
+  "lf_study": {
+    "en": "Study:", "ne": "अध्ययन:", "bn": "অধ্যয়ন:", "ru": "Учить:", "he": "ללמוד:",
+    "ms": "Belajar:", "vi": "Học:", "id": "Belajar:", "si": "ඉගෙනීම:", "pt": "Estudar:",
+    "fr": "Étudier :", "ta": "படிப்பு:"
+  },
+  "lf_all": {
+    "en": "All sections & pages", "ne": "सबै भाग र पृष्ठहरू", "bn": "সব বিভাগ ও পৃষ্ঠা",
+    "ru": "Все разделы и страницы", "he": "כל החלקים והעמודים", "ms": "Semua bahagian & halaman",
+    "vi": "Tất cả phần & trang", "id": "Semua bagian & halaman", "si": "සියලු කොටස් සහ පිටු",
+    "pt": "Todas as seções e páginas", "fr": "Toutes les sections et pages", "ta": "அனைத்து பிரிவுகள் & பக்கங்கள்"
+  },
+  "lf_sections": {
+    "en": "Sections", "ne": "भागहरू", "bn": "বিভাগসমূহ", "ru": "Разделы", "he": "חלקים",
+    "ms": "Bahagian", "vi": "Các phần", "id": "Bagian", "si": "කොටස්", "pt": "Seções",
+    "fr": "Sections", "ta": "பிரிவுகள்"
+  },
+  "lf_pages": {
+    "en": "Pages", "ne": "पृष्ठहरू", "bn": "পৃষ্ঠা", "ru": "Страницы", "he": "עמודים",
+    "ms": "Halaman", "vi": "Trang", "id": "Halaman", "si": "පිටු", "pt": "Páginas",
+    "fr": "Pages", "ta": "பக்கங்கள்"
+  },
+  "lf_page": {
+    "en": "Page", "ne": "पृष्ठ", "bn": "পৃষ্ঠা", "ru": "Страница", "he": "עמוד",
+    "ms": "Halaman", "vi": "Trang", "id": "Halaman", "si": "පිටුව", "pt": "Página",
+    "fr": "Page", "ta": "பக்கம்"
+  },
+  "lf_clear": {
+    "en": "Show all", "ne": "सबै देखाउनुहोस्", "bn": "সব দেখান", "ru": "Показать всё",
+    "he": "הצג הכול", "ms": "Tunjuk semua", "vi": "Hiện tất cả", "id": "Tampilkan semua",
+    "si": "සියල්ල පෙන්වන්න", "pt": "Mostrar tudo", "fr": "Tout afficher", "ta": "அனைத்தையும் காட்டு"
+  },
   "search_ph": {
     "en": "Search words, grammar, meanings…",
     "ne": "शब्द, व्याकरण, अर्थ खोज्नुहोस्…",

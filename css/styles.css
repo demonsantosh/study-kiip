@@ -265,6 +265,15 @@ a { color: var(--brand-2); }
 .ko-click { cursor: pointer; border-bottom: 1px dashed var(--brand-2); transition: background .12s; border-radius: 3px; }
 .ko-click:hover { background: var(--brand-soft); }
 .click-tip { font-size: 12.5px; color: var(--ink-soft); background: var(--surface-2); border-radius: 8px; padding: 7px 12px; margin-bottom: 14px; }
+.lesson-filter { position: sticky; top: 8px; z-index: 5; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
+.lesson-filter .lf-label { font-size: 13px; font-weight: 700; color: var(--brand); }
+.lesson-filter .lf-select { flex: 1; min-width: 180px; font-family: var(--font); font-size: 14px; color: var(--ink);
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.lesson-filter .lf-select:focus { border-color: var(--brand-2); outline: none; }
+.lesson-filter .lf-clear { font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--brand-2);
+  background: var(--brand-soft); border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.lesson-filter .lf-clear:hover { background: var(--surface-2); }
 .sentence-breakdown { background: var(--surface-2); border: 1px solid var(--line); border-left: 3px solid var(--brand-2); border-radius: 8px; padding: 10px 12px; margin: 6px 0 12px; }
 .sentence-breakdown .sb-empty { color: var(--ink-soft); font-size: 13px; }
 .sb-block + .sb-block { margin-top: 10px; padding-top: 10px; border-top: 2px solid var(--line); }
