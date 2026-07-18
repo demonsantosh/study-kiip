@@ -524,6 +524,28 @@
   }
   document.getElementById("homeBtn").onclick = () => go("/");
 
+  /* ---------- day / night theme toggle ---------- */
+  (function initTheme() {
+    const root = document.documentElement;
+    const btn = document.getElementById("themeToggle");
+    if (!root.getAttribute("data-theme")) root.setAttribute("data-theme", "light");
+    function paint() {
+      const dark = root.getAttribute("data-theme") === "dark";
+      if (!btn) return;
+      const icon = btn.querySelector(".theme-icon");
+      if (icon) icon.textContent = dark ? "☀️" : "🌙";
+      btn.setAttribute("aria-pressed", String(dark));
+      btn.title = dark ? "Switch to day theme" : "Switch to night theme";
+    }
+    paint();
+    if (btn) btn.addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("kiip_theme", next); } catch (e) {}
+      paint();
+    });
+  })();
+
   /* ================= VIEWS ================= */
 
   function renderHome() {
