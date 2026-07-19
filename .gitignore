@@ -19,3 +19,4 @@ _mkkeys.js
 
 # scratch/debris from scheduled runs
 _*
+_batch.json
