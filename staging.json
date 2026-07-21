@@ -1,0 +1,4 @@
+{
+  "_comment": "Chapters listed here are ingested + translated in the background but HIDDEN from the learner UI until their clean-content translation is complete. reveal-check.js removes an id automatically once every clean/translatable item is done in all 11 languages.",
+  "hidden": ["k4-ch15", "k4-ch16"]
+}

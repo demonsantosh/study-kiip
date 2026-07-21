@@ -35,6 +35,9 @@
     }
     Object.keys(window.LESSON_META).forEach((id) => {
       const m = window.LESSON_META[id];
+      // staged chapters: translated in the background but hidden from the learner UI
+      // until their clean-content translation is complete (flag set in staging.json).
+      if (m.hidden) return;
       const lvl = findLevel(m.level);
       if (!lvl) return;
       const existing = lvl.chapters.find((c) => c.id === id || c.number === m.number);
