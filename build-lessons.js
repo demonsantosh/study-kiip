@@ -47,19 +47,31 @@ const hasHangul = s => /[가-힣]/.test(s);
 
 // derive a chapter topic from the raw file: a line that is just the chapter
 // number is followed by a short Korean topic line (e.g. "10" then "언어생활").
+const LABEL_ONLY = /^(문법|어휘|활동|문화(와 정보)?|읽기|쓰기|듣기|말하기|발음|본문|예문|단어장|과제)$/;
 function topicFromRaw(raw, number) {
   const ls = raw.split(/\r?\n/).map(s => s.trim());
+  // accept only short noun-phrase titles: not a bare section label, not a sentence, <=14 chars
+  const ok = (t) => {
+    t = (t || "").trim();
+    return t && !LABEL_ONLY.test(t) && t.length <= 14 && !/(습니다|입니다|했어요|해요|합니다)$/.test(t);
+  };
+  // (a0) canonical header line only: "📖 KIIP 4 | Chapter 15: 법과 질서 | …" / "📖 KIIP 4 – Ch.16 이민 생활 | …"
+  for (const l of ls) {
+    if (!/^📖\s*KIIP/i.test(l)) continue;
+    const m = l.match(new RegExp("(?:Chapter|Ch)\\.?\\s*" + number + "\\s*[:：\\-–—]?\\s+([가-힣][가-힣\\s]{1,20}?)\\s*(?:·|\\||\\(|:|$)"));
+    if (m && ok(m[1].trim())) return m[1].trim();
+  }
   // (a) "📖 KIIP 4 · 12과 선거와 투표 · …" or "… 12과 선거와 투표" → topic after "N과"
   for (const l of ls) {
     const m = l.match(new RegExp(number + "\\s*과\\s+([가-힣][가-힣\\s]{1,20}?)\\s*(?:·|\\||\\(|$)"));
-    if (m && m[1].trim()) return m[1].trim();
+    if (m && ok(m[1].trim())) return m[1].trim();
   }
   // (b) a line that is just the chapter number, followed by a short Korean topic line
   for (let i = 0; i < ls.length - 1; i++) {
     if (ls[i] !== String(number)) continue;
     let j = i + 1; while (j < ls.length && !ls[j]) j++;
     const c = ls[j] || "";
-    if (/[가-힣]/.test(c) && c.length <= 14 && !/[:：\t\d]/.test(c)) return c;
+    if (/[가-힣]/.test(c) && c.length <= 14 && !/[:：\t\d]/.test(c) && ok(c)) return c;
   }
   // (c) "12 선거와 투표" — number + topic on the SAME line
   for (const l of ls) {
@@ -394,11 +406,16 @@ files.forEach(f => {
   }
   MD[info.id] = cleaned;
   VOCAB[info.id] = extractVocab(cleaned);
-  // title: try to read the "Chapter N: <title>" line
+  // title: read the "Chapter N: <title>" / "Ch.N …" header first (original behaviour),
+  // then fall back to the structured extractor; tidy off only page-ref/paren suffixes.
   let title = info._title || "";
-  const tm = cleaned.match(/Chapter\s*\d+\s*[:\-—]\s*([^\n(]+)/i);
-  if (tm && !info._title) title = tm[1].trim();
-  if (!title && !info._title) title = topicFromRaw(raw, info.number);
+  if (!info._title) {
+    const tm = cleaned.match(/Chapter\s*\d+\s*[:\-—–]\s*([^\n(]+)/i);
+    if (tm) title = tm[1].trim();
+    if (!title) title = topicFromRaw(raw, info.number);
+    // surgical tidy: strip a trailing "(…)" and page refs like "| p.202" / "p.202" — nothing else
+    title = title.replace(/\s*\([^)]*\)\s*$/, "").replace(/\s*\|?\s*p\.?\s*\d+.*$/i, "").trim();
+  }
   META[info.id] = { level: info.level, number: info.number, title };
   console.log(info.id, "->", VOCAB[info.id].length, "vocab,", cleaned.length, "chars", title ? "| " + title : "");
 });
