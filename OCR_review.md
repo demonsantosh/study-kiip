@@ -47,3 +47,32 @@
 - `그모시다` — 4-character orphan fragment, not a real word (likely the tail end of a mangled "모시겠습니다" or similar).
 
 All 9 pass the automated garbled() filter (no replacement char, no digit glued between two Hangul chars, Hangul ratio ≥0.55) so they will keep counting as "clean missing" and block this chapter from fully completing via `reveal-check.js` until someone fixes the source `.md` lines. Everything else translatable in k4-ch16 was completed this run (268/277 clean items done).
+
+## Site-wide sweep, 2026-07-23 scheduled run — `nextwords.js` fallback
+
+Both hidden chapters (k4-ch15, k4-ch16) had zero legitimately-translatable items left (only the garbled lines already logged above), so this run fell back to `node nextwords.js 20 0`, which reported **120** missing-translation candidates across the whole site. Every single one was manually checked against the garbled() heuristic plus human judgment (per the standing caveat that the heuristic misses scrambled-spacing/duplicate OCR fragments) — **all 120 turned out to be unsuitable for translation**: single mangled word fragments, run-on merges of 2-4 unrelated sentences, multiple-choice quiz fragments with corrupted option markers, or fill-in-the-blank templates with stray placeholder characters. None were translated this run; nothing was merged into `js/translations-gen.json`. Logged below by chapter so a human can fix the source `.md` lines. (A few very short generic fragments — `았어요`, `요`, `소하다` — matched as substrings in a dozen+ chapters each and are almost certainly the sentence-splitter over-firing on a trailing particle rather than a real standalone sentence; not attributable to one chapter, not translated.)
+
+- **k3-ch4** (1): `이유를 나타널팩 사`
+- **k3-ch5** (3): `정니파다`; `예문 .가 물건을 사기 전에 인터넷으로 가격 비교트 하는 좋다고 해요 "중고 매장에 가면 필요한 물건을 싸게 살 수 있다고 해0 나: 그래요?`; `[들다`
+- **k3-ch6** (2): `부모의 책에 걸 것입라`; `그간직하다`
+- **k3-ch8** (1): `씩우다`
+- **k3-ch9** (2): `1통일-어서 그런지`; `정브터 2 상고 이 스니다.`
+- **extra-2** (6): `0잘 지내는 저근제이`; `)에 들어갈 [1~5] <보기>와 같이 ( <보기> ) 음식은 불고기예요 0좋아한 0 좋아할`; `아나이스 씨가 제일 ( 0좋은`; `○ 꿈도록 했어요`; `@품일 수 있어요`; `엄마가 아기에게 밥을 먹여요 아기가 0 0잠시드 씨 때문어 사람들이 '웃어요.`; `잠시드 씨는 사람들을 보여프 0 후엔 씨가 창문 밖을 봐요.`
+- **extra-3** (11): `<보기> )에 갑니다 9 시장`; `<보기> ) 공원에서 산책해요 보는데`; `0하나요`; `ㅅ@활발한 데다기 8.`; `먹고 해서 2 먹을 만한더 0먹자고 하는데 ○먹으려던 참이었는데`; `실크로드의 1① 나든) ( 왔다 ) (내)( 사마르칼트이다 역사를 간직하고 있어서 유명합니다.`; `주소 00시 00동 빌2`; `그리고 일시적인게 가: 지금 제가 막 산책하러 ( 아니라면 상담을 좀 받아 보는 것도 좋고요 고마워요.`; `갈 만한 곳을 다녀왔어요 @ 가자마자 기분이 좋아졌어요 @ 가게 했는데 가 보라고 하세요 _@가려던 참이었는데 같이 산책해요`; `주문해야 2 주문하다기 3 주문하기 위해서 4 주문하는 대신어`; `어제 바닥에 ()잘 안돼요.`; `○ 떨어뜨렸을 텐더 ○ 떨어뜨린 대신에`; `(점) 고아칙 쓸만해요 요리어디 버렸어요 ③ 새로 사야 돼요 ④ 벌써 고장이 났어요 가.`; `① 구하는 것이다 판의 시설 * 구하는 것이다 6 부동산 소개소 26 살펴보는 것이다 ② 편의 시설 이 살펴보는 것이다 ② 부동산 소개소 16.`
+- **k4-ch1** (11): `발작 사랑하다- 해`; `챙겨 어리다 향상되( 수요`; `털성적이다`; `고 천여): 하하.`; `라' 하다`; `할 걸[할 껄 쓸수록(쓸쑤록 만날지[만날찌`; `1과한국생활적을 21`; `서울시 강남구 월급 150만원 4대보협 되직는 병 중식재는 선든`; `제1기 사회동합프로 그램 이민자 멘도단 선정 결과 공고 ㆍ ㆍ 사회동합프로그램 개강 및 중합평가 연기 알림 국제결혼 안내프로 그램 일시 중단 관련 추가 안내사항 공지`; `세지 취소 :강제주방등`; `균우지 금 여 시 (1,000년 북리우성`; `디어리다`
+- **k4-ch10** (3): `월말이 뜻하는 행동이나 상대트 거짓으로 그림듯회게`; `.가: 친구들 모임에 잘 다녀왔어요^ 예물 나: 안 갔어요, 나가기 싫어서 바튼 척했어요 .친구가 하는 말이 이해가 안 됐지만 공감하는 .길에서 념어졌는데 너무 창피해서 아프치 잃은`; `지후하다 전혀 말다등 별일`
+- **k4-ch11** (4): `그러한 일이 있는 컷이 당열함을`; `경생 처울하다 학력 중시하다`; `2 8년)으로 구성되어 있다.`; `유한대학교 1도 성인학는`
+- **k4-ch12** (7): `강초하여 확인하는 못을 나다넬`; `저는 지지율이 높은 시림에거`; `0선거와 투표 사식했습니디 취례 40 지방 선거가 전국 만 4천여 투표소에서 여의도 투표소를`; `먼저 서울 을 알이보겠습니다 연결해 투표 상원 양지호 기재 투표가 이제 막 시작됐죠^ 네 조금 전인 오전 6시 정각부터 투표가 시즈 있습니다.`; `청기다`; `시명의 능불비에서 보겠습니다.`; `시행의 목스니에 기용이겠을니다`
+- **k4-ch14** (3): `)키란, 기름,식랑 가꺽`; `전 쟁 외장이, 많이 저어1`; `영상으로 보는 지0체 기권문용 성과 카드뉴스로 제는 " 호 4번의 호 무사로등 한정니니 ¥ 한시가 있이니쳤습니니`
+- **k4-ch15** (1 additional): `약자 대상 '코로나194 대공타기`
+- **k4-ch16** (already logged above, resurfaced): `박수 로모셔 보겠습니다.`; `어 적게 성공할 수 있었는지 말씀을 좀 해 주시`; `그렇지만 하고 싶은 일이 무엇8 지.`; `문제에 부뒷힐 때도 많아서 고생을 했습니다 2) 이 문제를 먼저 맞히는 분에게 선물을 드리겠습니다 3) 아이를 따로 앉히고 싶은데요 의자.좀 주시겠어요?`; `대기은적 정상부도 교별시 내동 100번지`; `윤생연월은 주연등독번호 성별 1946년 01월 이1일 680101-1.`; `그모시다`
+- **k4-ch2** (2 additional): `자가- ( 자고기6 불가의54`; `교트이 리학 별 민`; `대꼽다`
+- **k4-ch4** (5): `남편은 이 두 생일이 한국에서는 의미 있는 돌간치에서는 오랜만에 친척들을 불 수 있어서 반가있다.`; `단어징 치르다 감격하다 3 시어머니께 노래를 불러 드렸다 분주하다 0 시어머니를 위해 여행을 보내 드렸다 효도 정겹다 2) 한국인의 특별한 생일에 대한 내용으로 맞지 않는 것은 무엇입니까?`; `는 것은 나 쌀을 연필을 가수가`; `주들이 했다 셨다.`; `순한 살이 의미 있는`
+- **k4-ch5** (1): `어린 시설이나 느점이 퍼우 그성다고 립조에서 시민이다 예문 .가: 한글이 과학적인 글자예요?`
+- **k4-ch6** (2): `[| 다국적 기업이 증가하디`; `붓설어 하다`
+- **k4-ch7** (2): `공단 통합 20주년 기념 연상키워드 이벤=`; `팟빵 입을 실천 건강(속속 해 을`
+- **k4-ch8** (11): `다른 시팀에게 틀은 내용을 성대방에게 확인하듯어 물을`; `•비씨다 "끝났다`; `추경에 마이일 금이감원 연속`; `'#방 기1사에 퇴근"`; `어민 행동을 하는 문책이 두 기지 이상2`; `예물 .가: 인젤라 씨는 시간이 나면 보통 월 해요 할겸 스트레스도 김`; `나; 저는 운동도 좋아해요 '친구들과 맛있는 음식도 먹을 겸 이야기도 나출`; `•주말에는 가려고 한다 -을 김 ㆍ먹다 나먹을 김 *걷다 >컬을 김`; `음 김 "장을 보다 장을 불길 •찾아회다 - 찾아월 검 *만들다 만들 겸`; `악성 댓글 3 개인 정보 관2`; `시화통합회로 그램 <까9 한코여와 한국문화 출급 2`; `용과 정보화 사회 107`
+- **k4-ch9** (11): `그 밀이 일어니치 않있지탄 켜익 일어날 컷 같은 성향까지 갔음을 나타낸다`; `을 편하다`; `단지다`; `"다칠 변한 적 "차에 치일 편한 적`; `*고장 •전개 사용`; `ㅋ 고장으로 인하 ㅋ 전기 사용으로 연하`; `"사고 *질은 안개`; `일반 보드마카사용 금금 만 사용가가 -인문대학 학지원`; `방판 화상을 읽다 홍대 전환다행이다 하아터스`; `불은 많은 일주 사무실 직원들이 퇴근한 시간에 발생하였고 주민들의 신속한 대피로 가벼운 부상자만 있는 것으로 알려졌다 경찰은 지난 16일 충북 청주의 한 빌라에서 절도 용의자 이 모 씨를 체포해 조사 중이다 이 모 씨는 지난 두 달 동안 청주 인근의 원륜을 돌며 원률 거주자들의 휴대 전화만 골라 흡처 온 협의를 받고 있다 이 씨의 행각은 비슷한 신고가 경찰에 잇따라 접수되자 경찰들의 끈질긴 수사 끝에 밝혀지게 되었다.` (news item, mostly clean but "원륜/원률" should be "원룸", "흡처" should be "훔쳐" — worth a source fix + retranslate later); `2(9: 0 (0: 2) 0의 이 씨와 9의김 씨는 다음 중 무엇에 해당합니까?`; `9과사사과과 사고 129`
+- **extra-4** (11): `○ 서클꽃어요 ○ 익숙했어요 ○ 서들렀어요`; `보존해야 0 탐방해야 ○언정해야 ○ 전승해야`; `<보기> )운동을 합니다 0에 6에서`; `영호 씨는 지금 공원( 0을`; `) 교실 밖으로 나갔어요 후엔 씨가 전화를(`; `0아름다웠잖아요 ○ 아름다웠다고 했어요 ○ 아름다있는지 몰라요 0 아름다울 수밖에 없었어요`; `계임할수록 ○ 게임하느라고 게임할 정도로 ○ 게임하기 위해서`; `아름다워져서 2 아름다운 나머지 ○ 아름다운 만큼 ○아름다율 뿐만 아니라`; `1~히 타음 클어 태합 설명으로 울지 많은 것을 코르세요`; `1인 가구의 즐카는 우리의 생활에토 많은 변화를 카져왔다, 혼자 편하게 식사할 수 있 식당이 생했고 1일분만 시력토 배달이 가능해졌다, 마트에 카민 소포장원 상금도 흔히 수 있다.`; `채소나 과일부만 아니란 생필품이나 카전제품도 1인 가구에 맞취 나오고 있다 혼자 사는 가구카 늘어나면서 소형 아파트나 소형 오피스텔도 꾸준히 인기를 얼코 있다 또한 청소.`; `대어, 집 보관 등 ]인 가구를 위한 서비스업의 규모도 점점 커지고 있다.`
+
+**Net effect:** with this sweep, the entire site-wide translation backlog is now down to *only* OCR-garbled content — there is nothing legitimately clean left to translate anywhere until someone corrects the underlying `.md` source files. Future scheduled runs will keep re-surfacing this same list (it's deterministic) until the source text is fixed or these lines are removed/corrected.
