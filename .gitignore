@@ -20,3 +20,7 @@ _mkkeys.js
 # scratch/debris from scheduled runs
 _*
 _batch.json
+build_batch.py
+ch16_items.txt
+all.txt
+._lockstash_*
