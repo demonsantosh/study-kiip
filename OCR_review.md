@@ -76,3 +76,19 @@ Both hidden chapters (k4-ch15, k4-ch16) had zero legitimately-translatable items
 - **extra-4** (11): `○ 서클꽃어요 ○ 익숙했어요 ○ 서들렀어요`; `보존해야 0 탐방해야 ○언정해야 ○ 전승해야`; `<보기> )운동을 합니다 0에 6에서`; `영호 씨는 지금 공원( 0을`; `) 교실 밖으로 나갔어요 후엔 씨가 전화를(`; `0아름다웠잖아요 ○ 아름다웠다고 했어요 ○ 아름다있는지 몰라요 0 아름다울 수밖에 없었어요`; `계임할수록 ○ 게임하느라고 게임할 정도로 ○ 게임하기 위해서`; `아름다워져서 2 아름다운 나머지 ○ 아름다운 만큼 ○아름다율 뿐만 아니라`; `1~히 타음 클어 태합 설명으로 울지 많은 것을 코르세요`; `1인 가구의 즐카는 우리의 생활에토 많은 변화를 카져왔다, 혼자 편하게 식사할 수 있 식당이 생했고 1일분만 시력토 배달이 가능해졌다, 마트에 카민 소포장원 상금도 흔히 수 있다.`; `채소나 과일부만 아니란 생필품이나 카전제품도 1인 가구에 맞취 나오고 있다 혼자 사는 가구카 늘어나면서 소형 아파트나 소형 오피스텔도 꾸준히 인기를 얼코 있다 또한 청소.`; `대어, 집 보관 등 ]인 가구를 위한 서비스업의 규모도 점점 커지고 있다.`
 
 **Net effect:** with this sweep, the entire site-wide translation backlog is now down to *only* OCR-garbled content — there is nothing legitimately clean left to translate anywhere until someone corrects the underlying `.md` source files. Future scheduled runs will keep re-surfacing this same list (it's deterministic) until the source text is fixed or these lines are removed/corrected.
+
+## Scheduled run, 2026-07-24 — no changes
+
+Re-checked both hidden chapters (k4-ch15: 75/76 clean done, 1 garbled; k4-ch16: 268/277 clean done, 9 garbled) and re-ran `node nextwords.js 20 0` site-wide (120 missing, identical list to the 2026-07-23 sweep logged above, byte-for-byte). Every item is still OCR-garbled junk per the same reasoning as yesterday's entry. Nothing translated, nothing merged, no commit made this run. Backlog remains blocked on source `.md` fixes.
+
+## Scheduled run, 2026-07-26 — no changes
+
+Re-checked both hidden chapters via `node reveal-check.js --dry` (k4-ch15: clean 75/76 done, 11 garbled; k4-ch16: clean 268/277 done, 14 garbled) and re-ran `node nextwords.js` site-wide (120 missing, identical to the 2026-07-23/07-24 sweeps). Every remaining item — the 1 in ch15 (`코로나194 대공타기` menu/nav fragment), the 9 in ch16 (`박수 로모셔`, `문저 에 부뒷히면서`, `학교생 할에`, `출인국관리사무소장`, address/letterhead lines, `그모시다`), and all 120 site-wide candidates (`이유를 나타널팩 사`, `정니파다`, stray ○●@ / fill-in-blank exercise fragments, etc.) — is OCR-garbled and not legitimately translatable. Nothing translated, nothing merged, no commit this run. Backlog remains blocked on source `.md` corrections.
+
+## Scheduled run, 2026-07-27 — 12 Nepali gaps filled
+
+Correcting an oversight from the 2026-07-23/24/26 runs: those runs skipped ALL garbled-flagged items as untranslatable, but 12 of them are actually coherent, correct Korean already translated into 10 languages (bn,ru,he,ms,vi,id,si,pt,fr,ta) and missing only Nepali (ne). They were flagged only because of a leading circled-number marker (①–⑨), which the garbled() heuristic treats as junk. Translated + merged the missing `ne` for these (marker dropped in the translation, matching the existing fr/other entries):
+- k4-ch15: sentences ②③④⑤⑥⑦⑧⑨ ("법과 질서" body text about the 생활 법령 정보 site / 생활 법률 app).
+- k4-ch16: vocab phrases ① 힘과 열정을 쏟다…, ② 어려움을 극복하다…, ③ 끊임없이 도전하다, ④ 자기 계발을 하다.
+
+These do NOT change reveal status (reveal-check.js's garbled() excludes ①–⑨ items from its clean totals), so both chapters stay hidden. The genuinely OCR-corrupted remaining items (ch15's `코로나194 대공타기` nav fragment; ch16's `박수 로모셔`, `문저 에 부뒷히면서`, `학교생 할에`, `출인국관리사무소장`, address/letterhead lines, `그모시다`; and the 120 site-wide nextwords candidates) still require source `.md` fixes before they can be translated.
