@@ -24,3 +24,6 @@ build_batch.py
 ch16_items.txt
 all.txt
 ._lockstash_*
+
+# scratch/debris from scheduled runs (dot-prefixed)
+._*
