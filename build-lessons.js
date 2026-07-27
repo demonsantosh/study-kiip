@@ -356,7 +356,8 @@ function extractVocab(raw) {
     // 1) tab-separated table rows
     if (line.indexOf("\t") !== -1) {
       let p = line.split("\t").map(x => x.trim()).filter(x => x.length);
-      if (/^\d+$/.test(p[0])) p = p.slice(1);
+      // drop a leading checkbox / bullet / row-number cell (e.g. "☐ | 질서를 지키다 | to follow order | …")
+      if (p.length && /^(?:\d+|[☐☑☒□■✓✔✗✘✅◻◼🔲])$/.test(p[0])) p = p.slice(1);
       if (p.length >= 3) { add(p[0], p[1], p[2], p[3]); return; }
       if (p.length === 2 && /\//.test(p[1])) { const m = splitMeaning(p[1]); add(p[0], m.en, m.ne, m.similar); return; }
       return;
