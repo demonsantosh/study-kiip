@@ -648,12 +648,10 @@
     view.appendChild(el("h1", "page-title", "📚 " + t("nav_words")));
 
     const m = langMeta(curLang());
-    // unique words across all chapters (first occurrence kept)
-    const data = (function () {
-      const seen = {}, out = [];
-      allVocab().forEach((v) => { if (!seen[v.ko]) { seen[v.ko] = 1; out.push(v); } });
-      return out;
-    })();
+    // ALL vocab occurrences (not globally deduped). We dedup by Korean within the
+    // current filter scope in draw() instead — so selecting a chapter shows that
+    // chapter's full word list, not only words whose first global occurrence is in it.
+    const data = allVocab();
     // controls
     const controls = el("div", "study-controls");
     const q = el("input", "study-search"); q.type = "search"; q.placeholder = t("word_search_ph");
@@ -724,7 +722,7 @@
     function draw() {
       const term = q.value.trim().toLowerCase();
       const lid = levelSel.value;
-      const rows = data.filter((v) => {
+      const matched = data.filter((v) => {
         if (lid && v._lvlId !== lid) return false;
         if (!chapMatch(v)) return false;
         if (!pageMatch(v)) return false;
@@ -732,6 +730,10 @@
         const ex = extraOf(v);
         return [v.ko, v.rom, v.en, v.similar, ex].join(" ").toLowerCase().indexOf(term) !== -1;
       });
+      // dedup by Korean within the current scope (avoids repeats while still
+      // showing every word that belongs to the selected chapter/level/page)
+      const rowSeen = {}, rows = [];
+      matched.forEach((v) => { if (!rowSeen[v.ko]) { rowSeen[v.ko] = 1; rows.push(v); } });
       count.textContent = rows.length + " " + t("cnt_words");
       let html = '<table class="vocab-table"><thead><tr><th>' + esc(t("th_korean")) + '</th><th>' + esc(t("th_english")) + '</th><th>' + esc(m.flag + " " + m.name) + '</th><th>' + esc(t("th_chapter")) + '</th></tr></thead><tbody>';
       rows.forEach((v) => {
