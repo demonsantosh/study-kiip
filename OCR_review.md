@@ -256,3 +256,13 @@ These passed the automated garbled() ratio filter but are clearly OCR-corrupted 
 - [k4-ch5] `어린 시설이나 느점이 퍼우 그성다고 립조에서 시민이다 예문 .가: 한글이 과학적인 글자예요?` (시설이나/느점이/퍼우/그성다고 scrambled)
 - [k4-ch8] `따라서 장단점이 가장 알맞은 제목.` (truncated instruction fragment)
 - [k4-ch9] `그 밀이 일어니치 않있지탄 켜익 일어날 컷 같은 성향까지 갔음을 나타낸다` (heavily scrambled)
+
+## Scheduled run, 2026-07-28 (15th follow-up) — 22 items translated
+No hidden chapters (staging.json hidden: []). The `nextwords.js` sentence backlog is still 98, all OCR-corrupted / scrambled composites (garbled() heuristic passes ~78 of them, but manual review confirms every one is mangled — stray digits, scrambled spacing, injected chars, or merged dialogue). Did NOT force translations on any of them. Notable: the news-passage key beginning "불은 많은 일주 사무실 직원들이 퇴근한 시간에..." already carries a mismatched `ne`-only value that does not correspond to the (corrupted) Korean key — flag for source .md fix.
+
+Instead, continued the vocab-pool approach (13th/14th runs): probed LESSON_VOCAB for clean items missing all 11 languages that the garbled()/isWord() filters wrongly exclude (parenthetical Latin annotations). Hand-picked 22 unambiguous, fully-untranslated label/vocab entries → all 11 langs (242 new translations):
+- Event-flyer nouns [extra-1]: 일시, 장소, 프로그램, 주최, 오시는 길, 대중교통.
+- Worksheet section headers: 고민(Problem), 조언(Advice), 결과(Result), 장점(Strengths), 단점(Weaknesses) [k3-ch2]; 원인(Cause), 의존성(Dependency), 익명성(Anonymity), 해킹(Hacking) [k4-ch8]; 문제(Problem) [k3-ch9]; 표현(Expression) [k3-ch4]; 상황(Situation), 사고(Accident), 화상(burn) [k4-ch9]; 입장(Position) [k4-ch11].
+- Slang: 댕댕이 — doggo [k4-ch10].
+
+No chapter revealed. Remaining clean vocab candidates for future runs (still missing langs, need per-context judgment): 받침 O/X/ㄹ conjugation-scaffold rows, name/particle worksheet cells in extra-3, and grammar pattern labels (동사/형용사 + ending). The 98-item sentence backlog remains blocked on source .md OCR fixes.
