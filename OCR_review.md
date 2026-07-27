@@ -92,3 +92,7 @@ Correcting an oversight from the 2026-07-23/24/26 runs: those runs skipped ALL g
 - k4-ch16: vocab phrases ① 힘과 열정을 쏟다…, ② 어려움을 극복하다…, ③ 끊임없이 도전하다, ④ 자기 계발을 하다.
 
 These do NOT change reveal status (reveal-check.js's garbled() excludes ①–⑨ items from its clean totals), so both chapters stay hidden. The genuinely OCR-corrupted remaining items (ch15's `코로나194 대공타기` nav fragment; ch16's `박수 로모셔`, `문저 에 부뒷히면서`, `학교생 할에`, `출인국관리사무소장`, address/letterhead lines, `그모시다`; and the 120 site-wide nextwords candidates) still require source `.md` fixes before they can be translated.
+
+## Scheduled run, 2026-07-27 (follow-up run) — no changes
+
+Both prior-hidden chapters (k4-ch15, k4-ch16) are now revealed (`staging.json` `hidden: []`, `reveal-check.js --dry` → "no hidden chapters"). Re-ran `node nextwords.js` site-wide: 120 missing, 0 words / 120 sentences — byte-for-byte identical to the 2026-07-23/24/26 sweeps. Re-audited every candidate: all 120 are OCR-garbled (corrupted sentences, mashed multiple-choice-option fragments like `보존해야 0 탐방해야 ○언정해야 ○ 전승해야`, address/letterhead lines, stray ○●@ markers). Also verified via raw I18N.data scan that the remaining language gaps are not actionable: `ne` (10,352 "missing") is supplied from source vocab notes (nextwords `srcNe`), and the `ta` (610) / other-language (29 each) gaps map only to garbled or non-displayed keys — 0 clean *displayed* vocab/sentences missing any language. Nothing translated, nothing merged. Backlog remains fully blocked on source `.md` corrections.
