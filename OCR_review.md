@@ -722,3 +722,10 @@ These 445 fully-untranslated sentence candidates passed the garbled() ratio filt
 - [extra-4] `0 스마트폰은 우리 생활을 편리하게 해 주는 것이다 @ 요쥬 스마트폰 중독에 빠진 사람이 많아 사회 문제가 된다.`
 - [extra-4] `0 스까트콘 때문에 가죽과 대화가 단결되는 것을 막아야 한다.`
 - [extra-4] `정답: ① 개인 정보 유출`
+
+## 2026-07-28 (scheduled run) — remaining backlog is all OCR garbage
+No hidden chapters (staging.json `hidden` is empty). `nextwords.js 20 0` reports 98 missing-any items (0 words / 98 sentences), and on manual review ALL of them are OCR-corrupted fragments, scrambled vocab, or answer-key/letterhead noise — none is a clean, well-formed, translatable Korean sentence. Translated nothing this run (did not invent translations for garbage). These need source-.md (OCR) fixes before they can be translated. Representative examples:
+- `정니파다` / `그간직하다` / `씩우다` / `털성적이다` / `디어리다` / `그모시다` / `대꼽다` / `단지다` / `청기다` / `붓설어 하다` — scrambled/nonexistent vocab (likely 간직하다, 씌우다, 적극적이다, 모시다, 던지다, 부끄러워하다, etc.)
+- `이유를 나타널팩 사`, `부모의 책에 걸 것입라`, `1통일-어서 그런지`, `그 밀이 일어니치 않있지탄 켜익 일어날 컷 같은 성향까지 갔음을 나타낸다` — scrambled sentence fragments
+- `대기은적 정상부도 교별시 내동 100번지` — mangled address/letterhead
+- `불은 많은 일주 사무실 직원들이 퇴근한 시간에 발생하였고 …` (fire/theft news passage) — mostly readable but has meaning-critical OCR errors (일주→일부, 원륜/원률→원룸, 흡처→훔쳐, 협의→혐의); already has a partial (paraphrased, non-matching) `ne` value. Left untranslated pending source fix.
