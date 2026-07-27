@@ -266,3 +266,10 @@ Instead, continued the vocab-pool approach (13th/14th runs): probed LESSON_VOCAB
 - Slang: 댕댕이 — doggo [k4-ch10].
 
 No chapter revealed. Remaining clean vocab candidates for future runs (still missing langs, need per-context judgment): 받침 O/X/ㄹ conjugation-scaffold rows, name/particle worksheet cells in extra-3, and grammar pattern labels (동사/형용사 + ending). The 98-item sentence backlog remains blocked on source .md OCR fixes.
+
+## Scheduled run, 2026-07-28 (16th follow-up) — 22 vocab items translated
+No hidden chapters (staging.json hidden: []); nothing revealed. The `nextwords.js` sentence backlog is still 98 (all OCR-corrupted; garbled() passes ~78 but manual review confirms every one is mangled — stray digits, scrambled spacing, injected chars, or merged/duplicate dialogue — so none were forced). Backlog remains blocked on source .md OCR fixes.
+
+Continued the vocab-pool approach: probed LESSON_VOCAB for clean [extra-3] "word — gloss" entries missing all 11 languages that the sentence-oriented filters skip. Hand-picked 22 unambiguous common-noun vocab entries → all 11 langs (242 new translations): head, water, work, younger sibling, mobile phone, park, view, refrigerator, weather, movie, coffee, sleep, time, friend, personality, people, seasoning, course, address, interpreter, cellphone, desk. Reused the item's embedded Nepali gloss for `ne`. Style matches existing "word — gloss" entries (value = target-language gloss only, Korean word not repeated).
+
+Remaining clean [extra-3] vocab candidates for future runs (still missing all 11): more particle-attached nouns (제출하라고, 하셨어요, 보름달을, 소원을, 빌어요, 전화했어요, 업무를, 한 시간씩, 잠이 들었거든요, 약속 장소를, 세수를, 부장님이, 불고기는/를, 출근을, 야외 행사는, 요리하는 것을, 한국 요리는, 비빔국수를, 가족들에게/이, 라흐만 씨는) — straightforward on future runs.
