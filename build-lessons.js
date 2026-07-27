@@ -416,6 +416,9 @@ files.forEach(f => {
     // surgical tidy: strip a trailing "(…)" and page refs like "| p.202" / "p.202" — nothing else
     title = title.replace(/\s*\([^)]*\)\s*$/, "").replace(/\s*\|?\s*p\.?\s*\d+.*$/i, "").trim();
   }
+  // per-chapter title overrides for sources whose header format defeats auto-extraction
+  const TITLE_OVERRIDE = { "k4-ch5": "문화유산", "k4-ch8": "정보화 사회" };
+  if (!info._title && TITLE_OVERRIDE[info.id]) title = TITLE_OVERRIDE[info.id];
   META[info.id] = { level: info.level, number: info.number, title };
   console.log(info.id, "->", VOCAB[info.id].length, "vocab,", cleaned.length, "chars", title ? "| " + title : "");
 });
