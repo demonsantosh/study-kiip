@@ -729,3 +729,13 @@ No hidden chapters (staging.json `hidden` is empty). `nextwords.js 20 0` reports
 - `이유를 나타널팩 사`, `부모의 책에 걸 것입라`, `1통일-어서 그런지`, `그 밀이 일어니치 않있지탄 켜익 일어날 컷 같은 성향까지 갔음을 나타낸다` — scrambled sentence fragments
 - `대기은적 정상부도 교별시 내동 100번지` — mangled address/letterhead
 - `불은 많은 일주 사무실 직원들이 퇴근한 시간에 발생하였고 …` (fire/theft news passage) — mostly readable but has meaning-critical OCR errors (일주→일부, 원륜/원률→원룸, 흡처→훔쳐, 협의→혐의); already has a partial (paraphrased, non-matching) `ne` value. Left untranslated pending source fix.
+
+## 2026-07-28 scheduled batch — skipped garbled/OCR-corrupted fragments
+The garbled() heuristic passed these as "clean" but they are clearly OCR-corrupted
+duplicates/fragments and were NOT translated. Source .md needs a human fix:
+- [k4-ch16] 대기은적 정상부도 교별시 내동 100번지  (mangled address/letterhead)
+- [k4-ch11] 그러한 일이 있는 컷이 당열함을
+- [k4-ch12] 먼저 서울 을 알이보겠습니다 ... 투표가 시즈 있습니다.  (scrambled news line)
+- [k4-ch9] 불은 많은 일주 사무실 직원들이 ... (long mangled news article; needs re-OCR)
+- [k4-ch4] 는 것은 나 쌀을 연필을 가수가 / 주들이 했다 셨다. (scrambled fragments)
+- [k4-ch5] 예문 .가 물건을 사기 전에 ... 싸게 살 수 있다고 해0 (digit-glued OCR)
