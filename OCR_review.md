@@ -100,3 +100,7 @@ Both prior-hidden chapters (k4-ch15, k4-ch16) are now revealed (`staging.json` `
 ## Scheduled run, 2026-07-27 (2nd follow-up) — no changes
 
 `staging.json` `hidden: []` (no hidden chapters). Re-ran `node nextwords.js 120 0`: 120 missing, 0 words / 120 sentences — byte-for-byte identical to every prior sweep. Ran the task-spec `garbled()` heuristic over all 120: it passes 96 as "clean," but manual audit confirms every one of those 96 is in fact OCR-corrupted (scrambled syllables like `즐카는`→증가는, `카져왔다`→가져왔다, `원륜`→원룸, `흡처`→훔쳐; mangled fragments `정니파다`, `그간직하다`, `씩우다`, `털성적이다`; address/letterhead lines; fill-in-the-blank option strings). No legitimately-translatable Korean remains anywhere. Nothing translated, nothing merged. Backlog stays fully blocked on source `.md` corrections.
+
+## Scheduled run, 2026-07-27 (3rd follow-up) — no changes
+
+`staging.json` `hidden: []` (`reveal-check.js --dry` → "no hidden chapters"). Re-ran `node nextwords.js`: 120 missing, 0 words / 120 sentences — byte-for-byte identical to every prior sweep. Applied the task-spec `garbled()` heuristic: 96 of 120 pass as "clean," but full manual audit reconfirms every one is OCR-corrupted (scrambled syllables `정니파다`/`그간직하다`/`씩우다`/`디어리다`/`대꼽다`/`털성적이다`, embedded digits & parentheses, `<보기>` fill-in-the-blank exam fragments, address/letterhead lines, mangled reading passages like `1인 가구의 즐카는`→증가는 / `카져왔다`→가져왔다). No legitimately-translatable Korean remains anywhere. Nothing translated, nothing merged. Backlog stays fully blocked on source `.md` corrections.
