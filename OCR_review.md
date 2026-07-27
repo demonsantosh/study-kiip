@@ -237,3 +237,22 @@ Continued the 13th run's "relaxed rule" approach (the `garbled()` filter and `ne
 - Grammar word-class labels: `동사 (verb)`, `형용사 (adjective)`, `명사 (noun)`.
 
 `staging.json hidden: []`, no chapter revealed. The `nextwords.js` sentence backlog is still 98 (0 words / 98 sentences), all OCR-corrupted and blocked on source `.md` fixes. Remaining clean-but-filter-excluded candidates for future runs (still ≥5 langs missing): more `(받침 O/X/ㄹ)` conjugation-scaffold rows, worksheet section headers (`문제/원인/결과/장점/단점/조언`), and grammar pattern labels (`A 대신에 B (verb/noun)`) — left for now as they need per-context judgment.
+
+## 2026-07-28 scheduled run — garbled 11-lang candidates skipped (need source .md OCR fix)
+These passed the automated garbled() ratio filter but are clearly OCR-corrupted / scrambled duplicates; NOT translated:
+- [k3-ch5] `예문 .가 물건을 사기 전에 인터넷으로 가격 비교트 하는 좋다고 해요 "중고 매장에 가면 필요한 물건을 싸게 살 수 있다고 해0 나: 그래요?` (garbled: 비교트, 해0)
+- [extra-2] `엄마가 아기에게 밥을 먹여요 아기가 0 0잠시드 씨 때문어 사람들이 '웃어요.` (stray 0, 때문어)
+- [extra-2] `잠시드 씨는 사람들을 보여프 0 후엔 씨가 창문 밖을 봐요.` (보여프, stray 0)
+- [extra-3] `그리고 일시적인게 가: 지금 제가 막 산책하러 ( 아니라면 상담을 좀 받아 보는 것도 좋고요 고마워요.` (merged/scrambled dialogue)
+- [k4-ch1] `챙겨 어리다 향상되( 수요` (fragment)
+- [k4-ch12] `먼저 서울 을 알이보겠습니다 연결해 투표 상원 양지호 기재 투표가 이제 막 시작됐죠^ 네 조금 전인 오전 6시 정각부터 투표가 시즈 있습니다.` (알이보겠습니다, 시즈)
+- [k4-ch12] `시명의 능불비에서 보겠습니다.` (nonsense OCR)
+- [k4-ch12] `시행의 목스니에 기용이겠을니다` (nonsense OCR)
+- [k4-ch15] `정책정보 에피소드 현장이야기 생활정보 공지사항 고속도로 한돈 손창다.` (menu fragment + 손창다)
+- [k4-ch16] `박수 로모셔 보겠습니다.` (로모셔)
+- [k4-ch16] `그렇지만 하고 싶은 일이 무엇8 지.` (무엇8)
+- [k4-ch16] `문제에 부뒷힐 때도 많아서 고생을 했습니다 2) 이 문제를 먼저 맞히는 분에게 선물을 드리겠습니다 3) 아이를 따로 앉히고 싶은데요 의자.좀 주시겠어요?` (부뒷힐, merged)
+- [k4-ch4] `주들이 했다 셨다.` (fragment)
+- [k4-ch5] `어린 시설이나 느점이 퍼우 그성다고 립조에서 시민이다 예문 .가: 한글이 과학적인 글자예요?` (시설이나/느점이/퍼우/그성다고 scrambled)
+- [k4-ch8] `따라서 장단점이 가장 알맞은 제목.` (truncated instruction fragment)
+- [k4-ch9] `그 밀이 일어니치 않있지탄 켜익 일어날 컷 같은 성향까지 갔음을 나타낸다` (heavily scrambled)
