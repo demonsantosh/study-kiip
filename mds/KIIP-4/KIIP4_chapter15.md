@@ -365,3 +365,615 @@ Key contrast to remember:
 아무리 -아/어도	no matter how much	जतिसुकै गरे पनि	비록 -아도
 
 💡 보충 어휘 정리 완료 (Supplementary vocabulary section)
+
+
+
+====================
+
+
+
+
+
+Invite team members
+/
+I am studying kiip korean please translatekorean  to Nepali and english . If it is a sentence please provide word meaning per sentence as well along with translation , if questions solve also lets start with chapter details. Please provide mobile easy readable format
+
+-while providing word meaning please provide similar word meaning for that word also 
+Just acknowledge no need to reply
+
+Acknowledged! Ready to help you study KIIP Korean with translations to Nepali and English, word-by-word breakdowns with similar words, and question solutions. Share the chapter details whenever you're ready. 📚
+
+15 법과 질서
+어휘: 규칙과 법 문법: 동-다시피 통-는 법이다
+활동: 법규를 지키는 생활 말하기 준법 생활의 필요성 쓰기
+문화와 정보: 찾기 쉬운 생활 법령 정보
+
+📖 KIIP 4 | Chapter 15: 법과 질서 | p.212 (단원 소개)
+
+🔵 단원 제목 (Unit Title)
+
+15. 법과 질서
+🇬🇧 Law and Order
+🇳🇵 कानून र व्यवस्था
+
+📝 Word Breakdown
+
+Korean	English	Nepali	Similar Words
+법 (法)	law	कानून	법률, 규칙, 법규
+질서	order, discipline	व्यवस्था, अनुशासन	순서, 규율, 체계
+🔵 어휘 (Vocabulary)
+
+규칙과 법
+🇬🇧 Rules and Laws
+🇳🇵 नियम र कानून
+
+📝 Word Breakdown
+
+Korean	English	Nepali	Similar Words
+규칙	rule	नियम	규정, 원칙, 룰
+과	and	र	와, 및, 하고
+법	law	कानून	법률, 법규, 법령
+🔵 문법 (Grammar)
+
+1. 동-다시피
+🇬🇧 "As you (know/see/heard)…" — used with verbs of perception
+🇳🇵 "जस्तै तपाईंले (थाहा पाउनुहुन्छ/देख्नुहुन्छ)…"
+
+2. 통-는 법이다
+🇬🇧 "It is natural/bound to…" — expresses a general truth or tendency
+🇳🇵 "स्वाभाविक रूपमा त्यस्तै हुन्छ" — सामान्य सत्य वा प्रवृत्ति
+
+📝 Word Breakdown
+
+Korean	English	Nepali	Similar Words
+문법	grammar	व्याकरण	어법, 문형
+-다시피	as (you know/see)	जस्तै (थाहा छ/देख्नुहुन्छ)	-듯이, -는 것처럼
+-는 법이다	it is natural to / bound to	स्वाभाविक हो	-기 마련이다, -게 되어 있다
+🔵 활동 (Activities)
+
+법규를 지키는 생활
+🇬🇧 Life of Following Laws and Regulations
+🇳🇵 कानून-नियम पालना गर्ने जीवन
+
+말하기: 준법 생활의 필요성
+🇬🇧 Speaking: The Necessity of a Law-Abiding Life
+🇳🇵 बोल्ने: कानून पालनाको जीवनको आवश्यकता
+
+쓰기
+🇬🇧 Writing
+🇳🇵 लेखन
+
+📝 Word Breakdown
+
+Korean	English	Nepali	Similar Words
+법규	laws and regulations	कानून-नियम	법령, 규정, 규칙
+지키다	to keep, follow, obey	पालना गर्नु, पछ्याउनु	준수하다, 따르다
+생활	life, living	जीवन, दैनिकी	삶, 일상
+준법	law-abiding	कानून पालना	준수, 법 준수
+필요성	necessity	आवश्यकता	필요, 중요성
+말하기	speaking	बोल्ने अभ्यास	회화, 대화
+쓰기	writing	लेखन	작문, 글쓰기
+🔵 문화와 정보 (Culture & Information)
+
+찾기 쉬운 생활 법령 정보
+🇬🇧 Easy-to-Find Living Law Information
+🇳🇵 सजिलै भेटिने दैनिक जीवनको कानूनी जानकारी
+
+📝 Word Breakdown
+
+Korean	English	Nepali	Similar Words
+찾다	to find, search	खोज्नु	검색하다, 구하다
+쉽다	easy	सजिलो	간단하다, 수월하다
+생활 법령	living law / everyday law	दैनिक जीवनको कानून	일상 법률, 생활 법률
+정보	information	जानकारी, सूचना	자료, 데이터
+문화	culture	संस्कृति	전통, 문명
+💡 핵심 정리 (Key Summary)
+
+Chapter theme: 법과 질서 — laws, rules, and the importance of following them in daily life.
+Two grammar points to learn:
+동-다시피 → "As you know/see/heard…" (softens or refers back to shared knowledge)
+동-는 법이다 → "It's natural/bound to happen" (compare with prior 동형-기 마련이다 from Ch.10/11 — similar meaning, slightly more formal/rule-like tone)
+Skills covered: Vocabulary about rules & law → grammar → speaking about law-abiding life → writing → cultural info on Korean legal resources.
+📌 Share the next page to continue!
+
+이 사람들은 무엇을 하고 있어요? 여러분은 생활 속에서 질서를 잘 지켜요? .
+
+📖 KIIP 4 | Chapter 15: 법과 질서 | p.213 (도입)
+
+🔵 도입 질문 (Introduction Questions)
+
+1. 이 사람들은 무엇을 하고 있어요?
+🇬🇧 What are these people doing?
+🇳🇵 यी मानिसहरू के गर्दै छन्?
+
+📝 Word Breakdown
+
+Korean	English	Nepali	Similar Words
+이	this / these	यो / यी	그, 저
+사람들	people	मानिसहरू	인간들, 분들
+은	topic marker	-ले (विषय सूचक)	는, 이/가
+무엇	what	के	뭐, 어떤 것
+을	object marker	-लाई (कर्म सूचक)	를
+하다	to do	गर्नु	행하다, 실행하다
+-고 있어요	is doing (progressive)	-दै छ (जारी क्रिया)	-는 중이다
+🔵 2. 여러분은 생활 속에서 질서를 잘 지켜요?
+🇬🇧 Do you follow order (rules) well in your daily life?
+🇳🇵 तपाईंहरू दैनिक जीवनमा व्यवस्था (नियम) राम्रोसँग पालना गर्नुहुन्छ?
+
+📝 Word Breakdown
+
+Korean	English	Nepali	Similar Words
+여러분	everyone, you all	तपाईंहरू सबै	모두, 여러 사람
+은	topic marker	-ले	는
+생활	daily life	दैनिक जीवन	일상, 삶
+속	inside	भित्र	안, 내부
+-에서	in / at	-मा	-에
+질서	order, discipline	व्यवस्था, अनुशासन	순서, 규율
+를	object marker	-लाई	을
+잘	well	राम्रोसँग	훌륭히, 제대로
+지키다	to keep, follow, obey	पालना गर्नु	준수하다, 따르다
+-어요	polite ending	-छ (शिष्ट अन्त्य)	-아요, -여요
+💡 핵심 정리 (Key Summary)
+
+These are warm-up questions before starting the chapter — asking learners to observe pictures and reflect on their own life.
+Key expressions:
+-고 있어요 → describing an ongoing action (progressive tense)
+생활 속에서 → "in daily life" (common set phrase for this chapter)
+질서를 지키다 → "to follow/keep order" (core chapter phrase)
+Sample answer idea (for reference):
+이 사람들은 신호등을 지키고 길을 건너고 있어요. 저도 생활 속에서 질서를 잘 지키려고 노력해요.
+🇬🇧 These people are obeying the traffic lights and crossing the road. I also try to follow order well in daily life.
+📌 Share the next page to continue!
+
+📖 KIIP 4 | Chapter 15: 법과 질서 — 페이지별 어휘 + 문법 총정리
+(Page-by-Page Vocabulary + Grammar Recap)
+
+🔵 p.193 — 단원 소개 (Unit Introduction)
+
+Korean	English	Nepali	Similar Words
+법	law	कानून	법률, 법규
+질서	order	व्यवस्था	규율
+규칙	rule	नियम	규정
+법규	law & regulations	कानून-नियम	법령
+지키다	to obey	पालना गर्नु	준수하다
+준법	law-abiding	कानून पालना	준수
+필요성	necessity	आवश्यकता	중요성
+안내문	notice	सूचना पत्र	공지문
+🔵 p.194 — 어휘 (Vocabulary: 규칙과 법)
+
+Korean	English	Nepali	Similar Words
+위반하다	to violate	उल्लङ्घन गर्नु	어기다
+범죄	crime	अपराध	범행
+저지르다	to commit	अपराध गर्नु	범하다
+처벌	punishment	सजाय	벌
+받다	to receive	पाउनु	당하다
+벌금	fine	जरिवाना	과태료
+범칙금	traffic fine	सानो जरिवाना	과료
+내다	to pay	तिर्नु	지불하다
+징역	imprisonment	जेल सजाय	감옥살이
+불법	illegal	गैरकानूनी	위법
+촬영	filming	भिडियो खिच्ने	녹화
+무단	without permission	अनुमति बिना	불법
+저작권법	copyright law	प्रतिलिपि अधिकार कानून	저작권
+주정차	parking & stopping	पार्किङ	주차
+금지	prohibition	निषेध	금함
+쓰레기	garbage	फोहोर	폐기물
+투기	dumping	फाल्ने	유기
+단속	crackdown	नियन्त्रण	감시
+함부로	carelessly	जथाभावी	마음대로
+담배꽁초	cigarette butt	चुरोटको ठुटो	—
+껌	chewing gum	च्युइङ गम	—
+🔵 p.195 — 문법 1: 동-다시피
+
+의미: Indicates what the listener already knows or perceives.
+🇬🇧 "As you know / see / hear / feel…"
+🇳🇵 "जस्तै तपाईंलाई थाहा छ / देख्नुहुन्छ…"
+
+형태: Verb stem + -다시피 (perception verbs only: 알다, 보다, 듣다, 말하다, 느끼다, 짐작하다)
+
+Honorific: -시다시피 (아시다시피, 보시다시피)
+Past: -(으)셨다시피 (들으셨다시피, 말씀드렸다시피)
+Page vocab:
+
+Korean	English	Nepali	Similar Words
+아나이스	Anaïs (name)	अनाइस	—
+시험 기간	exam period	परीक्षा अवधि	시험 때
+저출산	low birth rate	न्यून जन्मदर	출산율 저하
+심각하다	serious	गम्भीर	중대하다
+행사	event	कार्यक्रम	이벤트
+마무리하다	to wrap up	सक्नु	끝내다
+기념사진	commemorative photo	स्मृति तस्बिर	기념 촬영
+출입구	entrance/exit	प्रवेशद्वार	입구
+이내	within	-भित्र	안
+금연 구역	no-smoking zone	धूम्रपान निषेध क्षेत्र	흡연 금지
+행인	passerby	बटुवा	통행인
+미처	(not) in time	ख्याल नगरी	아직
+매출	sales	बिक्री	판매액
+상승하다	to rise	बढ्नु	오르다
+짐작하다	to guess	अनुमान गर्नु	추측하다
+폭설	heavy snow	भारी हिमपात	대설
+경기	economy	आर्थिक अवस्था	경제
+🔵 p.196 — 문법 2: 동-는 법이다
+
+의미: Indicates something is natural, obvious, or bound to happen.
+🇬🇧 "It is natural / bound to…"
+🇳🇵 "स्वाभाविक रूपमा त्यस्तै हुन्छ।"
+
+형태: Verb stem + -는 법이다 (verbs only, present)
+
+ㄹ verbs drop ㄹ: 알다 → 아는 법이다, 살다 → 사는 법이다.
+Similar to prior grammar -기 마련이다 (Ch.10/11), but more formal/philosophical.
+Page vocab:
+
+Korean	English	Nepali	Similar Words
+대한민국	Republic of Korea	दक्षिण कोरिया	한국
+국민	citizen	नागरिक	시민
+권리	right	अधिकार	특권
+의무	duty	कर्तव्य	책임
+누리다	to enjoy	उपभोग गर्नु	향유하다
+다하다	to fulfill	पूरा गर्नु	이행하다
+노력하다	to make effort	मेहनत गर्नु	애쓰다
+기회	opportunity	अवसर	찬스
+잡다	to catch	समात्नु	붙잡다
+잊다	to forget	बिर्सनु	망각하다
+기억	memory	सम्झना	추억
+생생하다	vivid	ताजा	뚜렷하다
+사건	case	घटना	사고
+범인	criminal	अपराधी	죄인
+꼬리	tail	पुच्छर	—
+밟히다	to be stepped on	कुल्चिनु	—
+강산	rivers & mountains	नदी र पहाड	자연
+벼	rice plant	धानको बोट	쌀
+익다	to ripen	पाक्नु	여물다
+고개	head/neck	टाउको	머리
+숙이다	to bow	झुकाउनु	굽히다
+버릇	habit	बानी	습관
+여든	eighty	असी	80세
+주장	claim, argument	तर्क	의견
+내세우다	to assert	अगाडि सार्नु	주장하다
+망치다	to ruin	बिगार्नु	그르치다
+사공	boatman	माझी	뱃사공
+최선	one's best	पूरा प्रयास	최고
+결과	result	नतिजा	성과
+얻다	to gain	पाउनु	획득하다
+복	luck, blessing	भाग्य	행운
+🔵 p.197 — 말하기 (Speaking)
+
+두 문법 결합 사용: 동-다시피 + 동-는 법이다
+Example: "애나 씨도 알다시피 지금 급한 상황이라서요…", "교통 법규는 꼭 지켜야 하는 법이잖아요."
+
+Page vocab:
+
+Korean	English	Nepali	Similar Words
+급히	hurriedly	हतारमा	서둘러
+응급실	emergency room	आकस्मिक कक्ष	ER
+오토바이	motorcycle	मोटरसाइकल	이륜차
+헬멧	helmet	हेल्मेट	안전
+Claude’s response was interrupted.
+This chapter word meanings as per page, grammer explain at the same time
+
+📖 KIIP 4 | Chapter 15: 법과 질서 — 페이지별 어휘 + 문법 (Part 1)
+
+🔵 p.193 — 단원 소개 (Unit Introduction)
+
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+법	law	कानून	법률, 법규
+질서	order	व्यवस्था	규율
+규칙	rule	नियम	규정
+법규	law & regulations	कानून-नियम	법령
+지키다	to obey	पालना गर्नु	준수하다
+준법	law-abiding	कानून पालना	준수
+필요성	necessity	आवश्यकता	중요성
+생활	life, living	जीवन	삶
+문법 미리보기: Chapter introduces 2 grammar points → 동-다시피 & 동-는 법이다 (both taught on pp.195–196).
+
+🔵 p.194 — 어휘 1 & 2 (규칙과 법 / 안내문)
+
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+위반하다	to violate	उल्लङ्घन गर्नु	어기다
+범죄	crime	अपराध	범행
+저지르다	to commit	अपराध गर्नु	범하다
+처벌	punishment	सजाय	벌
+벌금	fine	जरिवाना	과태료
+범칙금	traffic fine	सानो जरिवाना	과료
+내다	to pay	तिर्नु	지불하다
+징역	imprisonment	जेल सजाय	감옥살이
+불법	illegal	गैरकानूनी	위법
+촬영	filming	भिडियो खिच्ने	녹화
+무단	without permission	अनुमति बिना	불법
+저작권법	copyright law	प्रतिलिपि अधिकार कानून	저작권
+주정차	parking & stopping	पार्किङ	주차
+금지	prohibition	निषेध	금함
+쓰레기 투기	garbage dumping	फोहोर फाल्ने	폐기물 유기
+단속	crackdown	नियन्त्रण	감시
+함부로	carelessly	जथाभावी	마음대로
+담배꽁초	cigarette butt	चुरोटको ठुटो	—
+껌	chewing gum	च्युइङ गम	—
+신고 전화	report number	उजुरी नम्बर	112
+안내문	notice	सूचना पत्र	공지문
+문법 관련: Vocabulary sets up context for later grammar — laws you naturally must follow (→ -는 법이다) and shared knowledge notices (→ -다시피).
+
+🔵 p.195 — 문법 1: 동-다시피
+
+💡 문법 설명:
+
+의미: 듣는 사람이 이미 알거나 지각하고 있는 것임을 나타낸다.
+🇬🇧 "As you (already) know / see / hear / feel…" — refers to shared knowledge with the listener.
+🇳🇵 "जस्तै तपाईंलाई थाहा छ / देख्नुहुन्छ / सुन्नुहुन्छ…" — सुन्ने व्यक्तिलाई पहिले नै थाहा भएको कुरा जनाउँछ।
+
+형태 (Form):
+
+Verb stem + -다시피
+Only used with perception verbs: 알다, 보다, 듣다, 말하다, 느끼다, 짐작하다
+Honorific: -시다시피 (아시다시피, 보시다시피)
+Past: -(으)셨다시피 (들으셨다시피, 말씀드렸다시피)
+예문: 여러분도 아시다시피 요즘 회사 매출이 상승하고 있습니다.
+🇬🇧 As you all know, our sales have been rising these days.
+🇳🇵 तपाईंहरूलाई पनि थाहा भएजस्तै, आजकल कम्पनीको बिक्री बढिरहेको छ।
+
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+시험 기간	exam period	परीक्षा अवधि	시험 때
+저출산	low birth rate	न्यून जन्मदर	출산율 저하
+심각하다	serious	गम्भीर	중대하다
+행사	event	कार्यक्रम	이벤트
+마무리하다	to wrap up	सक्नु	끝내다
+기념사진	commemorative photo	स्मृति तस्बिर	기념 촬영
+출입구	entrance/exit	प्रवेशद्वार	입구
+이내	within	-भित्र	안
+금연 구역	no-smoking zone	धूम्रपान निषेध क्षेत्र	흡연 금지
+행인	passerby	बटुवा	통행인
+미처	(not) in time	ख्याल नगरी	아직
+매출	sales	बिक्री	판매액
+상승하다	to rise	बढ्नु	오르다
+짐작하다	to guess	अनुमान गर्नु	추측하다
+폭설	heavy snow	भारी हिमपात	대설
+경기	economy	आर्थिक अवस्था	경제
+🔵 p.196 — 문법 2: 동-는 법이다
+
+💡 문법 설명:
+
+의미: 앞의 상태나 행동이 당연하거나 이미 그렇게 정해진 것임을 나타낸다.
+🇬🇧 "It is natural / bound to…" — expresses a general truth or expected outcome.
+🇳🇵 "स्वाभाविक रूपमा त्यस्तै हुन्छ।" — अघिको कार्य वा अवस्था स्वाभाविक भएको जनाउँछ।
+
+형태 (Form):
+
+Verb stem + -는 법이다 (present only)
+ㄹ verbs drop ㄹ: 알다 → 아는 법이다, 살다 → 사는 법이다, 만들다 → 만드는 법이다
+Common polite endings: -는 법이에요 / -는 법입니다 / -는 법이지요
+Compare with Ch.10/11 -기 마련이다 → almost the same meaning; -는 법이다 is more formal, often used with proverbs and moral truths.
+예문: 잘못한 사람은 반드시 벌을 받는 법이지요.
+🇬🇧 Wrongdoers are bound to be punished.
+🇳🇵 गल्ती गर्नेले पक्कै पनि सजाय पाउनु स्वाभाविक हो।
+
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+대한민국	Republic of Korea	दक्षिण कोरिया	한국
+국민	citizen	नागरिक	시민
+권리	right	अधिकार	특권
+의무	duty	कर्तव्य	책임
+누리다	to enjoy	उपभोग गर्नु	향유하다
+다하다	to fulfill	पूरा गर्नु	이행하다
+노력하다	to make effort	मेहनत गर्नु	애쓰다
+기회	opportunity	अवसर	찬스
+잡다	to catch	समात्नु	붙잡다
+잊다	to forget	बिर्सनु	망각하다
+기억	memory	सम्झना	추억
+생생하다	vivid	ताजा	뚜렷하다
+사건	case	घटना	사고
+범인	criminal	अपराधी	죄인
+꼬리	tail	पुच्छर	—
+밟히다	to be stepped on	कुल्चिनु	—
+강산	rivers & mountains	नदी र पहाड	자연
+벼	rice plant	धानको बोट	쌀
+익다	to ripen	पाक्नु	여물다
+고개	head/neck	टाउको	머리
+숙이다	to bow	झुकाउनु	굽히다
+버릇	habit	बानी	습관
+여든	eighty	असी	80세
+주장	claim	तर्क	의견
+내세우다	to assert	अगाडि सार्नु	주장하다
+망치다	to ruin	बिगार्नु	그르치다
+사공	boatman	माझी	뱃사공
+최선	one's best	पूरा प्रयास	최고
+결과	result	नतिजा	성과
+얻다	to gain	पाउनु	획득하다
+복	luck, blessing	भाग्य	행운
+🔵 p.197 — 말하기 (Speaking)
+
+💡 문법 결합 사용: Both grammar points appear together in dialogue —
+
+알다시피 ("as you know") = softens reminder
+-는 법이잖아요 ("it's naturally so") = emphasizes obligation
+예: "애나 씨도 알다시피 지금 급한 상황이라서요… 아무리 급해도 교통 법규는 꼭 지켜야 하는 법이잖아요."
+
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+급히	hurriedly	हतारमा	서둘러
+응급실	emergency room	आकस्मिक कक्ष	ER
+오토바이	motorcycle	मोटरसाइकल	이륜차
+헬멧	helmet	हेल्मेट	안전모
+안전벨트	seatbelt	सिट बेल्ट	안전띠
+매다	to fasten	बाँध्नु	착용하다
+카 시트	car seat	कार सिट	유아 좌석
+앉히다	to seat someone	बसाल्नु	앉게 하다
+어린이 보호 구역	school zone	बाल संरक्षण क्षेत्र	스쿨존
+속도	speed	गति	스피드
+줄이다	to reduce	घटाउनु	낮추다
+운전	driving	सवारी चलाउने	드라이빙
+조심하다	to be careful	सावधान रहनु	주의하다
+위험하다	dangerous	खतरनाक	위태롭다
+사고	accident	दुर्घटना	사건
+보호하다	to protect	जोगाउनु	지키다
+깜박하다	to briefly forget	बिर्सनु	잊다
+당황하다	to be flustered	अलमलिनु	허둥대다
+상황	situation	अवस्था	형편
+🔵 p.198 — 듣기 + 발음 (Listening & Pronunciation)
+
+💡 문법 활용: 듣기 대본에서 두 문법 모두 사용됨.
+
+"많은 분들이 아시다시피 인터넷에 함부로 댓글을 쓰면…" (-다시피)
+"모두의 작은 실천이 모여 살기 좋은 사회가 만들어지는 법이지요." (-는 법이다)
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+청취자	listener	श्रोता	듣는 사람
+법률 상식	legal common sense	कानूनी सामान्य ज्ञान	법 지식
+변호사	lawyer	वकिल	법조인
+무심코	unintentionally	अनजानमा	무의식적으로
+어기다	to violate	उल्लङ्घन गर्नु	위반하다
+연예인	celebrity	सेलिब्रेटी	스타
+댓글	comment	टिप्पणी	리플
+악성 댓글	malicious comment	दुर्भावनापूर्ण टिप्पणी	악플
+명예 훼손죄	defamation charge	मानहानि अपराध	명예 손상
+모욕죄	insult charge	अपमान अपराध	모독죄
+적용되다	to be applied	लागू हुनु	해당되다
+공유	sharing	साझा गर्ने	나눔
+공개적으로	publicly	सार्वजनिक रूपमा	오픈하게
+저작물	copyrighted work	कृति	창작물
+인격	personhood	व्यक्तित्व	성품
+존중하다	to respect	सम्मान गर्नु	공경하다
+실천	practice, action	अभ्यास	행동
+발음 규칙: [ㅂ] + ㄹ → [ㅁ] + [ㄴ]
+
+법률 → [범뉼]
+협력 → [혐녁]
+실업률 → [시럼뉼]
+🔵 p.199 — 읽기 1 & 2 (경범죄 통계 + 5대 범죄 기사)
+
+💡 문법 활용: No direct grammar usage; focus on data-reading vocabulary.
+
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+경범죄	petty offense	हल्का अपराध	경미한 범죄
+음주 소란	drunken disturbance	नशामा हल्ला	술 소동
+인근 소란	neighborhood disturbance	छिमेकमा हल्ला	주변 소음
+무단 침입	trespassing	अनधिकृत प्रवेश	무단 출입
+관계자	related person	सम्बन्धित व्यक्ति	담당자
+비율	ratio	अनुपात	퍼센트
+차지하다	to occupy	ओगट्नु	점유하다
+5대 범죄	5 major crimes	५ प्रमुख अपराध	주요 범죄
+살인	murder	हत्या	살해
+강도	robbery	डकैती	강탈
+강간	rape	बलात्कार	성폭행
+절도	theft	चोरी	도둑질
+폭력	violence	हिंसा	폭행
+검거율	arrest rate	गिरफ्तारी दर	체포율
+-에 따르면	according to	-का अनुसार	-의 말로는
+나타나다	to appear	देखिनु	드러나다
+기록하다	to record	अभिलेख गर्नु	등록하다
+발달	development	विकास	발전
+불안감	anxiety	चिन्ता	두려움
+낮아지다	to lower	घट्नु	줄어들다
+🔵 p.200 — 읽기 3 (경범죄 기사)
+
+💡 문법 활용:
+
+"모든 범죄 행위에는 처벌이 뒤따르는 법이다." (-는 법이다)
+"모두가 알다시피 함께 사는 사회를 위해서는…" (-다시피)
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+일상생활	daily life	दैनिक जीवन	매일의 삶
+흔하다	common	प्रायः	자주 있다
+의미하다	to mean	जनाउनु	뜻하다
+대수롭지 않다	insignificant	तुच्छ	사소하다
+뒤따르다	to follow after	पछ्याउनु	수반되다
+대상	subject, target	दायरा	목표
+취하다	to get drunk	मात्नु	술 취하다
+소란을 피우다	to make a scene	हल्ला मच्चाउनु	시끄럽게 하다
+광고물	ad material	विज्ञापन सामग्री	전단지
+붙이다	to attach	टाँस्नु	부착하다
+해당되다	to fall under	पर्नु	적용되다
+지속적	persistent	निरन्तर	계속되는
+쫓아다니다	to stalk	पछ्याइरहनु	따라다니다
+괴롭히다	to harass	सताउनु	괴롭게 하다
+피해를 주다	to cause harm	हानि पुर्‍याउनु	손해를 끼치다
+성숙하다	mature	परिपक्व	어른스럽다
+시민 의식	civic consciousness	नागरिक चेतना	공공 의식
+안전하다	safe	सुरक्षित	안심되다
+편안하다	comfortable	आरामदायी	안락하다
+🔵 p.201 — 쓰기 (Writing)
+
+💡 문법 활용 in sample essay:
+
+"아시다시피 법과 질서는 우리 모두의 안전과 권리를 지키기 위해 만들어진 것이다." (-다시피)
+"모두의 작은 실천이 모여 살기 좋은 사회가 만들어지는 법이다." (-는 법이다)
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+필요성	necessity	आवश्यकता	중요성
+문제점	problem	समस्या	문제
+혼란스럽다	chaotic	अस्तव्यस्त	어수선하다
+늘어나다	to increase	बढ्नु	증가하다
+서로	each other	एकअर्का	상호
+믿다	to trust	विश्वास गर्नु	신뢰하다
+만약	if	यदि	만일
+-기 위해서	in order to	-का लागि	-을 위해
+그러므로	therefore	त्यसैले	따라서
+행복하다	happy	सुखी	즐겁다
+🔵 p.202 — 문화와 정보 (찾기 쉬운 생활 법령 정보)
+
+💡 문법 활용: No direct grammar drills, but chapter grammar can be applied when discussing:
+
+"아시다시피 정부에서 좋은 자료를 제공하고 있어요."
+"법을 잘 알면 이롭게 되는 법이에요."
+주요 어휘:
+
+Korean	English	Nepali	Similar Words
+정부	government	सरकार	국가
+홈페이지	website	वेबसाइट	사이트
+애플리케이션	app	एप	앱
+제공하다	to provide	उपलब्ध गराउनु	지원하다
+가정	family	परिवार	가족
+금융	finance	वित्त	재정
+근로	labor	श्रम	노동
+주제	topic	विषय	테마
+설명되다	to be explained	व्याख्या गरिनु	해설되다
+언어	language	भाषा	말
+편리하다	convenient	सजिलो	편하다
+법무부	Ministry of Justice	न्याय मन्त्रालय	사법부
+경찰청	Police Agency	प्रहरी आयोग	경찰서
+기관	agency	निकाय	단체
+블로그	blog	ब्लग	웹로그
+유튜브 채널	YouTube channel	युट्युब च्यानल	동영상 채널
+운영하다	to operate	सञ्चालन गर्नु	관리하다
+영상	video	भिडियो	동영상
+이롭다	beneficial	फाइदाजनक	유익하다
+불이익	disadvantage	नोक्सानी	손해
+유익하다	beneficial	फाइदाजनक	이롭다
+지혜	wisdom	बुद्धि	슬기
+🔵 p.203 — 배운 어휘 확인 (Vocabulary Checklist)
+
+Consolidation page — review checklist of ~35 key terms already covered above.
+
+💡 전체 문법 요약 (Complete Grammar Recap)
+
+Grammar	Meaning	Attach To	Key Use	Example
+동-다시피	"as you know / see / hear / feel"	Perception verbs only (알다, 보다, 듣다, 말하다, 느끼다, 짐작하다)	Referring to shared knowledge with listener	여러분도 아시다시피 요즘 매출이 오르고 있습니다.
+동-는 법이다	"it is natural / bound to"	Verbs only (present); ㄹ drops	General truths, proverbs, moral statements	잘못한 사람은 벌을 받는 법이지요.
+비교 (Comparison with prior chapters):
+
+-는 법이다 ≈ -기 마련이다 (Ch.10/11) → same meaning; -는 법이다 sounds more formal.
+-다시피 vs -더니 (Ch.4) → 다시피 = shared knowledge; 더니 = personal past observation.
+-다시피 vs -듯이 → 다시피 refers to perceived info; 듯이 compares similarity.
+📌 Share the next chapter (Chapter 16) or any page to continue!
+
+
+
+
+
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+
