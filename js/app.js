@@ -811,16 +811,31 @@
     view.appendChild(crumbs([[t("crumb_home"), "/"], [t("nav_culture"), null]]));
     view.appendChild(el("h1", "page-title", "🎎 " + t("nav_culture")));
 
-    // chapter filter
+    // level (KIIP 3 / KIIP 4) + dependent chapter filter
     const controls = el("div", "study-controls");
-    const sel = el("select", "study-filter");
     const items = [];
     DATA.levels.forEach((lvl) => lvl.chapters.forEach((ch) => {
       const c = ch.culture, cmd = getCultureMd(ch.id);
       if (c || cmd) items.push({ lvl, ch, c, cmd });
     }));
-    sel.innerHTML = '<option value="">' + esc(t("all_chapters")) + '</option>' + items.map((it, i) => '<option value="' + i + '">' + esc(lvlName(it.lvl) + " · " + it.ch.number + ". " + it.ch.ko) + '</option>').join("");
-    const filterRow = el("div", "study-filter-row"); filterRow.append(el("span", "filter-label", t("filters_label")), sel);
+    const levelSel = el("select", "study-filter");
+    const lvlsWith = DATA.levels.filter((l) => items.some((it) => it.lvl.id === l.id));
+    levelSel.innerHTML = '<option value="">' + esc(t("all_levels")) + '</option>' +
+      lvlsWith.map((l) => '<option value="' + l.id + '">' + esc(lvlName(l)) + '</option>').join("");
+    const chapSel = el("select", "study-filter");
+    function populateChapters() {
+      const lid = levelSel.value;
+      let html = '<option value="">' + esc(t("all_chapters")) + "</option>";
+      items.forEach((it, i) => {
+        if (lid && it.lvl.id !== lid) return;
+        const prefix = lid ? "" : lvlName(it.lvl) + " · ";
+        html += '<option value="' + i + '">' + esc(prefix + it.ch.number + ". " + it.ch.ko) + "</option>";
+      });
+      chapSel.innerHTML = html;
+    }
+    populateChapters();
+    const filterRow = el("div", "study-filter-row");
+    filterRow.append(el("span", "filter-label", t("filters_label")), levelSel, chapSel);
     controls.appendChild(filterRow);
     view.appendChild(controls);
     const host = el("div"); view.appendChild(host);
@@ -851,11 +866,14 @@
     }
     function draw() {
       host.innerHTML = "";
-      const v = sel.value;
-      const show = v === "" ? items : [items[+v]];
+      const lid = levelSel.value, cv = chapSel.value;
+      let show;
+      if (cv !== "") show = [items[+cv]];
+      else show = items.filter((it) => !lid || it.lvl.id === lid);
       show.forEach((it) => host.appendChild(drawOne(it)));
     }
-    sel.onchange = draw;
+    levelSel.onchange = () => { populateChapters(); draw(); };
+    chapSel.onchange = draw;
     draw();
   }
 
