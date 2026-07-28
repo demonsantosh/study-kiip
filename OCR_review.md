@@ -739,3 +739,12 @@ duplicates/fragments and were NOT translated. Source .md needs a human fix:
 - [k4-ch9] 불은 많은 일주 사무실 직원들이 ... (long mangled news article; needs re-OCR)
 - [k4-ch4] 는 것은 나 쌀을 연필을 가수가 / 주들이 했다 셨다. (scrambled fragments)
 - [k4-ch5] 예문 .가 물건을 사기 전에 ... 싸게 살 수 있다고 해0 (digit-glued OCR)
+
+## 2026-07-28 (scheduled batch)
+OCR-garbled fragments surfaced by nextwords.js — skipped for translation, source .md needs human fix:
+- `이유를 나타널팩 사` — scrambled ("나타내는" garbled), empty English
+- `정니파다` — corrupted token, not a real word
+- `예문 .가 물건을 사기 전에 인터넷으로 가격 비교트 하는 좋다고 해요 "중고 매장에 가면 필요한 물건을 싸게 살 수 있다고 해0 나: 그래요?` — mangled example dialogue with glued digit "해0" and typos ("비교트")
+- `[들다` — stray bracket fragment
+- `부모의 책에 걸 것입라` — corrupted ("책임일 것입니다" garbled)
+- `그간직하다` — glued fragment ("그"+"간직하다")
