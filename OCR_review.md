@@ -773,3 +773,8 @@ to their Korean key (a prior automated run stuffed unrelated text in):
 - `계임할수록 ○ 게임하느라고 …` grammar option-list — its `ne` is about revisiting a
   restaurant, wholly unrelated. LEFT AS-IS.
 Nothing invented. Backlog needs a human source-text (re-OCR) pass, not translation.
+
+## Scheduled run 2026-07-28 — corrupted fragments (passed ratio filter, skipped)
+- [k4-ch12] `시행의 목스니에 기용이겠을니다` — scrambled, not real Korean ("목스니","기용이겠을니다"). Source .md needs re-OCR.
+- [k4-ch9] `그 밀이 일어니치 않있지탄 켜익 일어날 컷 같은 성향까지 갔음을 나타낸다` — heavily corrupted ("밀이","일어니치 않있지탄","켜익","컷"); likely "그 일이 일어나지 않았지만 곧 일어날 것 같은 성향까지 갔음을 나타낸다".
+- [k4-ch12] `지지하는 정당의 후보에게 투표하다 ↔ 경력, 우리 지역에 도움이 되는 후보자를 찾다` — stray injected "경력," between two collocations; needs source cleanup before translation.
