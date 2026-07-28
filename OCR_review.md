@@ -759,3 +759,17 @@ dominated by k3 garbage). These already had the other 10 languages; now 11/11:
 Reconfirmed SKIPPED (still needs source re-OCR, not invented): the k4-ch9 fire/theft
 news passage `불은 많은 일주 사무실 직원들이 …` (일부→일주, 원룸→원륜/원률, 훔쳐→흡처,
 혐의→협의) — meaning-critical OCR errors; left with only its pre-existing partial `ne`.
+
+## 2026-07-28 (scheduled batch — re-review, no new translations)
+No hidden chapters remain (staging.json `hidden` is empty; reveal-check.js reports
+"no hidden chapters"). nextwords.js reports 99 missing-any items, but on inspection
+ALL are OCR-garbled fragments / mangled exam option-lists (0/○/@ markers, glued
+digits, scrambled spacing) — no legitimately-clean sentence left to translate.
+Spot-checked the only two carrying a pre-existing `ne` value and BOTH are mismatched
+to their Korean key (a prior automated run stuffed unrelated text in):
+- `불은 많은 일주 사무실 직원들이 …` (k4-ch9 fire/theft news) — its `ne` describes an
+  Incheon office-tel arson + phone thief, not the Cheongju/16th details in the key;
+  meaning-critical OCR errors (일부→일주, 원룸→원륜/원률, 훔쳐→흡처, 혐의→협의). LEFT AS-IS.
+- `계임할수록 ○ 게임하느라고 …` grammar option-list — its `ne` is about revisiting a
+  restaurant, wholly unrelated. LEFT AS-IS.
+Nothing invented. Backlog needs a human source-text (re-OCR) pass, not translation.
