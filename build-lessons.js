@@ -295,6 +295,9 @@ function cleanMarkdown(raw) {
 }
 
 const HEADER_KO = /^(word|korean|한국어|단어|#|영어|뜻|group|verb|tense|form|stem|program|award|title|event|excerpt|column|feeling|condition|항목|문장|root|pattern|grammar|번호|구분|예시|내용)/i;
+// chapter overview / syllabus row labels (구분 column): "과 제목", "어휘 1", "문법 2",
+// "활동 1", "문화와 정보", "발음"… — these are section headings, not vocabulary.
+const SECTION_LABEL = /^(과\s*제목|어휘|문법|활동|문화와\s*정보|발음|읽기|쓰기|듣기|말하기|본문|과제|예문|단어장)\s*\d*$/;
 const META_EN = /^(english|en|meaning|nepali|ne|np|नेपाली|similar|note|focus)$/i;
 
 // split a meaning string "Korea / कोरिया Similar: 대한민국 (Republic of Korea)" -> {en, ne, similar}
@@ -327,6 +330,7 @@ function extractVocab(raw) {
     en = (en || "").trim();
     if (!ko || !hasHangul(ko) || !en) return;
     if (HEADER_KO.test(ko) || META_EN.test(en)) return;
+    if (SECTION_LABEL.test(ko)) return;   // chapter overview/syllabus labels, not vocab
     if (ko.length > 24) return;                 // skip whole-sentence rows
     if (/[.?!。]$/.test(ko)) return;            // skip sentences
     if (seen[ko]) return;
