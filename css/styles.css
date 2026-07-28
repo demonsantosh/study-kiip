@@ -27,6 +27,19 @@
   --shadow-sm: 0 2px 8px rgba(22, 32, 58, 0.06);
   --font: "Noto Sans", "Noto Sans KR", system-ui, -apple-system, sans-serif;
   --font-ko: "Noto Sans KR", "Noto Sans", sans-serif;
+
+  /* warm accent family — used to add colour & life across cards, tags, sections */
+  --coral: #ef5b4c;      --coral-soft: #ffe9e5;
+  --amber: #e08a12;      --amber-soft: #fff2d8;
+  --teal:  #128a80;      --teal-soft:  #d9f3f0;
+  --violet:#6b4bd6;      --violet-soft:#ece6fb;
+  --pink:  #d6459a;      --pink-soft:  #fce4f2;
+  --lime:  #4f9b26;      --lime-soft:  #e8f6dd;
+  /* glow used behind the hero + brand mark */
+  --hero-glow-1: #3457d5;
+  --hero-glow-2: #6b4bd6;
+  --hero-glow-3: #ef5b4c;
+  --shadow-glow: 0 10px 30px rgba(52, 87, 213, 0.28);
 }
 
 html[data-theme="dark"] {
@@ -54,10 +67,33 @@ html[data-theme="dark"] {
   --brand-line: #2c3a6b;
   --shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+
+  /* warm accents, brightened for dark backgrounds */
+  --coral: #ff8674;      --coral-soft: #3a201c;
+  --amber: #f0b24a;      --amber-soft: #3a2c12;
+  --teal:  #4bcabd;      --teal-soft:  #123230;
+  --violet:#a891ff;      --violet-soft:#241a44;
+  --pink:  #f07bc4;      --pink-soft:  #3a1830;
+  --lime:  #8ed468;      --lime-soft:  #1c3212;
+  --hero-glow-1: #3457d5;
+  --hero-glow-2: #6b4bd6;
+  --hero-glow-3: #ef5b4c;
+  --shadow-glow: 0 10px 34px rgba(0, 0, 0, 0.6);
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+
+/* rotating Korean-culture background (bg-art.js) — subtle, behind all content */
+.bg-art {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  background-position: center; background-size: cover; background-repeat: no-repeat;
+  opacity: 0.06;
+  transition: opacity .4s ease;
+}
+html[data-theme="dark"] .bg-art { opacity: 0.10; }
+.topbar, main { position: relative; z-index: 1; }   /* keep content above the bg-art layer */
 body {
   font-family: var(--font);
   background: var(--bg);
@@ -497,4 +533,167 @@ html, body { overflow-x: hidden; max-width: 100%; }
   /* fully stack the breakdown rows */
   .sb-row { grid-template-columns: 1fr; gap: 1px; }
   .sb-row .sb-rom, .sb-row .sb-en, .sb-row .sb-ex { grid-column: auto; }
+}
+
+/* =====================================================================
+   ✦ Liveliness layer — warm colour + tasteful motion (added on top)
+   Decorative only: colours, gradients, borders, shadows, animation.
+   ===================================================================== */
+
+/* --- Subtle animated background wash so the page isn't a flat slab --- */
+body {
+  background-image:
+    radial-gradient(1100px 520px at 108% -8%, color-mix(in srgb, var(--violet) 12%, transparent), transparent 60%),
+    radial-gradient(950px 480px at -8% 6%, color-mix(in srgb, var(--brand-2) 14%, transparent), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* --- Brand mark: give the little 한 chip a warm multi-stop gradient + glow --- */
+.brand-mark {
+  background: linear-gradient(135deg, var(--brand-2), var(--violet) 55%, var(--coral));
+  box-shadow: var(--shadow-glow);
+}
+.brand:hover .brand-mark { transform: rotate(-4deg) scale(1.05); }
+.brand-mark { transition: transform .18s ease; }
+
+/* --- Top-nav pills get a coloured active/hover feel --- */
+.top-nav button { transition: background .15s, color .15s, transform .12s; }
+.top-nav button:hover { transform: translateY(-1px); }
+
+/* --- HERO: layered gradient + soft decorative blobs + slow drift --- */
+.hero {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--hero-glow-1), var(--hero-glow-2) 55%, var(--hero-glow-3));
+  box-shadow: var(--shadow-glow);
+}
+.hero::before,
+.hero::after {
+  content: ""; position: absolute; border-radius: 50%;
+  pointer-events: none; mix-blend-mode: screen; opacity: .55;
+}
+.hero::before {
+  width: 340px; height: 340px; top: -120px; right: -70px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.85), transparent 65%);
+  animation: heroFloat 14s ease-in-out infinite;
+}
+.hero::after {
+  width: 260px; height: 260px; bottom: -130px; left: -40px;
+  background: radial-gradient(circle at 50% 50%, var(--coral), transparent 68%);
+  animation: heroFloat 18s ease-in-out infinite reverse;
+}
+.hero h1, .hero p { position: relative; z-index: 1; }
+@keyframes heroFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(-18px, 16px) scale(1.08); }
+}
+
+/* --- Section labels: small coloured tick before the text --- */
+.section-label { display: flex; align-items: center; gap: 8px; }
+.section-label::before {
+  content: ""; width: 18px; height: 3px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--brand-2), var(--coral));
+}
+
+/* --- Cards: warm top accent bar + livelier hover lift --- */
+.card { position: relative; overflow: hidden; }
+.card::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+  background: linear-gradient(90deg, var(--brand-2), var(--violet));
+  transform: scaleX(0); transform-origin: left; transition: transform .22s ease;
+}
+.card:hover::before { transform: scaleX(1); }
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-glow); }
+
+/* Rotate accent colours across the level / chapter grid so it reads as colourful */
+.card:nth-child(6n+1)::before { background: linear-gradient(90deg, var(--brand-2), var(--violet)); }
+.card:nth-child(6n+2)::before { background: linear-gradient(90deg, var(--coral), var(--amber)); }
+.card:nth-child(6n+3)::before { background: linear-gradient(90deg, var(--teal), var(--lime)); }
+.card:nth-child(6n+4)::before { background: linear-gradient(90deg, var(--violet), var(--pink)); }
+.card:nth-child(6n+5)::before { background: linear-gradient(90deg, var(--amber), var(--coral)); }
+.card:nth-child(6n+6)::before { background: linear-gradient(90deg, var(--pink), var(--brand-2)); }
+.card:nth-child(6n+1) .card-kicker { color: var(--brand-2); }
+.card:nth-child(6n+2) .card-kicker { color: var(--coral); }
+.card:nth-child(6n+3) .card-kicker { color: var(--teal); }
+.card:nth-child(6n+4) .card-kicker { color: var(--violet); }
+.card:nth-child(6n+5) .card-kicker { color: var(--amber); }
+.card:nth-child(6n+6) .card-kicker { color: var(--pink); }
+
+/* Level cards: tint the whole surface a touch and colour the big number */
+.card.level:nth-child(4n+1) { background: linear-gradient(180deg, var(--brand-soft), var(--surface) 70%); }
+.card.level:nth-child(4n+2) { background: linear-gradient(180deg, var(--coral-soft), var(--surface) 70%); }
+.card.level:nth-child(4n+3) { background: linear-gradient(180deg, var(--teal-soft), var(--surface) 70%); }
+.card.level:nth-child(4n+4) { background: linear-gradient(180deg, var(--violet-soft), var(--surface) 70%); }
+.card.level:nth-child(4n+2) .card-ko { color: var(--coral); }
+.card.level:nth-child(4n+3) .card-ko { color: var(--teal); }
+.card.level:nth-child(4n+4) .card-ko { color: var(--violet); }
+
+/* --- Tool cards on the home page: each a different friendly colour --- */
+.tool-card:nth-child(4n+1) { background: var(--brand-soft); }
+.tool-card:nth-child(4n+2) { background: var(--coral-soft); }
+.tool-card:nth-child(4n+3) { background: var(--teal-soft); }
+.tool-card:nth-child(4n+4) { background: var(--amber-soft); }
+.tool-card .tool-ic {
+  display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px;
+  background: rgba(255,255,255,.6);
+}
+html[data-theme="dark"] .tool-card .tool-ic { background: rgba(255,255,255,.08); }
+.tool-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+
+/* --- Continue card: warm animated left edge --- */
+.continue-card { position: relative; overflow: hidden; }
+.continue-card::after {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: linear-gradient(180deg, var(--ok), var(--teal));
+}
+
+/* --- Primary buttons + quiz progress get a gradient --- */
+.btn-primary { background: linear-gradient(135deg, var(--brand-2), var(--violet)); }
+.btn-primary:hover { background: linear-gradient(135deg, var(--brand), var(--violet)); transform: translateY(-1px); box-shadow: var(--shadow-glow); }
+.btn-primary { transition: transform .12s, box-shadow .12s, background .12s; }
+.quiz-progress span { background: linear-gradient(90deg, var(--brand-2), var(--coral)); }
+.quiz-result .score { background: linear-gradient(135deg, var(--brand-2), var(--coral)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* --- Active lesson tab: gradient underline instead of flat line --- */
+.tabs button.active { border-bottom-color: transparent; position: relative; }
+.tabs button.active::after {
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 3px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--brand-2), var(--coral));
+}
+
+/* --- Flashcard front: richer 3-stop gradient --- */
+.fc-front { background: linear-gradient(135deg, var(--brand-2), var(--violet) 60%, var(--coral)); }
+
+/* =====================================================================
+   ✦ Motion — staggered entrance + smooth feel, with reduced-motion guard
+   ===================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  .hero { animation: liftIn .5s cubic-bezier(.22,.61,.36,1) both; }
+  .grid > .card,
+  .tool-row > .tool-card,
+  .continue-card,
+  .tri, .grammar-card, .culture-block {
+    animation: liftIn .45s cubic-bezier(.22,.61,.36,1) both;
+  }
+  /* stagger the grid cards so they cascade in */
+  .grid > .card:nth-child(1){animation-delay:.02s}
+  .grid > .card:nth-child(2){animation-delay:.06s}
+  .grid > .card:nth-child(3){animation-delay:.10s}
+  .grid > .card:nth-child(4){animation-delay:.14s}
+  .grid > .card:nth-child(5){animation-delay:.18s}
+  .grid > .card:nth-child(6){animation-delay:.22s}
+  .grid > .card:nth-child(7){animation-delay:.26s}
+  .grid > .card:nth-child(8){animation-delay:.30s}
+  .grid > .card:nth-child(n+9){animation-delay:.34s}
+  .tool-row > .tool-card:nth-child(2){animation-delay:.06s}
+  .tool-row > .tool-card:nth-child(3){animation-delay:.12s}
+  .tool-row > .tool-card:nth-child(4){animation-delay:.18s}
+}
+@keyframes liftIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before, .hero::after { animation: none; }
+  * { scroll-behavior: auto; }
 }
