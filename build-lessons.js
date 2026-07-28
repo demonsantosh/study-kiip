@@ -295,10 +295,12 @@ function cleanMarkdown(raw) {
 }
 
 const HEADER_KO = /^(word|korean|한국어|단어|#|영어|뜻|group|verb|tense|form|stem|program|award|title|event|excerpt|column|feeling|condition|항목|문장|root|pattern|grammar|번호|구분|예시|내용)/i;
-// chapter overview / syllabus row labels (구분 column): "과 제목", "어휘 1", "문법 2",
-// "활동 1", "문화와 정보", "단원명", "보기", "연습 1", "질문 2", "정답"… — section
-// headings / worksheet labels, not vocabulary.
-const SECTION_LABEL = /^(과\s*제목|단원명|단원\s*제목|어휘|문법|활동|문화와\s*정보|발음|읽기|쓰기|듣기|말하기|본문|과제|예문|단어장|보기|연습|복습|정답|질문|주제|목표|학습\s*목표)\s*\d*$/;
+// chapter overview / syllabus / worksheet labels ("과 제목", "어휘 1", "문법 2",
+// "활동 1", "문화와 정보", "단원명", "보기", "연습 1", "질문 2", "정답"…).
+// NOTE: several of these (어휘, 문법, 주제, 목표, 질문, 정답…) are also real vocabulary
+// words. So: a NUMBERED form ("어휘 1") is always a label; a BARE form is only a label
+// when the row is not a real definition (English column empty or holding Korean).
+const LABEL_EXACT = /^(과\s*제목|단원명|단원\s*제목|문화와\s*정보|본문|단어장|보기|복습|연습|예문|과제|어휘|문법|활동|발음|읽기|쓰기|듣기|말하기|질문|주제|목표|정답|학습\s*목표)(\s*\d+)?$/;
 // bare grammatical particles / connectors extracted as standalone "words" — never
 // taught as vocabulary on their own. Deliberately conservative: excludes single chars
 // that are also real words (이=tooth, 가, 도=degree, 만=10k, 나=I, 로, 보다=to see…).
@@ -335,7 +337,10 @@ function extractVocab(raw) {
     en = (en || "").trim();
     if (!ko || !hasHangul(ko) || !en) return;
     if (HEADER_KO.test(ko) || META_EN.test(en)) return;
-    if (SECTION_LABEL.test(ko)) return;   // chapter overview/syllabus labels, not vocab
+    if (LABEL_EXACT.test(ko)) {           // section/worksheet label — but keep real vocab
+      if (/\d/.test(ko)) return;                       // numbered ("어휘 1") -> always a label
+      if (!en || /[가-힣]/.test(en)) return;            // bare + no real English def -> label
+    }
     if (BARE_PARTICLE.test(ko)) return;   // bare grammatical particle, not a vocab word
     if (ko.length > 24) return;                 // skip whole-sentence rows
     if (/[.?!。]$/.test(ko)) return;            // skip sentences
