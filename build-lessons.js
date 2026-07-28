@@ -367,6 +367,9 @@ function extractVocab(raw) {
           || t.match(/^(\d{2,3})\s+\S.*한국/)                      // OCR footer "50 …(KIIP) 한국어와 한국문화"
           || t.match(/^\s*\d?\s*과[^\n]*?\s(\d{2,3})\s*$/);        // "N과 … NN"
     if (pm && +pm[1] > 0 && +pm[1] < 300) curPage = pm[1];          // ignore page 0 / out-of-range noise
+    // a "supplementary / 보충 어휘" section is NOT a real textbook page — clear the page so
+    // its words carry no page number (they show under the chapter, not a fabricated page).
+    if (/보충\s*어휘|supplementary\s*vocab/i.test(t)) curPage = null;
 
     // 1) tab-separated table rows
     if (line.indexOf("\t") !== -1) {

@@ -301,3 +301,67 @@ Key contrast to remember:
 ✅ Chapter 15 완료! (Chapter 15 Complete!)
 
 
+
+🔵 보충 어휘 (Supplementary Vocabulary — Law & Order theme)
+
+🔵 어휘 · 법과 규칙 (Law & Rules)
+
+한국어	🇬🇧 English	🇳🇵 Nepali	비슷한 말
+법을 지키다	to obey the law	कानून पालना गर्नु	준법하다, 규칙을 따르다
+규칙을 따르다	to follow rules	नियम पालना गर्नु	규칙을 지키다
+질서를 유지하다	to maintain order	व्यवस्था कायम राख्नु	질서를 지키다
+법을 어기다	to break the law	कानून तोड्नु	위반하다
+규정	regulation	नियमावली	규칙, 규범
+의무	duty, obligation	कर्तव्य	책임, 도리
+허가를 받다	to get permission	अनुमति लिनु	승인을 받다
+금지되다	to be prohibited	निषेध हुनु	못 하게 되다
+신고하다	to report (to authorities)	उजुरी दिनु	알리다, 고발하다
+단속하다	to crack down, enforce	कारबाही गर्नु	규제하다
+준법정신	law-abiding spirit	कानून पालनाको भावना	시민 의식
+공공질서	public order	सार्वजनिक व्यवस्था	사회 질서
+
+🔵 어휘 · 범죄와 처벌 (Crime & Punishment)
+
+한국어	🇬🇧 English	🇳🇵 Nepali	비슷한 말
+죄를 짓다	to commit a crime	अपराध गर्नु	범죄를 저지르다
+벌을 받다	to be punished	सजाय पाउनु	처벌을 받다
+처벌하다	to punish	सजाय दिनु	벌하다
+체포되다	to be arrested	पक्राउ पर्नु	잡히다, 검거되다
+구속되다	to be detained	थुनामा पर्नु	갇히다
+조사하다	to investigate	अनुसन्धान गर्नु	수사하다
+재판을 받다	to stand trial	मुद्दा चल्नु	심판을 받다
+유죄	guilty	दोषी	잘못이 있음
+무죄	innocent (not guilty)	निर्दोष	죄가 없음
+징역	imprisonment	कैद सजाय	감옥살이
+벌금	fine (penalty)	जरिवाना	과태료
+용의자	suspect	शंकास्पद व्यक्ति	피의자
+피해자	victim	पीडित	당한 사람
+가해자	offender	हमलावर	범인
+목격자	witness	प्रत्यक्षदर्शी	증인
+증거	evidence	प्रमाण	근거
+자백하다	to confess	अपराध स्वीकार गर्नु	실토하다
+예방하다	to prevent	रोकथाम गर्नु	방지하다
+
+🔵 어휘 · 생활 법률 (Everyday Law)
+
+한국어	🇬🇧 English	🇳🇵 Nepali	비슷한 말
+계약서	contract (document)	सम्झौतापत्र	약정서
+서명하다	to sign	हस्ताक्षर गर्नु	사인하다
+권리를 보호하다	to protect rights	अधिकार संरक्षण गर्नु	권익을 지키다
+법률 상담	legal consultation	कानुनी परामर्श	법률 자문
+법원	court (of law)	अदालत	재판소
+경찰서	police station	प्रहरी कार्यालय	파출소
+위반	violation	उल्लङ्घन	어김
+벌칙	penalty (rule)	दण्ड	제재
+안전	safety	सुरक्षा	보안
+위험하다	dangerous	खतरनाक	위태롭다
+해결하다	to resolve	समाधान गर्नु	처리하다
+
+🔵 문법 (Grammar patterns of Ch.15)
+
+한국어	🇬🇧 English	🇳🇵 Nepali	비슷한 말
+동-다시피	as you know/see/hear	तपाईंलाई थाहा भएझैं	알다시피, 보다시피
+동-는 법이다	it is natural/bound to	स्वाभाविक रूपमा हुने कुरा हो	당연히 그렇다
+아무리 -아/어도	no matter how much	जतिसुकै गरे पनि	비록 -아도
+
+💡 보충 어휘 정리 완료 (Supplementary vocabulary section)
