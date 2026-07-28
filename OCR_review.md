@@ -748,3 +748,14 @@ OCR-garbled fragments surfaced by nextwords.js — skipped for translation, sour
 - `[들다` — stray bracket fragment
 - `부모의 책에 걸 것입라` — corrupted ("책임일 것입니다" garbled)
 - `그간직하다` — glued fragment ("그"+"간직하다")
+
+## 2026-07-28 (scheduled batch — clean vocab found deeper in backlog)
+Completed the missing `ne` for 20 genuinely-clean vocabulary/collocation entries that
+earlier runs missed (they only appear past nextwords.js's top-20 window, which is
+dominated by k3 garbage). These already had the other 10 languages; now 11/11:
+정신이 없다, 분주하다, 지정되다, 밀접하다, 과도하다, 손쉽다, 단절되다, 악용되다, 떨어지다,
+넘어지다, 손을 데다, 깁스를 하다, 부끄럽다, 정신없다, 얼굴에 뭐가 나다,
+검색창에 검색어를 입력하다, 개인 정보를 입력하다, 개인 정보 이용에 동의하다, 이르다, 지나치다.
+Reconfirmed SKIPPED (still needs source re-OCR, not invented): the k4-ch9 fire/theft
+news passage `불은 많은 일주 사무실 직원들이 …` (일부→일주, 원룸→원륜/원률, 훔쳐→흡처,
+혐의→협의) — meaning-critical OCR errors; left with only its pre-existing partial `ne`.
