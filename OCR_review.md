@@ -786,3 +786,21 @@ hidden chapters". nextwords.js still reports 99 missing-any, ratio-filter yields
 option-lists (0/○/@ markers, glued digits, scrambled spacing, non-words like 정니파다,
 씩우다, 그간직하다). No legitimately-clean sentence remains. Nothing invented; backlog
 awaits a human source-text (re-OCR) pass. No content commit.
+
+## Scheduled run 2026-07-28 (4th pass) — re-confirmed, no new translations, no commit
+staging.json `hidden` empty; reveal-check.js → "no hidden chapters". nextwords.js still
+reports 99 missing-any; ratio filter yields 79 "clean" candidates but manual review
+finds 100% OCR-garbled (non-words 정니파다/씩우다/그간직하다, address fragment
+`대기은적 정상부도 교별시 내동 100번지`, exam option-lists w/ stray parens & digits).
+No legitimately-clean sentence remains. Nothing invented; backlog awaits a human
+source-text (re-OCR) pass. No content commit this run.
+
+## Scheduled run 2026-07-29 — re-confirmed, no new translations
+staging.json `hidden` empty; reveal-check.js → "no hidden chapters". nextwords.js
+still reports 99 missing-any; ratio filter yields 79 "clean" candidates but manual
+review finds 100% OCR-garbled (non-words 정니파다/씩우다/그간직하다, letterhead scrap
+`대기은적 정상부도 교별시 내동 100번지`, exam option-lists w/ stray parens/digits/○/@).
+Only borderline item is the k4-ch9 Cheongju fire/theft news passage, already flagged
+above with meaning-critical OCR errors (일부→일주, 원룸→원륜/원률, 훔쳐→흡처, 혐의→협의)
+and a mismatched pre-existing `ne` — LEFT AS-IS, not invented. Backlog awaits a human
+source-text (re-OCR) pass. Committing this note only; no translation content changed.
