@@ -804,3 +804,10 @@ Only borderline item is the k4-ch9 Cheongju fire/theft news passage, already fla
 above with meaning-critical OCR errors (일부→일주, 원룸→원륜/원률, 훔쳐→흡처, 혐의→협의)
 and a mismatched pre-existing `ne` — LEFT AS-IS, not invented. Backlog awaits a human
 source-text (re-OCR) pass. Committing this note only; no translation content changed.
+
+## 2026-07-29 scheduled batch — items skipped as OCR-corrupt (garbled() missed)
+No hidden chapters remain. Translated 18 clean items (Nepali; +Tamil on 2). Skipped
+for human re-OCR (passed garbled() but clearly corrupt):
+- `2019학년도 대학수학능력시험 인천광역시교육청(25지구) 제12시험장 (인천여자고등학교)` — exam-venue letterhead fragment, not learning content.
+- `의식 날에는 머리를 깎고 어깨에 신성한 실(자느이)을 걸어 줍니다.` — coherent sentence but garbled parenthetical (자느이) (likely 자네우/janeu sacred thread); needs source fix before translating.
+- k4-ch9 Cheongju fire/theft news passage (needs bn,ru,he,ms,vi,id,si,pt,fr,ta) — already flagged above; meaning-critical OCR errors (불은 많은 일주.../흡처 온 협의) — left as-is.
