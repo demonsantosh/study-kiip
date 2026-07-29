@@ -848,3 +848,15 @@ and exam option-lists riddled with ○/@/stray digits+parens (e.g. `아나이스
 the already-fully-translated `경찰은 지난 16일…` key — its lone stray `ne` value does
 not even match its own text — LEFT AS-IS, not extended. No translation content changed
 this run. Backlog still awaits a human source-text (re-OCR) pass.
+
+## Scheduled run 2026-07-29 (further pass) — re-confirmed, nothing translatable
+staging.json `hidden` empty; `reveal-check.js --dry` → "no hidden chapters".
+`nextwords.js` still reports 99 missing-any; the ratio filter passes 79 "clean"
+candidates, but a full independent manual review again finds 100% OCR-corrupt — no
+genuinely clean, translatable item remains. Same categories as prior passes: non-words
+(정니파다, 씩우다, 그간직하다, 디어리다, 대꼽다, 그모시다, 청기다, 단지다), scrambled
+fragments/merges (이유를 나타널팩 사, 부모의 책에 걸 것입라, 강초하여 확인하는 못을 나다넬),
+letterhead/address scraps (대기은적 정상부도 교별시 내동 100번지), and exam option-lists
+riddled with ○/@/stray digits+parens (e.g. `아나이스 씨가 제일 ( 0좋은`). k4-ch9 Cheongju
+fire/theft news passage remains a mangled duplicate — LEFT AS-IS, not extended. No
+translation content changed this run; backlog still awaits a human source-text (re-OCR) pass.
