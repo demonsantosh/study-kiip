@@ -835,3 +835,16 @@ fragments (이유를 나타널팩 사, 부모의 책에 걸 것입라, 강초하
 박수 로모셔 보겠습니다 [corrupt dup of clean 박수로 모셔 보겠습니다]), address/letterhead
 scraps (대기은적 정상부도 교별시 내동 100번지, 균우지 금 여 시 (1,000년 북리우성), and
 exam option-lists riddled with ○/@/stray digits+parens (e.g. 아나이스 씨가 제일 ( 0좋은).
+
+## Scheduled run 2026-07-29 (late pass) — re-confirmed, no translatable items
+staging.json `hidden` empty; `reveal-check.js --dry` → "no hidden chapters".
+`nextwords.js 99 0` still reports 99 missing-any; ratio filter yields 79 "clean"
+candidates but a full manual pass again finds 100% OCR-corrupt — no genuinely clean,
+translatable content remains. Categories (all previously logged): non-words
+(정니파다, 씩우다, 그간직하다, 디어리다, 대꼽다, 그모시다, 청기다, 단지다), scrambled
+fragments/merges, letterhead/address scraps (대기은적 정상부도 교별시 내동 100번지),
+and exam option-lists riddled with ○/@/stray digits+parens (e.g. `아나이스 씨가 제일
+( 0좋은`). The k4-ch9 Cheongju fire/theft news passage remains a mangled duplicate of
+the already-fully-translated `경찰은 지난 16일…` key — its lone stray `ne` value does
+not even match its own text — LEFT AS-IS, not extended. No translation content changed
+this run. Backlog still awaits a human source-text (re-OCR) pass.
