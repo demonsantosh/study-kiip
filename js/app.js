@@ -489,16 +489,27 @@
     const md = window.LESSON_MD && window.LESSON_MD[id];
     if (!md) return null;
     const lines = md.split("\n");
+    // START: prefer the "🔵 문화와 정보" content header; else any culture header line.
     let start = -1;
     for (let i = 0; i < lines.length; i++) {
+      if (/^🔵\s*문화와\s*정보/.test(lines[i].trim())) { start = i; break; }
+    }
+    if (start < 0) for (let i = 0; i < lines.length; i++) {
       if (/(문화와\s*정보|Culture\s*&\s*Information|Culture and Information)/i.test(lines[i])) { start = i; break; }
     }
     if (start < 0) return null;
+    // END: next page/section boundary or word-analysis block — NOT intra-culture 🔵
+    // sub-headers (본문/질문 etc.), so the whole reading passage is kept.
+    const endRe = /^(📖\s*KIIP|Page\s*\d+\s*[—\-–:]|배운\s*어휘|핵심\s*정리|🎉|✅\s*(Chapter|Complete|완료))/i;
+    const analysisRe = /(질문 번역|단어 의미 분석|문법 예문 해석|어휘 의미 분석|문장별 (?:번역|분석))/;
     let end = lines.length;
     for (let i = start + 1; i < lines.length; i++) {
-      if (/^(📖\s*KIIP|Page\s*\d+\s*[—\-–:]|배운 어휘|🎉|🔵)/i.test(lines[i].trim())) { end = i; break; }
+      const t = lines[i].trim();
+      if (endRe.test(t) || analysisRe.test(t)) { end = i; break; }
     }
-    return lines.slice(start, end).join("\n").trim();
+    let out = lines.slice(start, end).join("\n").trim();
+    if (out.length > 4000) out = out.slice(0, 4000).trim();   // safety cap (culture readings are short)
+    return out || null;
   }
 
 
