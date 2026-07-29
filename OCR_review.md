@@ -822,3 +822,16 @@ Only borderline item remains the k4-ch9 Cheongju fire/theft news passage — alr
 flagged above with meaning-critical OCR errors (일부→일주, 원룸→원륜/원률, 훔쳐→흡처,
 혐의→협의) — LEFT AS-IS, not invented. Backlog still awaits a human source-text
 (re-OCR) pass. No translation content changed this run.
+
+## 2026-07-29 scheduled batch — translated 22 clean items
+No hidden chapters (staging.json `hidden` empty). Translated 22 legitimately-clean
+items into all missing languages: 18 full sentences/headings (k4-ch8 internet-use
+paragraph, k4-ch16 model-interview dialogue) got all 11 languages; 4 items already
+having 9 langs (k3-ch16 weather Qs, k4-ch1 "먹을수록" proverb) got the missing ne+ta.
+206 new translations total.
+garbled() again let through OCR junk that was SKIPPED (needs human re-OCR): non-words
+(정니파다, 씩우다, 그간직하다, 디어리다, 대꼽다, 그모시다, 청기다, 단지다), scrambled
+fragments (이유를 나타널팩 사, 부모의 책에 걸 것입라, 강초하여 확인하는 못을 나다넬,
+박수 로모셔 보겠습니다 [corrupt dup of clean 박수로 모셔 보겠습니다]), address/letterhead
+scraps (대기은적 정상부도 교별시 내동 100번지, 균우지 금 여 시 (1,000년 북리우성), and
+exam option-lists riddled with ○/@/stray digits+parens (e.g. 아나이스 씨가 제일 ( 0좋은).
