@@ -65,6 +65,22 @@
       const m = String(v[f]).match(/\s*\(?\s*(?:Similar|유사어)\s*[:：]\s*([^]*)$/i);
       if (m) { if (!v.similar) v.similar = m[1].replace(/\)\s*$/, "").trim(); v[f] = String(v[f]).slice(0, m.index).trim(); }
     });
+    // 1b) Scrambled source columns: the real Nepali landed in `similar` (Devanagari),
+    //     the English meaning in `ne`, and `en` holds a romanization ("yeoreobun") or a
+    //     Korean/stat artifact. Rescue them: en←English, ne←Nepali, rom←romanization.
+    if (/[ऀ-ॿ]/.test(v.similar || "")) {
+      const neIsEng = v.ne && /[A-Za-z]/.test(v.ne) && !/[ऀ-ॿ]/.test(v.ne);
+      if (neIsEng) {
+        // a purely-lowercase Latin `en` (no Korean) is a Korean romanization → keep as pronunciation
+        if (v.en && /^[a-z][a-z' -]*$/.test(v.en) && !v.rom) v.rom = v.en;
+        v.en = v.ne;          // real English meaning
+        v.ne = v.similar;     // real Nepali translation
+        v.similar = "";
+      } else if (!/[ऀ-ॿ]/.test(v.ne || "")) {
+        v.ne = v.similar;     // ne wasn't Nepali → move the Nepali in
+        v.similar = "";
+      }
+    }
     // 2) A Korean "similar" word mistakenly stored in the Nepali (ne) slot → move to similar.
     if (v.ne && /[가-힣]/.test(v.ne) && !/[ऀ-ॿ]/.test(v.ne)) {
       if (!v.similar) v.similar = v.ne;
@@ -188,16 +204,25 @@
   }
   // the extra-language translation for a vocab item. Shows the SELECTED language
   // when we have it; otherwise English (universal) — never an unrelated language.
+  // true when a string actually contains Devanagari (real Nepali), not an
+  // English gloss or romanized pronunciation accidentally stored in `ne`.
+  function isDevanagari(s) { return /[ऀ-ॿ]/.test(s || ""); }
   function extraOf(v) {
     const c = curLang();
-    if (c === "ne") return v.ne || v.en || "";
     const d = window.I18N && window.I18N.data && window.I18N.data[v.ko];
+    if (c === "ne") {
+      // Prefer real Nepali: inline field if it's Devanagari, else the
+      // translation store, else fall back to the English gloss.
+      if (isDevanagari(v.ne)) return v.ne;
+      if (d && isDevanagari(d.ne)) return d.ne;
+      return v.ne || v.en || "";
+    }
     return (d && d[c]) || v.en || "";
   }
   function extraIsFallback(v) {
     const c = curLang();
-    if (c === "ne") return !v.ne;
     const d = window.I18N && window.I18N.data && window.I18N.data[v.ko];
+    if (c === "ne") return !(isDevanagari(v.ne) || (d && isDevanagari(d.ne)));
     return !(d && d[c]);
   }
   // selected-language line for grammar / culture / dialogue items (which only have
@@ -237,6 +262,8 @@
     if (VMAP) return VMAP;
     VMAP = {};
     allVocab().forEach((v) => { if (!VMAP[v.ko]) VMAP[v.ko] = { en: v.en, ne: v.ne, rom: v.rom }; });
+    // supplemental instruction/grammar tokens (breakdown segmenter only, not the Word lists)
+    (window.EXTRA_DICT || []).forEach((v) => { if (v && v.ko && !VMAP[v.ko]) VMAP[v.ko] = { en: v.en, ne: v.ne, rom: v.rom || "" }; });
     return VMAP;
   }
   // strip leading labels ("Sentence 1:", "Title:", "1)", ✅ …) → bare Korean sentence
@@ -287,6 +314,48 @@
     return SENT;
   }
 
+  // Curated per-sentence word breakdown, parsed from the "단어 | English | Nepali"
+  // tables the lesson notes bake under each sentence. We hide those tables inline
+  // (stripInlineBreakdown) but keep their exact word rows here so a click always
+  // shows the hand-made breakdown — no sentence loses its breakdown.
+  let CBD = null;
+  function lessonBreakdowns() {
+    if (CBD) return CBD; CBD = {};
+    const MD = window.LESSON_MD || {};
+    Object.keys(MD).forEach((id) => {
+      if (id.indexOf("@") !== -1) return; // base files only
+      const ls = MD[id].split(/\r?\n/);
+      for (let i = 0; i < ls.length; i++) {
+        if (!/^단어(\t|\s*$)/.test(ls[i]) && !/^\s*단어\tEnglish/i.test(ls[i])) continue;
+        // header columns → find English / Nepali indices
+        const cols = ls[i].split("\t").map((s) => s.trim());
+        let iEn = cols.findIndex((c) => /^(english|영어|meaning|뜻|en)$/i.test(c));
+        let iNe = cols.findIndex((c) => /^(nepali|네팔어|ne|np)$/i.test(c));
+        if (iEn < 0) iEn = 1; if (iNe < 0) iNe = 2;
+        // nearest preceding Korean sentence line (skip EN:/NE: and tables)
+        let j = i - 1;
+        while (j >= 0) {
+          const t = ls[j].trim();
+          if (ls[j].indexOf("\t") === -1 && /[가-힣]/.test(t) && !/^(English|Nepali|EN|NE|NP)\s*[:：]/i.test(t)) break;
+          j--;
+        }
+        if (j < 0) { continue; }
+        const key = normK(ls[j]);
+        // collect the following tab rows as {ko,en,ne}
+        const words = [];
+        let r = i + 1;
+        while (r < ls.length && ls[r].indexOf("\t") !== -1) {
+          const c = ls[r].split("\t").map((s) => s.trim());
+          const ko = c[0];
+          if (ko && /[가-힣]/.test(ko)) words.push({ ko: ko, en: c[iEn] || "", ne: c[iNe] || "" });
+          r++;
+        }
+        if (key && words.length && !CBD[key]) CBD[key] = words;
+        i = r - 1;
+      }
+    });
+    return CBD;
+  }
   // ----- dictionary-driven Korean segmenter (greedy longest-match) -----
   // The mapping "database" is the merged vocab dictionary (vmap). We tokenize a
   // sentence left→right, taking the longest dictionary entry at each position,
@@ -317,13 +386,30 @@
     }
     return res;
   }
+  // per-word selected-language meaning, preferring real Devanagari for Nepali and
+  // the translation store for every other language, with an English fallback.
+  function wordEx(ko, en, ne, code) {
+    const st = window.I18N && window.I18N.data && window.I18N.data[ko];
+    if (code === "ne") return isDevanagari(ne) ? ne : (st && isDevanagari(st.ne) ? st.ne : (ne || en || ""));
+    return (st && st[code]) || en || "";
+  }
   function sentenceTerms(sentence) {
     const map = vmap(), code = curLang(), seen = {}, out = [];
+    // 1) exact curated breakdown from the lesson's own 단어 table (highest quality)
+    const cur = lessonBreakdowns()[normK(sentence)];
+    if (cur && cur.length) {
+      cur.forEach((w) => {
+        if (seen[w.ko]) return; seen[w.ko] = 1;
+        const mm = map[w.ko] || {};
+        out.push({ ko: w.ko, rom: mm.rom || "", en: w.en || mm.en || "", ex: wordEx(w.ko, w.en || mm.en || "", w.ne, code) });
+      });
+      return out;
+    }
+    // 2) offline dictionary segmentation fallback
     segment(sentence).forEach((ko) => {
       if (seen[ko]) return; seen[ko] = 1;
       const mm = map[ko] || {};
-      const ex = code === "ne" ? (mm.ne || mm.en || "") : ((window.I18N && window.I18N.data[ko] && window.I18N.data[ko][code]) || mm.en || "");
-      out.push({ ko: ko, rom: mm.rom, en: mm.en, ex: ex });
+      out.push({ ko: ko, rom: mm.rom, en: mm.en, ex: wordEx(ko, mm.en, mm.ne, code) });
     });
     return out;
   }
@@ -372,6 +458,21 @@
     const box = el("div", "sentence-breakdown");
     box.innerHTML = parts.map((s) => '<div class="sb-block">' + breakdownBlock(s) + '</div>').join("");
     elm.parentNode.insertBefore(box, elm.nextSibling);
+  }
+  // Remove the always-visible per-sentence WORD-breakdown tables baked into the
+  // lesson notes (header "단어 | English | Nepali | …"). The same breakdown is
+  // available on demand by clicking the sentence, so showing it inline as well is
+  // a duplicate. The Korean sentence and its English/Nepali translation lines stay.
+  function stripInlineBreakdown(root) {
+    if (!root) return;
+    root.querySelectorAll("table.lesson-table").forEach((tb) => {
+      const th = tb.querySelector("thead th");
+      const first = th ? th.textContent.trim() : "";
+      if (/^단어$/.test(first) || /^word$/i.test(first)) {
+        const wrap = tb.closest(".lesson-table-wrap") || tb;
+        wrap.remove();
+      }
+    });
   }
   function makeKoClickable(root) {
     root.querySelectorAll(".lp.ko, .ko, .l-label, .l-answer").forEach((e2) => {
@@ -866,6 +967,7 @@
         const doc = el("div", "lesson-doc"); doc.style.marginTop = "12px";
         try { doc.innerHTML = window.renderLesson(it.cmd); } catch (e) { doc.textContent = it.cmd; }
         if (!(window.LESSON_MD && window.LESSON_MD[it.ch.id + "@" + curLang()])) { localizeLesson(doc); annotatePassage(doc); annotateGloss(doc); }
+        stripInlineBreakdown(doc);
         makeKoClickable(doc);
         block.appendChild(doc);
       }
@@ -995,6 +1097,7 @@
     // (variant) are already in the right language, so leave them.
     if (!variant) annotatePassage(wrap);
     if (!variant) annotateGloss(wrap);
+    stripInlineBreakdown(wrap);
     makeKoClickable(wrap);
     const tip = el("div", "click-tip", t("tip_click"));
     wrap.insertBefore(tip, wrap.firstChild);
