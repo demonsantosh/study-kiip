@@ -502,6 +502,21 @@
       seen[key] = 1;
     });
   }
+  // Remove only unambiguous OCR garbage that stands alone as its own line: pure
+  // enumerators ("1번", "3)", "4)") and lines carrying foreign (Arabic-Indic) digits
+  // like "٩٣". Meaningful labels (예문/보기/답안) are kept and formatted as headings
+  // by the renderer; real vocabulary (접속하다) and names (안젤라) never match here.
+  const ARABIC_DIGIT = /[٠-٩۰-۹]/;
+  function stripNoiseFragments(root) {
+    if (!root) return;
+    root.querySelectorAll("p.lp.ko, p.lp, li").forEach((e) => {
+      const t = (e.textContent || "").trim();
+      if (!t) return;
+      if (/^[\s\d]+[).번:：]*$/.test(t)) { e.remove(); return; }        // pure number/enumerator
+      if (/^\d+\s*[번)\.]\s*(\d+\s*[번)\.]\s*)*$/.test(t)) { e.remove(); return; } // "3) 4)"
+      if (ARABIC_DIGIT.test(t)) { e.remove(); return; }                 // Arabic-Indic digit garble
+    });
+  }
   function makeKoClickable(root) {
     const mark = (e2) => {
       if (e2.classList.contains("ko-click")) return;
@@ -1014,6 +1029,7 @@
         try { doc.innerHTML = window.renderLesson(it.cmd); } catch (e) { doc.textContent = it.cmd; }
         if (!(window.LESSON_MD && window.LESSON_MD[it.ch.id + "@" + curLang()])) { localizeLesson(doc); annotatePassage(doc); annotateGloss(doc); }
         stripInlineBreakdown(doc);
+        stripNoiseFragments(doc);
         dedupeSentences(doc);
         makeKoClickable(doc);
         block.appendChild(doc);
@@ -1145,6 +1161,7 @@
     if (!variant) annotatePassage(wrap);
     if (!variant) annotateGloss(wrap);
     stripInlineBreakdown(wrap);
+    stripNoiseFragments(wrap);
     dedupeSentences(wrap);
     makeKoClickable(wrap);
     const tip = el("div", "click-tip", t("tip_click"));
