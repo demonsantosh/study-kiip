@@ -1284,8 +1284,24 @@
   }
 
   /* ---------- flashcards ---------- */
+  // "Very basic" / non-vocabulary entries we don't want cluttering a chapter's
+  // flashcard deck: numeric noise (headers/counters like "제1과", "방법 1"),
+  // Latin-mixed labels/codes ("현실형 (R)", "SNS로"), bare grammar particles,
+  // and trivial single-syllable function words. Real words (물, 밥, 책 …) and
+  // grammar patterns (-아지다, -는 대신에) are kept.
+  const FC_PARTICLES = new Set("은 는 이 가 을 를 와 과 의 에 에서 도 만 로 으로 께 에게 한테 부터 까지 이나 든지 라도 조차 마저 밖에 요 및 좀 등".split(" "));
+  const FC_FUNC1 = /^(왜|잘|또|네|응|음|어|저|이|그|더|덜|안|못|곧|제|내|딱|꽤)$/;
+  function isBasicFC(v) {
+    const k = (v && v.ko ? String(v.ko) : "").trim();
+    if (!k) return true;
+    if (/\d/.test(k)) return true;          // numeric noise / counters / headers
+    if (/[A-Za-z]/.test(k)) return true;    // Latin-mixed labels / codes
+    if (FC_PARTICLES.has(k)) return true;   // bare particle
+    if (FC_FUNC1.test(k)) return true;      // trivial one-syllable function word
+    return false;
+  }
   function panelFlashcards(panel, ch) {
-    const cards = vocabOf(ch).slice();
+    const cards = vocabOf(ch).filter((v) => !isBasicFC(v));
     if (!cards.length) return panel.appendChild(emptyState("🃏", "No flashcards — add vocabulary first."));
     let i = 0;
     const stage = el("div", "fc-stage");
