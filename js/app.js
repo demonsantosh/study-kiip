@@ -475,8 +475,14 @@
     });
   }
   function makeKoClickable(root) {
-    root.querySelectorAll(".lp.ko, .ko, .l-label, .l-answer").forEach((e2) => {
-      if (/[가-힣]/.test(e2.textContent) && e2.textContent.trim().length > 3) {
+    // Any block of Korean text should open a word breakdown on click — not just
+    // sentence paragraphs, but headings, list items and definition/note lines too.
+    const sel = ".lp.ko, .ko, .l-label, .l-answer, .lh, .l-def, .l-note, li";
+    root.querySelectorAll(sel).forEach((e2) => {
+      if (e2.classList.contains("ko-click")) return;
+      if (e2.querySelector(sel)) return; // skip containers that hold another clickable target
+      const txt = (e2.textContent || "").trim();
+      if (/[가-힣]/.test(txt) && txt.length > 3) {
         e2.classList.add("ko-click");
         e2.title = "Click for translation & word meanings";
         e2.onclick = () => toggleBreakdown(e2);
