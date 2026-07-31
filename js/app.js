@@ -465,6 +465,15 @@
   // a duplicate. The Korean sentence and its English/Nepali translation lines stay.
   function stripInlineBreakdown(root) {
     if (!root) return;
+    // (a) inline "Word meanings:" text blocks: the label + its "Korean — meaning"
+    // definition lines. Word meanings are available on click, so drop them inline.
+    root.querySelectorAll(".l-def").forEach((e) => e.remove());
+    root.querySelectorAll("p, .lp, h4, .lh, div").forEach((e) => {
+      if (e.querySelector && e.querySelector("*")) return; // leaf text only
+      const t = (e.textContent || "").trim();
+      if (/^(word\s*meanings?|단어\s*의미|vocabulary|word\s*list)\s*[:：]?$/i.test(t)) e.remove();
+    });
+    // (b) baked "단어 | English | Nepali" breakdown tables
     root.querySelectorAll("table.lesson-table").forEach((tb) => {
       const th = tb.querySelector("thead th");
       const first = th ? th.textContent.trim() : "";
