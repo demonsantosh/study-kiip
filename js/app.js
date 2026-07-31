@@ -1343,17 +1343,41 @@
   }
 
   /* ---------- quiz ---------- */
+  const QUIZ_LEN = 20; // target number of questions per chapter
   function buildQuiz(ch) {
-    if (ch.quiz && ch.quiz.length) return ch.quiz.slice();
-    // auto-generate from vocab: meaning -> pick Korean
-    const vocab = vocabOf(ch).filter((v) => v.en);
-    if (vocab.length < 4) return [];
-    const pool = vocab.map((v) => v.ko);
-    return vocab.slice(0, 8).map((v) => {
-      const wrong = pool.filter((k) => k !== v.ko).sort(() => Math.random() - 0.5).slice(0, 3);
-      const opts = [v.ko, ...wrong].sort(() => Math.random() - 0.5);
-      return { q: 'Which word means "' + v.en + '"?', options: opts, answer: opts.indexOf(v.ko) };
+    // keep any curated questions first, then top up with auto-generated ones
+    const curated = (ch.quiz && ch.quiz.length) ? ch.quiz.slice() : [];
+    // clean vocab pool: real words with an English meaning, no basic/junk entries
+    const seen = {}, uniq = [];
+    vocabOf(ch).forEach((v) => {
+      const k = (v && v.ko ? String(v.ko).trim() : "");
+      if (!v.en || !/[가-힣]/.test(k) || k.length > 20 || isBasicFC(v) || seen[k]) return;
+      seen[k] = 1; uniq.push(v);
     });
+    if (uniq.length < 4) return curated;
+    const koPool = [...new Set(uniq.map((v) => v.ko))];
+    const enPool = [...new Set(uniq.map((v) => v.en))];
+    const pick = (pool, exclude, n) => {
+      const out = [];
+      for (const x of pool.slice().sort(() => Math.random() - 0.5)) {
+        if (x !== exclude && !out.includes(x)) out.push(x);
+        if (out.length >= n) break;
+      }
+      return out;
+    };
+    const need = Math.max(QUIZ_LEN, curated.length) - curated.length;
+    const chosen = uniq.slice().sort(() => Math.random() - 0.5).slice(0, need);
+    const generated = chosen.map((v, i) => {
+      if (i % 2 === 0 || enPool.length < 4) {
+        // meaning → pick the Korean word
+        const opts = [v.ko, ...pick(koPool, v.ko, 3)].sort(() => Math.random() - 0.5);
+        return { q: 'Which word means "' + v.en + '"?', options: opts, answer: opts.indexOf(v.ko) };
+      }
+      // Korean → pick the meaning
+      const opts = [v.en, ...pick(enPool, v.en, 3)].sort(() => Math.random() - 0.5);
+      return { q: 'What does "' + v.ko + '" mean?', options: opts, answer: opts.indexOf(v.en) };
+    });
+    return curated.concat(generated);
   }
 
   function panelQuiz(panel, ch) {
