@@ -145,7 +145,7 @@
         flushPara(); html += '<h4 class="lh lh-sub">' + inline(t) + "</h4>"; i++; continue;
       }
       // standalone section labels (incl. common OCR garbles) → clean sub-heading
-      var LABELMAP = { "예물": "예문", "들기": "듣기", "단어징": "단어장", "발믐": "발음" };
+      var LABELMAP = { "예물": "예문", "예분": "예문", "들기": "듣기", "단어징": "단어장", "단여장": "단어장", "단어정": "단어장", "발믐": "발음", "말하다기": "말하기" };
       var tl = LABELMAP[t] || t;
       if (LABELMAP[t] || /^(예문|보기|질문|답안|정답|문제|답)\s*[:：]?$/.test(t)) {
         flushPara(); html += '<h4 class="lh lh-sub">' + inline(tl.replace(/[:：]\s*$/, "")) + "</h4>"; i++; continue;
