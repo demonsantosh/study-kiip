@@ -66,6 +66,28 @@
     return parts.length > 1 ? parts.map((p) => p.trim()).filter(Boolean) : [line];
   }
 
+  // Split a Korean line that has several sentences/items glued together with stray
+  // separators (bullets, asterisks, misplaced periods, stray tab-"t") into clean
+  // individual sentences. Clean lines are returned unchanged (single element).
+  function splitSentences(t) {
+    const B = String.fromCharCode(1);
+    let s = " " + String(t) + " ";
+    s = s.replace(/\s*[\u2022\u00b7]\s*/g, B);        // bullet separators
+    s = s.replace(/\s*\*+\s*/g, B);                    // asterisk bullets
+    s = s.replace(/([.?!\u3002\uff01\uff1f\u2026])\s+/g, "$1" + B); // after sentence punctuation
+    s = s.replace(/\s+\.(?=\s*[\uac00-\ud7a3])/g, B); // stray leading period before Korean
+    return s.split(B)
+      .map(function (x) {
+        return x
+          .replace(/^[\s.\-\u2022\u00b7*>]+/, "")      // strip leading junk
+          .replace(/[\s.\-\u2022\u00b7*>]+$/, "")      // strip trailing junk
+          .replace(/(^|\s)t(?=\s|$)/g, " ")             // drop stray standalone "t"
+          .replace(/\s+/g, " ")
+          .trim();
+      })
+      .filter(function (x) { return /[\uac00-\ud7a3]/.test(x) && x.length > 1; });
+  }
+
   window.renderLesson = function (md) {
     if (!md) return '<div class="empty-state"><div class="es-emoji">📖</div><p>No lesson text yet.</p></div>';
     const lines = md.split(/\r?\n/).flatMap(splitGlossLine);
@@ -155,7 +177,15 @@
           items.push(lines[i].replace(/^(\s*[-•]\s+|\s*\d+\)\s+)/, ""));
           i++;
         }
-        html += '<ul class="l-list">' + items.map((it) => "<li>" + inline(it) + "</li>").join("") + "</ul>";
+        html += '<ul class="l-list">' + items.map((it) => {
+          // a Korean list item that glues several sentences together is split so each
+          // sentence is its own bullet (and its own clickable unit); non-Korean items stay.
+          if (hangulHeavy(it)) {
+            const parts = splitSentences(it);
+            if (parts.length) return parts.map((p) => "<li>" + inline(p) + "</li>").join("");
+          }
+          return "<li>" + inline(it) + "</li>";
+        }).join("") + "</ul>";
         continue;
       }
 
@@ -167,7 +197,7 @@
         flushPara();
         // split the line into individual sentences so each becomes its own clickable
         // unit and gets its own sentence-level translation (not one merged word-by-word).
-        const sents = t.split(/(?<=[.?!。！？…])\s+/).map((s) => s.trim()).filter(Boolean);
+        const sents = splitSentences(t);
         (sents.length ? sents : [t]).forEach((s) => { html += '<p class="lp ko">' + inline(s) + "</p>"; });
         i++; continue;
       }

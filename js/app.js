@@ -494,15 +494,16 @@
       const t = (e2.textContent || "").trim();
       const hang = (t.match(/[가-힣]/g) || []).length;
       if (hang < 8) return; // keep short headings/labels, not "sentences"
-      const key = t.replace(/\s+/g, "").replace(/[.?!。…·,，'"“”()（）\[\]~]/g, "");
+      // strip leading enumerators (①②③, "1)", "2.") so a numbered copy and a bare
+      // copy of the same sentence are treated as duplicates
+      const key = t.replace(/^[\s.\-•·*()\[\]0-9①-⑳]+/, "")
+        .replace(/\s+/g, "").replace(/[.?!。…·,，'"“”()（）\[\]~]/g, "");
       if (seen[key]) { e2.remove(); return; }
       seen[key] = 1;
     });
   }
   function makeKoClickable(root) {
-    // Only full sentence lines open a word breakdown on click — not headings,
-    // list items or definition lines.
-    root.querySelectorAll(".lp.ko, .ko, .l-label, .l-answer").forEach((e2) => {
+    const mark = (e2) => {
       if (e2.classList.contains("ko-click")) return;
       const txt = (e2.textContent || "").trim();
       if (/[가-힣]/.test(txt) && txt.length > 3) {
@@ -510,6 +511,16 @@
         e2.title = "Click for translation & word meanings";
         e2.onclick = () => toggleBreakdown(e2);
       }
+    };
+    // sentence paragraphs and answer/label lines are always clickable
+    root.querySelectorAll(".lp.ko, .ko, .l-label, .l-answer").forEach(mark);
+    // list items only when they are a full sentence (end in a verb ending or carry
+    // sentence punctuation) — not short titles/labels like "한국생활적응시기 회고하기"
+    const SENT_END = /(요|죠|다|까|네요|군요|습니다|십시오|세요|어요|아요|여요|았어요|었어요|겠어요|이에요|예요|잖아요|거든요|는데요)$/;
+    root.querySelectorAll("li").forEach((e2) => {
+      const t = (e2.textContent || "").trim();
+      const core = t.replace(/["'”’)\]\s.?!,…]+$/, "");
+      if (/[.?!。！？]/.test(t) || SENT_END.test(core)) mark(e2);
     });
   }
   // selected-language meaning for a whole Korean sentence: exact stored
