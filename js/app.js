@@ -474,6 +474,22 @@
       }
     });
   }
+  // Remove repeated sentences within one lesson (the source notes sometimes include
+  // the same dialogue line / reading passage / question more than once). We drop the
+  // later duplicates of sentence-length Korean lines, but keep short section
+  // headings/labels (which legitimately repeat, e.g. "어휘", "문법").
+  function dedupeSentences(root) {
+    if (!root) return;
+    const seen = {};
+    root.querySelectorAll("p.lp.ko, li, .l-answer, .l-def, .l-note").forEach((e2) => {
+      const t = (e2.textContent || "").trim();
+      const hang = (t.match(/[가-힣]/g) || []).length;
+      if (hang < 8) return; // keep short headings/labels, not "sentences"
+      const key = t.replace(/\s+/g, "").replace(/[.?!。…·,，'"“”()（）\[\]~]/g, "");
+      if (seen[key]) { e2.remove(); return; }
+      seen[key] = 1;
+    });
+  }
   function makeKoClickable(root) {
     // Any block of Korean text should open a word breakdown on click — not just
     // sentence paragraphs, but headings, list items and definition/note lines too.
@@ -980,6 +996,7 @@
         try { doc.innerHTML = window.renderLesson(it.cmd); } catch (e) { doc.textContent = it.cmd; }
         if (!(window.LESSON_MD && window.LESSON_MD[it.ch.id + "@" + curLang()])) { localizeLesson(doc); annotatePassage(doc); annotateGloss(doc); }
         stripInlineBreakdown(doc);
+        dedupeSentences(doc);
         makeKoClickable(doc);
         block.appendChild(doc);
       }
@@ -1110,6 +1127,7 @@
     if (!variant) annotatePassage(wrap);
     if (!variant) annotateGloss(wrap);
     stripInlineBreakdown(wrap);
+    dedupeSentences(wrap);
     makeKoClickable(wrap);
     const tip = el("div", "click-tip", t("tip_click"));
     wrap.insertBefore(tip, wrap.firstChild);
