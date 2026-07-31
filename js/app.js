@@ -491,12 +491,10 @@
     });
   }
   function makeKoClickable(root) {
-    // Any block of Korean text should open a word breakdown on click — not just
-    // sentence paragraphs, but headings, list items and definition/note lines too.
-    const sel = ".lp.ko, .ko, .l-label, .l-answer, .lh, .l-def, .l-note, li";
-    root.querySelectorAll(sel).forEach((e2) => {
+    // Only full sentence lines open a word breakdown on click — not headings,
+    // list items or definition lines.
+    root.querySelectorAll(".lp.ko, .ko, .l-label, .l-answer").forEach((e2) => {
       if (e2.classList.contains("ko-click")) return;
-      if (e2.querySelector(sel)) return; // skip containers that hold another clickable target
       const txt = (e2.textContent || "").trim();
       if (/[가-힣]/.test(txt) && txt.length > 3) {
         e2.classList.add("ko-click");
