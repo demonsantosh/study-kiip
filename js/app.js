@@ -641,7 +641,13 @@
       topNav.appendChild(b);
     });
   }
-  document.getElementById("homeBtn").onclick = () => go("/");
+  // Clicking the brand does a FULL fresh reload of the site root (not just an
+  // in-app route change), so a newly published version is fetched instead of the
+  // cached one. Offline (file://) just reloads from disk.
+  document.getElementById("homeBtn").onclick = () => {
+    if (location.protocol === "file:") { location.hash = "#/"; location.reload(); return; }
+    location.href = location.origin + location.pathname.replace(/[^/]*$/, "") + "?_=" + Date.now();
+  };
 
   /* ---------- day / night theme toggle ---------- */
   (function initTheme() {
